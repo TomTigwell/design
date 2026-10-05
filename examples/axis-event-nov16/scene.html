@@ -7,111 +7,99 @@
 <!-- Fonts (ABC Arizona Flare, DM Sans) are injected by render.mjs from the private brand folder. -->
 <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
 <style>
-  /* 1080x1920. LinkedIn's full-screen player covers ~260px top, ~560px bottom, ~112px left, ~210px right (secondary
-     sources), so ALL essential content lives in x 112-870, y 300-1360. That box also sits inside a centred 4:5 crop
-     (y 285-1635), so it survives if the platform crops. Backgrounds and motion may bleed full-frame. */
-  :root{ --navy:#0e1034; --corn:#6A8FFD; --soft:#93A9F6; --alice:#E7ECF3; --white:#fff; }
+  /* 1080x1920. Essential content in the platform safe area x 112-870, y 300-1360 (inside a centred 4:5 crop too).
+     Design plan (frontend-design pass): one H1 size for every scene (Arizona Flare 142px, top-left, frame-0 visible),
+     boldness spent in ONE place per scene (the tangle, the chat, the line), flat navy / alice-blue grounds, no gradient
+     washes, sentence-case labels, headlines in one colour, cornflower kept for graphics, hard cuts on the beat. */
+  :root{ --navy:#0e1034; --corn:#6A8FFD; --soft:#93A9F6; --alice:#E7ECF3; --white:#fff; --ink2:#1d2060; }
   *{box-sizing:border-box;margin:0;padding:0}
   html,body{width:1080px;height:1920px;overflow:hidden;background:var(--navy);font-family:'DM Sans',system-ui,sans-serif;color:var(--white)}
   .display{font-family:'ABC Arizona Flare',Georgia,serif;font-weight:400;letter-spacing:-.02em}
   #bg{position:absolute;inset:0;background:var(--navy)}
-  .orb{position:absolute;width:1000px;height:1000px;border-radius:50%;background:radial-gradient(circle,rgba(106,143,253,.30),rgba(106,143,253,0) 65%)}
-  #o1{left:-420px;top:80px} #o2{left:380px;top:1000px}
-  .top{position:absolute;left:112px;top:296px;display:flex;align-items:center;gap:18px;color:var(--white);z-index:5}
-  .brand{display:flex;align-items:center;gap:14px;font-size:38px;font-weight:600;letter-spacing:-.01em}
-  .brand svg{display:block}
-  .with{font-size:23px;opacity:.7;white-space:nowrap}
-  .scene{position:absolute;inset:0;padding:0 210px 0 112px;opacity:0;visibility:hidden}
-  .mw{display:block;overflow:hidden;padding-bottom:.14em;margin-bottom:-.14em}
-  .mw>span{display:inline-block}
+  .h1{position:absolute;left:112px;top:300px;width:770px;font-size:142px;line-height:.98}
+  .sub{position:absolute;left:112px;width:758px;font-size:40px;line-height:1.3;font-weight:500}
+  .scene{position:absolute;inset:0;opacity:0;visibility:hidden}
+  #logo{position:absolute;right:210px;top:1302px;display:flex;align-items:center;gap:12px;font-size:36px;font-weight:600;color:var(--white);z-index:9}
+  #logo svg{display:block;width:46px;height:46px}
 
-  /* HOOK: messages from different teams fly in at angles, drift, and leave one by one */
-  #sH{opacity:1;visibility:visible}
-  #qmark{position:absolute;left:150px;top:380px;font-size:1500px;line-height:1;color:var(--corn);opacity:.11}
-  .card{position:absolute;width:690px}
-  .drift{padding:24px 34px 28px;border-radius:30px;background:rgba(255,255,255,.075);border:2px solid rgba(147,169,246,.4)}
-  .tag{font-size:22px;font-weight:700;letter-spacing:.16em;color:var(--soft);margin-bottom:10px}
-  .q{font-size:50px;line-height:1.1}
-
-  /* TURN */
-  #sT h2{position:absolute;left:112px;top:392px;width:758px;font-size:88px;line-height:1.03}
-  #sT h2 em{font-style:normal;color:var(--corn)}
-  .chip{position:absolute;z-index:2;padding:12px 26px 14px;border-radius:16px;background:#1d2060;border:2px solid rgba(255,255,255,.28);white-space:nowrap}
-  .chip .tool{font-size:20px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--soft)}
+  /* S1: still stitching */
+  #s1{opacity:1;visibility:visible}
+  #s1 .sub{top:872px;opacity:.85}
+  #s1sub{visibility:hidden}  /* revealed on the beat; hidden in CSS because a set() at t=0 is skipped when seeking to 0 */
+  .chip{position:absolute;z-index:2;padding:12px 26px 14px;border-radius:14px;background:var(--ink2);border:2px solid rgba(255,255,255,.26);white-space:nowrap}
+  .chip .tool{font-size:23px;font-weight:600;color:var(--soft)}
   .chip .art{font-size:31px;font-weight:500;margin-top:2px}
-  #thread{position:absolute;left:0;top:0;width:1080px;height:1920px;z-index:1}
+  #tangle{position:absolute;left:0;top:0;width:1080px;height:1920px;z-index:1}
 
-  /* AXIS (light) */
-  #sA{color:var(--navy)}
-  #sA h2{position:absolute;left:112px;top:392px;font-size:142px;line-height:.98}
-  #sA .sub{position:absolute;left:112px;top:560px;width:758px;font-size:40px;line-height:1.28;opacity:.82}
-  #steps{position:absolute;left:112px;top:790px;width:758px;height:520px}
+  /* S2: sound familiar? Voices from different teams, as chat bubbles */
+  .bub{position:absolute;max-width:640px}
+  .bub .in{padding:22px 32px 26px;border-radius:34px}
+  .bub .who{font-size:25px;font-weight:600;margin-bottom:8px}
+  .bub .q{font-size:48px;line-height:1.1}
+  .bub.l .in{background:var(--white);color:var(--navy);border-bottom-left-radius:6px}
+  .bub.l .who{color:#4a5bd0}
+  .bub.r .in{background:var(--ink2);color:var(--white);border:2px solid rgba(147,169,246,.45);border-bottom-right-radius:6px}
+  .bub.r .who{color:var(--soft)}
+
+  /* S3: Axis (light) */
+  #s3{color:var(--navy)}
+  #s3 .sub{top:470px;opacity:.85}
+  #steps{position:absolute;left:112px;top:660px;width:758px;height:520px}
   #line{position:absolute;left:19px;top:20px;width:6px;height:416px;background:var(--soft);border-radius:3px;transform-origin:top}
   .step{position:absolute;left:0;display:flex;align-items:center;gap:34px;font-size:43px;font-weight:500;white-space:nowrap}
   .dot{width:44px;height:44px;border-radius:50%;background:var(--alice);border:6px solid var(--corn);flex:none}
   .step.live .dot{background:var(--corn)}
-  .step.live span.t{background:var(--corn);color:var(--navy);padding:6px 22px;border-radius:100px;font-weight:700}
+  .step.live span.t{background:var(--navy);color:var(--white);padding:6px 22px;border-radius:100px;font-weight:700}
 
-  /* EVENT */
-  #sE h2{position:absolute;left:112px;top:392px;font-size:190px;line-height:.96}
-  #sE h2 em{font-style:normal;color:var(--corn)}
-  #sE .where{position:absolute;left:112px;top:820px;width:758px;font-size:44px;font-weight:500}
-  #sE .when{position:absolute;left:112px;top:892px;font-size:78px}
-  #sE .lunch{position:absolute;left:112px;top:1030px;width:758px;font-size:36px;opacity:.82;line-height:1.3}
-  .tags{position:absolute;left:112px;top:1170px;display:flex;gap:14px}
-  .tag2{font-size:30px;font-weight:600;padding:14px 24px;border-radius:100px;border:2px solid var(--soft);color:var(--white);white-space:nowrap}
-  .tag2.f{background:var(--corn);border-color:var(--corn);color:var(--navy)}
+  /* S4: event */
+  #s4 .where{top:490px}
+  #s4 .when{position:absolute;left:112px;top:556px;font-size:80px;line-height:1}
+  #s4 .with{top:676px;opacity:.8;font-size:34px}
+  #s4 .lunch{top:770px;opacity:.85;font-size:36px}
+  .tags{position:absolute;left:112px;top:920px;display:flex;flex-wrap:wrap;gap:16px;width:758px}
+  .tag2{font-size:31px;font-weight:600;padding:14px 26px;border-radius:100px;border:2px solid var(--soft);white-space:nowrap}
+  .tag2.f{background:var(--white);border-color:var(--white);color:var(--navy)}
 
-  /* CTA: points down at the platform button inside the bottom overlay */
-  #sC h2{position:absolute;left:112px;top:392px;font-size:98px;line-height:1.0;width:760px}
-  #sC h2 em{font-style:normal;color:var(--corn)}
-  #sC .sub{position:absolute;left:112px;top:640px;width:758px;font-size:35px;font-weight:500;opacity:.9;line-height:1.3}
+  /* S5: call to action, pointing down at the platform button */
+  #s5 .sub{top:752px;opacity:.85;font-size:36px}
   #tap{position:absolute;left:112px;width:758px;top:900px;text-align:center;font-size:48px;font-weight:700}
-  #arrows{position:absolute;left:112px;width:758px;top:990px;height:380px;display:flex;flex-direction:column;align-items:center}
+  #arrows{position:absolute;left:112px;width:758px;top:990px;height:300px;display:flex;flex-direction:column;align-items:center}
   #arrows svg{width:300px;height:138px;margin-top:-34px;display:block}
-  #glow{position:absolute;left:0;right:0;bottom:0;height:760px;background:radial-gradient(ellipse 75% 100% at 50% 100%,rgba(106,143,253,.65),rgba(106,143,253,0) 70%);opacity:0}
 </style>
 </head>
 <body>
 <div id="bg"></div>
-<div class="orb" id="o1"></div><div class="orb" id="o2"></div>
 
-<div class="top" id="top">
-  <div class="brand"><svg width="52" height="52" viewBox="0 0 48 48" aria-hidden="true"><path d="M24.3394 19.7273L30.2766 2.09935C30.4128 1.69804 30.2584 1.2582 29.9019 1.02014L28.6123 0.163113C28.0811 -0.190578 27.3545 0.0565523 27.1593 0.657375L21.4696 18.0971C21.3606 18.4304 21.4492 18.7954 21.6989 19.0448L22.7388 20.09C23.2428 20.5956 24.1124 20.3984 24.3372 19.7273H24.3394ZM24.7458 26.4678L37.4465 27.3792C38.0005 27.42 38.475 26.9893 38.4773 26.4429L38.5 22.3391C38.5023 21.8199 38.08 21.3982 37.5532 21.3892L24.8185 21.21C24.2827 21.2032 23.8422 21.6295 23.8445 22.1555L23.8536 25.5269C23.8536 26.0212 24.2441 26.4293 24.7436 26.4655L24.7458 26.4678ZM21.12 18.1084L16.5178 4.16255C16.2749 3.42796 15.2873 3.27379 14.8264 3.89955L14.1634 4.79738C13.9863 5.03771 13.9341 5.34832 14.0227 5.63173L18.4295 19.5731C18.6475 20.2623 19.542 20.4664 20.0461 19.9404L20.902 19.0471C21.1427 18.7954 21.2244 18.4372 21.1154 18.1084H21.12ZM21.4991 29.2815L27.207 47.3356C27.3931 47.9228 28.0901 48.1813 28.6237 47.8616L29.9065 47.0953C30.2856 46.8686 30.4582 46.4128 30.322 45.9979L24.3213 27.8123C24.1056 27.157 23.2701 26.9417 22.7547 27.411L21.7648 28.3111C21.4923 28.5582 21.3902 28.9368 21.4991 29.2837V29.2815ZM17.9641 21.1148L10.474 21.0831C9.94273 21.0831 9.51135 21.5025 9.50908 22.024L9.5 24.3615C9.5 24.8535 9.88143 25.2662 10.3832 25.307L17.8914 25.9123C18.4522 25.9577 18.9313 25.5224 18.9313 24.9691L18.9245 22.058C18.9245 21.5388 18.4954 21.1193 17.9686 21.1171L17.9641 21.1148ZM18.4114 27.606L14.0544 41.1211C13.9636 41.3999 14.0113 41.7038 14.1816 41.9441L14.8582 42.9031C15.3077 43.5425 16.3067 43.4019 16.5587 42.6651L21.145 29.2225C21.2539 28.9074 21.1835 28.5582 20.961 28.3043L20.0552 27.2727C19.5647 26.7149 18.6384 26.9008 18.4114 27.606Z" fill="currentColor"></path></svg><span>Axis</span></div>
-  <div class="with">with Fill My Funnel and LinkedIn</div>
-</div>
-
-<section class="scene" id="sH">
-  <div id="qmark" class="display">?</div>
-  <div class="card" id="c1"><div class="drift"><div class="tag">FINANCE</div><div class="q display">Why did we spend £4,200 if it wasn't approved?</div></div></div>
-  <div class="card" id="c2"><div class="drift"><div class="tag">LEADERSHIP</div><div class="q display">What's the overarching plan?</div></div></div>
-  <div class="card" id="c3"><div class="drift"><div class="tag">SALES</div><div class="q display">Why are we running these ads?</div></div></div>
-  <div class="card" id="c4"><div class="drift"><div class="tag">CLIENT</div><div class="q display">What will the ads actually look like?</div></div></div>
-  <div class="card" id="c5"><div class="drift"><div class="tag">BRAND TEAM</div><div class="q display">We wanted the creative changed first.</div></div></div>
-  <div class="card" id="c6"><div class="drift"><div class="tag">CLIENT</div><div class="q display">We approved it. Why didn't it launch?</div></div></div>
-</section>
-
-<section class="scene" id="sT">
-  <h2 class="display" id="hT">
-    <span class="mw"><span class="w">Five tools.</span></span>
-    <span class="mw"><span class="w">Ten threads.</span></span>
-    <span class="mw"><span class="w"><em>Nothing stitched together.</em></span></span>
-  </h2>
-  <svg id="thread" viewBox="0 0 1080 1920">
-    <defs><mask id="tm"><path id="tmp" d="M277 837 C420 765 540 765 665 822 S470 950 395 972 S600 1075 660 1102 S330 1150 222 1122 S400 1280 500 1262" stroke="#fff" stroke-width="16" fill="none" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/></mask></defs>
-    <path d="M277 837 C420 765 540 765 665 822 S470 950 395 972 S600 1075 660 1102 S330 1150 222 1122 S400 1280 500 1262" stroke="#6A8FFD" stroke-width="7" fill="none" stroke-linecap="round" stroke-dasharray="18 13" mask="url(#tm)"/>
+<!-- S1 -->
+<section class="scene" id="s1">
+  <h1 class="h1 display">Still stitching LinkedIn campaigns together?</h1>
+  <div class="sub" id="s1sub">Five tools. Ten threads. No shared plan.</div>
+  <svg id="tangle" viewBox="0 0 1080 1920">
+    <defs><mask id="tm"><path id="tmp" d="M230 1006 C420 900 640 1180 730 986 C820 800 300 1250 460 1126 C600 1020 980 1000 880 1126 C780 1260 420 1000 240 1276 C120 1320 600 1300 690 1200 C600 1110 160 1150 300 1000" stroke="#fff" stroke-width="16" fill="none" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/></mask></defs>
+    <path d="M230 1006 C420 900 640 1180 730 986 C820 800 300 1250 460 1126 C600 1020 980 1000 880 1126 C780 1260 420 1000 240 1276 C120 1320 600 1300 690 1200 C600 1110 160 1150 300 1000" stroke="#6A8FFD" stroke-width="6" fill="none" stroke-linecap="round" stroke-dasharray="16 12" mask="url(#tm)"/>
   </svg>
-  <div class="chip" style="left:112px;top:790px;transform:rotate(-5deg)"><div class="tool">Google Sheets</div><div class="art">Plan_v7_FINAL.xlsx</div></div>
-  <div class="chip" style="left:520px;top:775px;transform:rotate(4deg)"><div class="tool">Notion</div><div class="art">Q4 campaign brief</div></div>
-  <div class="chip" style="left:250px;top:925px;transform:rotate(-3deg)"><div class="tool">Slack</div><div class="art">#client-linkedin</div></div>
-  <div class="chip" style="left:470px;top:1055px;transform:rotate(5deg)"><div class="tool">Email</div><div class="art">RE: RE: Fwd: approval?</div></div>
-  <div class="chip" style="left:112px;top:1075px;transform:rotate(6deg)"><div class="tool">Asana</div><div class="art">Launch Q4 ads</div></div>
-  <div class="chip" style="left:290px;top:1215px;transform:rotate(-4deg)"><div class="tool">Campaign Manager</div><div class="art">3 ad sets live</div></div>
+  <div class="chip" id="k1" style="left:60px;top:960px"><div class="tool">Google Sheets</div><div class="art">Plan_v7_FINAL.xlsx</div></div>
+  <div class="chip" id="k2" style="left:560px;top:940px"><div class="tool">Notion</div><div class="art">Q4 campaign brief</div></div>
+  <div class="chip" id="k3" style="left:300px;top:1080px"><div class="tool">Slack</div><div class="art">#client-linkedin</div></div>
+  <div class="chip" id="k4" style="left:525px;top:1165px"><div class="tool">Email</div><div class="art">RE: RE: Fwd: approval?</div></div>
+  <div class="chip" id="k5" style="left:90px;top:1230px"><div class="tool">Asana</div><div class="art">Launch Q4 ads</div></div>
+  <div class="chip" id="k6" style="left:700px;top:1075px"><div class="tool">Campaign Manager</div><div class="art">3 ad sets live</div></div>
 </section>
 
-<section class="scene" id="sA">
-  <h2 class="display"><span class="mw"><span class="w">Meet Axis.</span></span></h2>
-  <div class="sub" id="aSub">The companion that keeps strategy, builds and approvals in one place.</div>
+<!-- S2 -->
+<section class="scene" id="s2">
+  <h1 class="h1 display">Sound familiar?</h1>
+  <div class="bub l" id="b1"><div class="in"><div class="who">Finance</div><div class="q display">Why did we spend £4,200 if it wasn't approved?</div></div></div>
+  <div class="bub r" id="b2"><div class="in"><div class="who">Leadership</div><div class="q display">What's the overarching plan?</div></div></div>
+  <div class="bub l" id="b3"><div class="in"><div class="who">Sales</div><div class="q display">Why are we running these ads?</div></div></div>
+  <div class="bub r" id="b4"><div class="in"><div class="who">Client</div><div class="q display">What will the ads actually look like?</div></div></div>
+  <div class="bub l" id="b5"><div class="in"><div class="who">Brand team</div><div class="q display">We wanted the creative changed first.</div></div></div>
+</section>
+
+<!-- S3 -->
+<section class="scene" id="s3">
+  <h1 class="h1 display">Meet Axis.</h1>
+  <div class="sub" id="s3sub">The companion that keeps strategy, builds and approvals in one place.</div>
   <div id="steps">
     <div id="line"></div>
     <div class="step" style="top:0"><span class="dot"></span><span class="t">Strategy</span></div>
@@ -122,17 +110,20 @@
   </div>
 </section>
 
-<section class="scene" id="sE">
-  <h2 class="display"><span class="mw"><span class="w">See Axis</span></span><span class="mw"><span class="w"><em>live.</em></span></span></h2>
-  <div class="where" id="eWhere">Launching at LinkedIn London HQ</div>
-  <div class="when display" id="eWhen">Monday 16 November</div>
-  <div class="lunch" id="eLunch">Lunch with the LinkedIn team. Hear what's coming next.</div>
-  <div class="tags" id="eTags"><span class="tag2">Free to attend, lunch included</span><span class="tag2 f">25 seats</span></div>
+<!-- S4 -->
+<section class="scene" id="s4">
+  <h1 class="h1 display">See Axis live.</h1>
+  <div class="sub where" id="s4a">Launching at LinkedIn London HQ</div>
+  <div class="when display" id="s4b">Monday 16 November</div>
+  <div class="sub with" id="s4c">With Fill My Funnel and LinkedIn</div>
+  <div class="sub lunch" id="s4d">Lunch with the LinkedIn team. Hear what's coming next.</div>
+  <div class="tags" id="s4e"><span class="tag2">Free to attend, lunch included</span><span class="tag2 f">25 seats</span></div>
 </section>
 
-<section class="scene" id="sC">
-  <h2 class="display"><span class="mw"><span class="w">Learn more and</span></span><span class="mw"><span class="w"><em>request a seat.</em></span></span></h2>
-  <div class="sub" id="cSub">Monday 16 November<br>LinkedIn London HQ</div>
+<!-- S5 -->
+<section class="scene" id="s5">
+  <h1 class="h1 display">Learn more and request a seat.</h1>
+  <div class="sub" id="s5a">Monday 16 November, LinkedIn London HQ</div>
   <div id="tap">Tap the button below</div>
   <div id="arrows">
     <svg viewBox="0 0 200 90" fill="none" stroke="#6A8FFD" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"><path d="M30 20 L100 70 L170 20"/></svg>
@@ -140,91 +131,70 @@
     <svg viewBox="0 0 200 90" fill="none" stroke="#6A8FFD" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"><path d="M30 20 L100 70 L170 20"/></svg>
   </div>
 </section>
-<div id="glow"></div>
+
+<div id="logo"><svg width="52" height="52" viewBox="0 0 48 48" aria-hidden="true"><path d="M24.3394 19.7273L30.2766 2.09935C30.4128 1.69804 30.2584 1.2582 29.9019 1.02014L28.6123 0.163113C28.0811 -0.190578 27.3545 0.0565523 27.1593 0.657375L21.4696 18.0971C21.3606 18.4304 21.4492 18.7954 21.6989 19.0448L22.7388 20.09C23.2428 20.5956 24.1124 20.3984 24.3372 19.7273H24.3394ZM24.7458 26.4678L37.4465 27.3792C38.0005 27.42 38.475 26.9893 38.4773 26.4429L38.5 22.3391C38.5023 21.8199 38.08 21.3982 37.5532 21.3892L24.8185 21.21C24.2827 21.2032 23.8422 21.6295 23.8445 22.1555L23.8536 25.5269C23.8536 26.0212 24.2441 26.4293 24.7436 26.4655L24.7458 26.4678ZM21.12 18.1084L16.5178 4.16255C16.2749 3.42796 15.2873 3.27379 14.8264 3.89955L14.1634 4.79738C13.9863 5.03771 13.9341 5.34832 14.0227 5.63173L18.4295 19.5731C18.6475 20.2623 19.542 20.4664 20.0461 19.9404L20.902 19.0471C21.1427 18.7954 21.2244 18.4372 21.1154 18.1084H21.12ZM21.4991 29.2815L27.207 47.3356C27.3931 47.9228 28.0901 48.1813 28.6237 47.8616L29.9065 47.0953C30.2856 46.8686 30.4582 46.4128 30.322 45.9979L24.3213 27.8123C24.1056 27.157 23.2701 26.9417 22.7547 27.411L21.7648 28.3111C21.4923 28.5582 21.3902 28.9368 21.4991 29.2837V29.2815ZM17.9641 21.1148L10.474 21.0831C9.94273 21.0831 9.51135 21.5025 9.50908 22.024L9.5 24.3615C9.5 24.8535 9.88143 25.2662 10.3832 25.307L17.8914 25.9123C18.4522 25.9577 18.9313 25.5224 18.9313 24.9691L18.9245 22.058C18.9245 21.5388 18.4954 21.1193 17.9686 21.1171L17.9641 21.1148ZM18.4114 27.606L14.0544 41.1211C13.9636 41.3999 14.0113 41.7038 14.1816 41.9441L14.8582 42.9031C15.3077 43.5425 16.3067 43.4019 16.5587 42.6651L21.145 29.2225C21.2539 28.9074 21.1835 28.5582 20.961 28.3043L20.0552 27.2727C19.5647 26.7149 18.6384 26.9008 18.4114 27.606Z" fill="currentColor"></path></svg><span>Axis</span></div>
 
 <script>
-  // One PAUSED timeline exposed as window.tl. Exactly 25 s. Music: 96 bpm (beat 0.625 s, bar 2.5 s).
-  // Hook 0-7.5 | Turn 7.5-12.5 | Axis 12.5-16.25 | Event 16.25-20 | CTA 20-25. The music lifts at 12.5.
+  // One PAUSED timeline exposed as window.tl. Exactly 25 s. Music: 96 bpm (beat 0.625 s, bar 2.5 s); the lift lands at 12.5.
+  // S1 0-6.25 stitching | S2 6.25-12.5 sound familiar | S3 12.5-16.25 Meet Axis | S4 16.25-20 event | S5 20-25 CTA.
+  // Scene changes are hard cuts on the beat; the motion lives inside each scene.
   const tl = gsap.timeline({paused:true, defaults:{ease:'power3.out'}});
   window.tl = tl;
-  const show=(s,t)=>tl.set(s,{autoAlpha:1},t), hide=(s,t)=>tl.set(s,{autoAlpha:0},t);
+  const B = .625;
+  const on=(s,t)=>tl.set(s,{autoAlpha:1},t), off=(s,t)=>tl.set(s,{autoAlpha:0},t);
+  const ground=(bg,fg,t)=>tl.set('#bg',{backgroundColor:bg},t).set('#logo',{color:fg},t);
   const NAVY='#0e1034', ALICE='#E7ECF3', WHITE='#ffffff';
+  const drift=(sel,start,n)=>tl.to(sel,{y:'+=8',rotation:'+=1.4',duration:1.25,yoyo:true,repeat:n,ease:'sine.inOut'},start);
 
-  // slow-moving background light, for life under everything
-  tl.fromTo('#o1',{x:0,y:0},{x:260,y:520,duration:25,ease:'sine.inOut'},0)
-    .fromTo('#o2',{x:0,y:0},{x:-300,y:-420,duration:25,ease:'sine.inOut'},0);
-
-  // ---- HOOK 0 to 7.5: six different voices, angled, flying in from different sides ----
-  // [id, left, top, restAngle, fromX, fromY, fromAngle, landAt]  (c1 is already on screen at frame 0)
-  const cards=[
-    ['#c1',112,380,-3,0,0,0,0],
-    ['#c2',178,625,3,950,60,16,1.25],
-    ['#c3',112,870,-2.5,-950,-40,-16,2.5],
-    ['#c4',178,1115,2.5,950,260,18,3.75],
-    ['#c5',112,380,3.5,-80,-760,-14,5.0],
-    ['#c6',178,625,-3,-950,40,-18,6.25]
-  ];
-  cards.forEach(([id,l,t,rot,fx,fy,fr,land],i)=>{
-    gsap.set(id,{left:l,top:t});
-    if(i===0){
-      // opens big and centred on frame 0, then settles into the first slot
-      tl.fromTo(id,{x:22,y:430,scale:1.06,rotation:-1.5},{x:22,y:430,scale:1.1,rotation:-2.5,duration:.5,ease:'none'},0)
-        .to(id,{x:0,y:0,scale:1,rotation:rot,duration:.45,ease:'power3.inOut'},.5);
-    } else {
-      tl.fromTo(id,{x:fx,y:fy,rotation:fr,scale:1.06},{x:0,y:0,rotation:rot,scale:1,duration:.65,ease:'back.out(1.3)'},land-.5);
-    }
-    // keep drifting after landing so the screen is never still
-    tl.to(id+' .drift',{y:'+=9',rotation:'+=1.2',duration:1.25,yoyo:true,repeat:5,ease:'sine.inOut'},(i===0?1.0:land+.2));
+  // ---- S1 0 to 6.25: the headline is there on frame 0; the tools arrive messily around it ----
+  // [id, rest angle, from x, from y, from angle, land time]
+  [['#k1',-7,0,0,-7,0],['#k2',6,700,-40,20,B],['#k3',-4,-200,1000,-14,2*B],
+   ['#k4',8,800,120,24,3*B],['#k5',5,-760,60,-20,4*B],['#k6',-10,700,-80,-26,5*B]]
+  .forEach(([id,rot,fx,fy,fr,land],i)=>{
+    if(i===0){ tl.fromTo(id,{rotation:-9,scale:1.04},{rotation:rot,scale:1,duration:.5},0); }
+    else { tl.fromTo(id,{x:fx,y:fy,rotation:fr},{x:0,y:0,rotation:rot,duration:.6,ease:'back.out(1.4)'},land-.45); }
+    drift(id,land+.2,3);
   });
-  // conveyor: the oldest card flies off before a new one takes its slot
-  tl.to('#c1',{x:-1200,rotation:-22,duration:.45,ease:'power3.in'},4.05)
-    .to('#c2',{x:1200,rotation:22,duration:.45,ease:'power3.in'},5.3)
-    // sweep the rest away together into the turn
-    .to(['#c3','#c4','#c5','#c6'],{x:(i)=>(i%2?1300:-1300),rotation:(i)=>(i%2?24:-24),duration:.45,ease:'power3.in',stagger:.06},6.95)
-    .fromTo('#qmark',{rotation:-8,scale:.95},{rotation:6,scale:1.06,duration:7.5,ease:'none'},0)
-    .to('#qmark',{opacity:0,duration:.3},7.1);
-  hide('#sH',7.5);
+  tl.to('#tmp',{strokeDashoffset:0,duration:1.2,ease:'power1.inOut'},3.25);   // the stitching tangles
+  tl.set('#s1sub',{visibility:'visible'},7*B);                                                          // 4.375, on the beat
+  tl.to(['#k1','#k3','#k5'],{x:-90,rotation:'-=6',duration:.25,ease:'power2.out'},9*B)   // a tug that goes nowhere
+    .to(['#k2','#k4','#k6'],{x:90,rotation:'+=6',duration:.25,ease:'power2.out'},9*B)
+    .to(['#k1','#k2','#k3','#k4','#k5','#k6'],{x:0,duration:.35,ease:'back.out(2)'},9*B+.25);
+  off('#s1',10*B);
 
-  // ---- TURN 7.5 to 12.5: tools everywhere, then stitched together ----
-  show('#sT',7.45);
-  tl.from('#hT .w',{yPercent:110,duration:.65,stagger:.15},7.6)
-    .from('.chip',{scale:.4,opacity:0,duration:.45,stagger:.12,ease:'back.out(2)'},8.4)
-    .to('.chip',{rotation:'+=4',duration:.18,repeat:5,yoyo:true,ease:'sine.inOut',stagger:.025},9.2)
-    .to('#tmp',{strokeDashoffset:0,duration:1.1,ease:'power1.inOut'},9.6)
-    .to('.chip',{rotation:0,borderColor:'#6A8FFD',duration:.4},10.9)
-    .to(['#hT','.chip','#thread'],{opacity:0,y:-30,duration:.35,ease:'power2.in'},12.1);
-  hide('#sT',12.5);
+  // ---- S2 6.25 to 12.5: one voice per two beats, angled, from alternating sides; oldest leaves first ----
+  on('#s2',10*B);
+  // [id, side, left, top, rest angle, land]
+  const bubs=[['#b1','l',112,640,-2.5,10*B],['#b2','r',870,860,2,12*B],['#b3','l',112,1080,-2,14*B],
+              ['#b4','r',870,640,2.5,16*B],['#b5','l',112,860,-2,18*B]];
+  bubs.forEach(([id,side,x,y,rot,land],i)=>{
+    gsap.set(id, side==='l' ? {left:x,top:y} : {right:1080-x,top:y});
+    if(i===0){ tl.fromTo(id,{x:-120,rotation:-8},{x:0,rotation:rot,duration:.45,ease:'back.out(1.6)'},land); }
+    else { tl.fromTo(id,{x:side==='l'?-900:900,rotation:side==='l'?-16:16},{x:0,rotation:rot,duration:.6,ease:'back.out(1.3)'},land-.45); }
+    drift(id+' .in',land+.2,3);
+  });
+  tl.to('#b1',{x:-1100,rotation:-18,duration:.4,ease:'power3.in'},16*B-.85)
+    .to('#b2',{x:1100,rotation:18,duration:.4,ease:'power3.in'},18*B-.85);
+  off('#s2',20*B);
 
-  // ---- AXIS 12.5 to 16.25 (light): relief, the music lifts here ----
-  tl.to('#bg',{backgroundColor:ALICE,duration:.3,ease:'power2.inOut'},12.2)
-    .to('#top',{color:NAVY,duration:.3},12.2);
-  show('#sA',12.45);
-  tl.from('#sA .w',{yPercent:110,duration:.65},12.5)
-    .from('#aSub',{y:30,opacity:0,duration:.5},12.85)
-    .from('#line',{scaleY:0,duration:1.0,ease:'power1.inOut'},13.2)
-    .from('.step',{x:-40,opacity:0,duration:.35,stagger:.17},13.2)
-    .from('.dot',{scale:0,duration:.28,stagger:.17,ease:'back.out(3)'},13.2)
-    .to('#sA',{opacity:0,y:-30,duration:.3,ease:'power2.in'},15.95);
-  hide('#sA',16.25);
+  // ---- S3 12.5 to 16.25 (light): the reveal, on the music's lift ----
+  ground(ALICE,'#0e1034',20*B); on('#s3',20*B);
+  tl.from('#line',{scaleY:0,duration:1.1,ease:'power1.inOut'},21*B)
+    .from('.step',{x:-30,opacity:0,duration:.35,stagger:.2},21*B)
+    .from('.dot',{scale:0,duration:.28,stagger:.2,ease:'back.out(3)'},21*B);
+  off('#s3sub',20*B); on('#s3sub',20*B+B/2);
+  off('#s3',26*B);
 
-  // ---- EVENT 16.25 to 20.0 (navy) ----
-  tl.to('#bg',{backgroundColor:NAVY,duration:.3,ease:'power2.inOut'},15.95)
-    .to('#top',{color:WHITE,duration:.3},15.95);
-  show('#sE',16.2);
-  tl.from('#sE .w',{yPercent:110,duration:.7,stagger:.14},16.3)
-    .from(['#eWhere','#eWhen'],{y:30,opacity:0,duration:.5,stagger:.14},16.95)
-    .from(['#eLunch','#eTags .tag2'],{y:26,opacity:0,duration:.45,stagger:.12},17.6)
-    .to('#sE',{opacity:0,y:-30,duration:.3,ease:'power2.in'},19.7);
-  hide('#sE',20.0);
+  // ---- S4 16.25 to 20 (navy) ----
+  ground(NAVY,WHITE,26*B); on('#s4',26*B);
+  [['#s4a',27],['#s4b',27],['#s4c',28],['#s4d',29],['#s4e',30]].forEach(([id,b])=>{ off(id,26*B); on(id,b*B); });
+  off('#s4',32*B);
 
-  // ---- CTA 20.0 to 25.0: learn more, request a seat, pointing down at the platform button ----
-  show('#sC',19.95);
-  tl.from('#sC .w',{yPercent:110,duration:.75,stagger:.15},20.05)
-    .from('#cSub',{y:30,opacity:0,duration:.5},20.85)
-    .from('#tap',{y:20,opacity:0,duration:.5},21.5)
-    .from('#arrows svg',{y:-30,opacity:0,duration:.4,stagger:.1},21.7)
-    .to('#glow',{opacity:1,duration:.9},21.6)
-    .to('#arrows svg',{y:44,opacity:.4,duration:.3,stagger:.12,yoyo:true,repeat:7,ease:'sine.inOut'},22.2);
+  // ---- S5 20 to 25: call to action ----
+  on('#s5',32*B);
+  [['#s5a',33],['#tap',34]].forEach(([id,b])=>{ off(id,32*B); on(id,b*B); });
+  tl.from('#arrows svg',{y:-30,opacity:0,duration:.35,stagger:.1},35*B)
+    .to('#arrows svg',{y:44,opacity:.35,duration:.3,stagger:.12,yoyo:true,repeat:7,ease:'sine.inOut'},36*B);
 
   tl.to({},{duration:0.001},25);
 </script>

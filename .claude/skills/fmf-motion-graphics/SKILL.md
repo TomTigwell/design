@@ -64,6 +64,18 @@ Their examples assume a live page: in scenes, keep to the one-timeline contract 
   cascading down-chevrons and "Tap the button below". Do not draw a fake button. Pick the closest native label (LinkedIn
   offers fixed presets such as Register or Sign up).
 
+## Layout and design rules (Axis event v5, after a `frontend-design` pass: read `../frontend-design/SKILL.md` first)
+
+- **One H1 style everywhere:** ABC Arizona Flare 142px, line-height .98, top-left of the safe area (x 112, y 300), width 770,
+  visible on the scene's first frame. About 11 characters fit per line at 142px, so measure copy first
+  (fontTools advance widths) and write headlines that break well.
+- **Logo bottom-right**, inside the safe area (right edge x 870, top y 1302), out of the way of the H1.
+- Avoid the generated-design tells: ALL-CAPS tracked labels (use sentence case), one word in a headline picked out in another
+  colour (keep headlines one colour; cornflower is for graphics), identical rounded cards, gradient washes and glow orbs,
+  a fade-and-slide-up on every element. Spend boldness on one thing per scene; cut between scenes hard, on the beat.
+- Gotcha: a `tl.set()` at exactly t=0 is skipped when the renderer seeks to 0. Hide later-revealed elements in CSS and
+  reveal them with a set at their beat.
+
 ## Stack (deliberately small)
 
 - **Engine:** GSAP (free, including plugins). Animates HTML/CSS/SVG.
@@ -121,5 +133,5 @@ ffprobe -v error -show_entries format=duration -of csv=p=0 /tmp/test.mp4   # exp
 
 ## Candidate additions (from the "28 installs" list, not yet vendored)
 
-`anthropics/skills` canvas/GIF skills, `threejs-skills` (unvetted), Remotion skills (licence). Log any vendored skill in
+`lottie-web` (needs designer-made Lottie files), `elevenlabs/skills` (paid account), `three.js` (only when 3D is needed). Rejected: React UI kits (generic SaaS look), Remotion (licence), duplicate engines and renderers. Log any vendored skill in
 `../THIRD-PARTY.md` with source, licence and commit.
