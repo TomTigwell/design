@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // Render a GSAP scene (HTML) to MP4 by seeking the timeline frame by frame.
-// Usage: node render.mjs <scene.html> <out.mp4> [--fps 30] [--width 1920] [--height 1080] [--duration <s>]
+// Usage: node render.mjs <scene.html> <out.mp4> [--fps 30] [--width 1920] [--height 1080] [--duration <s>] [--audio bed.wav]
 // The scene must expose a PAUSED GSAP timeline as `window.tl`.
 import { chromium } from 'playwright-core';
 import { spawn } from 'node:child_process';
@@ -13,6 +13,8 @@ const args = process.argv.slice(2);
 const pos = args.filter((a, i) => !a.startsWith('--') && !(args[i - 1] || '').startsWith('--'));
 const opt = (n, d) => { const i = args.indexOf(`--${n}`); return i > -1 ? Number(args[i + 1]) : d; };
 const [scene, out] = pos;
+const audioIdx = args.indexOf('--audio');
+const audio = audioIdx > -1 ? resolve(args[audioIdx + 1]) : null;
 if (!scene || !out) { console.error('usage: render.mjs <scene.html> <out.mp4> [--fps N --width N --height N --duration S]'); process.exit(1); }
 
 const fps = opt('fps', 30), width = opt('width', 1920), height = opt('height', 1080);
@@ -74,7 +76,10 @@ const duration = opt('duration', total);
 const frames = Math.round(duration * fps);
 
 log('frames=' + frames);
-const ff = spawn('ffmpeg', ['-y', '-loglevel', 'error', '-f', 'image2pipe', '-framerate', String(fps), '-i', '-',
+const audioArgs = audio
+  ? ['-i', audio, '-c:a', 'aac', '-b:a', '192k', '-af', `afade=t=in:d=1,afade=t=out:st=${Math.max(0, duration - 1.8).toFixed(2)}:d=1.8`, '-t', String(duration)]
+  : [];
+const ff = spawn('ffmpeg', ['-y', '-loglevel', 'error', '-f', 'image2pipe', '-framerate', String(fps), '-i', '-', ...audioArgs,
   '-c:v', 'libx264', '-pix_fmt', 'yuv420p', '-crf', '16', '-movflags', '+faststart', resolve(out)], { stdio: ['pipe', 'inherit', 'inherit'] });
 
 for (let f = 0; f < frames; f++) {
