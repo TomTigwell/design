@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <title>FMF motion scene</title>
-<meta name="fmf-size" content="1920x1080">
+<meta name="fmf-size" content="1080x1350">
 <!-- Fonts (ABC Arizona Flare, DM Sans) are injected by render.mjs from the private brand folder. In a plain browser preview they fall back. -->
 <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
 <style>
@@ -12,14 +12,14 @@
     --sage:#7CC4A7; --honey:#E0A766; --rose:#E58A97; --white:#FFFFFF;
   }
   *{box-sizing:border-box;margin:0}
-  html,body{width:1920px;height:1080px;overflow:hidden;background:var(--navy);color:var(--white);
+  html,body{width:1080px;height:1350px;overflow:hidden;background:var(--navy);color:var(--white);
     font-family:'DM Sans',system-ui,sans-serif}
-  .stage{position:relative;width:100%;height:100%;display:flex;flex-direction:column;justify-content:center;padding:0 160px}
-  .kicker{font-size:28px;letter-spacing:.18em;text-transform:uppercase;color:var(--cornflower);font-weight:700}
-  h1{font-family:'ABC Arizona Flare','Lora',Georgia,serif;font-weight:400;font-size:132px;line-height:1.05;margin:28px 0}
+  .stage{position:relative;width:100%;height:100%;display:flex;flex-direction:column;justify-content:center;padding:0 90px}
+  .kicker{font-size:24px;letter-spacing:.18em;text-transform:uppercase;color:var(--cornflower);font-weight:700}
+  h1{font-family:'ABC Arizona Flare','Lora',Georgia,serif;font-weight:400;font-size:112px;line-height:1.05;margin:28px 0}
   h1 em{font-style:normal;color:var(--cornflower)}
-  .sub{font-size:44px;color:var(--alice-blue);opacity:.85;max-width:1200px}
-  .bar{position:absolute;left:160px;bottom:140px;height:8px;width:0;background:var(--cornflower);border-radius:4px}
+  .sub{font-size:40px;color:var(--alice-blue);opacity:.85;max-width:900px}
+  .bar{position:absolute;left:90px;bottom:150px;height:8px;width:0;background:var(--cornflower);border-radius:4px}
 </style>
 </head>
 <body>
@@ -36,7 +36,7 @@
   tl.from('.kicker', {y:30, opacity:0, duration:.6})
     .from('.w', {y:80, opacity:0, duration:.7, stagger:.12}, '-=.2')
     .from('.sub', {y:30, opacity:0, duration:.6}, '-=.2')
-    .to('.bar', {width:400, duration:.9, ease:'power2.inOut'}, '<')
+    .to('.bar', {width:300, duration:.9, ease:'power2.inOut'}, '<')
     .to({}, {duration:1.5}); // hold on the final frame
 </script>
 </body>
