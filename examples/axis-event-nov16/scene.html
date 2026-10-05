@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<title>Axis event, 16 November (10s, 4:5)</title>
+<meta name="fmf-size" content="1080x1350">
+<!-- Fonts (ABC Arizona Flare, DM Sans) are injected by render.mjs from the private brand folder. -->
+<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+<style>
+  :root{ --navy:#111C33; --peri:#5068FF; --peri-soft:#9FB3FF; --lime:#C6F7A0; --paper:#EEF2F8; --white:#fff; }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{width:1080px;height:1350px;overflow:hidden;background:var(--paper);font-family:'DM Sans',system-ui,sans-serif;color:var(--navy)}
+  .display{font-family:'ABC Arizona Flare',Georgia,serif;font-weight:400;letter-spacing:-.02em}
+  #bg{position:absolute;inset:0;background:var(--paper)}
+  .top{position:absolute;left:80px;right:80px;top:64px;display:flex;align-items:center;justify-content:space-between;color:var(--navy);z-index:5}
+  .brand{display:flex;align-items:center;gap:16px;font-size:38px;font-weight:600;letter-spacing:-.01em}
+  .brand svg{display:block}
+  .with{font-size:26px;opacity:.7}
+  .bar{position:absolute;left:0;bottom:0;height:10px;width:0;background:var(--peri);z-index:5}
+  .scene{position:absolute;inset:0;padding:0 80px;opacity:0;visibility:hidden}
+  .mw{display:block;overflow:hidden;padding-bottom:.14em;margin-bottom:-.14em}
+  .mw>span{display:inline-block}
+  /* S1 */
+  #s1{display:flex;flex-direction:column;justify-content:center;padding-top:60px}
+  .pill{align-self:flex-start;font-size:30px;font-weight:600;padding:14px 28px;border-radius:100px;background:var(--navy);color:var(--white);margin-bottom:44px}
+  #s1 h1{font-size:118px;line-height:1.03;max-width:920px}
+  #s1 h1 em{font-style:normal;color:var(--peri)}
+  /* S2 */
+  #s2{color:var(--white)}
+  .h2box{position:absolute;left:80px;right:80px;top:190px;height:420px}
+  .h2box h2{position:absolute;left:0;top:0;width:920px;font-size:96px;line-height:1.04}
+  .h2box h2 em{font-style:normal;color:var(--lime)}
+  .chip{position:absolute;font-size:36px;font-weight:500;padding:16px 30px;border-radius:16px;background:rgba(255,255,255,.09);border:2px solid rgba(255,255,255,.22);white-space:nowrap}
+  #steps{position:absolute;left:96px;top:690px;width:900px;height:520px}
+  #line{position:absolute;left:19px;top:20px;width:6px;height:440px;background:var(--peri-soft);border-radius:3px;transform-origin:top}
+  .step{position:absolute;left:0;display:flex;align-items:center;gap:38px;font-size:50px;font-weight:500}
+  .dot{width:44px;height:44px;border-radius:50%;background:var(--navy);border:6px solid var(--peri-soft);flex:none}
+  .step.live .dot{background:var(--lime);border-color:var(--lime)}
+  .step.live{color:var(--lime);font-weight:700}
+  /* S3 */
+  #s3{padding-top:190px}
+  #s3 h2{font-size:104px;line-height:1.03;margin-bottom:56px}
+  .row{display:flex;align-items:baseline;gap:34px;background:var(--white);border-radius:28px;padding:34px 40px;margin-bottom:24px;box-shadow:0 10px 30px rgba(17,28,51,.08)}
+  .row .t{font-size:60px;color:var(--peri);width:176px;flex:none}
+  .row .n{font-size:46px;font-weight:700;line-height:1.1}
+  .row .s{font-size:30px;opacity:.7;margin-top:8px}
+  /* S4 */
+  #s4{color:var(--white);display:flex;flex-direction:column;justify-content:center;padding-top:60px}
+  #s4 .date{font-size:150px;line-height:.98}
+  #s4 .date em{font-style:normal;color:var(--lime)}
+  #s4 .venue{font-size:44px;font-weight:500;margin-top:44px;line-height:1.25}
+  #s4 .arrive{font-size:34px;opacity:.75;margin-top:14px}
+  .tags{display:flex;gap:18px;margin-top:44px}
+  .tag{font-size:32px;font-weight:600;padding:14px 28px;border-radius:100px;border:2px solid var(--peri-soft);color:var(--white)}
+  .tag.l{background:var(--lime);border-color:var(--lime);color:var(--navy)}
+  .cta{align-self:flex-start;margin-top:56px;font-size:46px;font-weight:700;padding:30px 54px;border-radius:100px;background:var(--lime);color:var(--navy)}
+</style>
+</head>
+<body>
+<div id="bg"></div>
+
+<div class="top" id="top">
+  <div class="brand"><svg width="52" height="52" viewBox="0 0 48 48" aria-hidden="true"><path d="M24.3394 19.7273L30.2766 2.09935C30.4128 1.69804 30.2584 1.2582 29.9019 1.02014L28.6123 0.163113C28.0811 -0.190578 27.3545 0.0565523 27.1593 0.657375L21.4696 18.0971C21.3606 18.4304 21.4492 18.7954 21.6989 19.0448L22.7388 20.09C23.2428 20.5956 24.1124 20.3984 24.3372 19.7273H24.3394ZM24.7458 26.4678L37.4465 27.3792C38.0005 27.42 38.475 26.9893 38.4773 26.4429L38.5 22.3391C38.5023 21.8199 38.08 21.3982 37.5532 21.3892L24.8185 21.21C24.2827 21.2032 23.8422 21.6295 23.8445 22.1555L23.8536 25.5269C23.8536 26.0212 24.2441 26.4293 24.7436 26.4655L24.7458 26.4678ZM21.12 18.1084L16.5178 4.16255C16.2749 3.42796 15.2873 3.27379 14.8264 3.89955L14.1634 4.79738C13.9863 5.03771 13.9341 5.34832 14.0227 5.63173L18.4295 19.5731C18.6475 20.2623 19.542 20.4664 20.0461 19.9404L20.902 19.0471C21.1427 18.7954 21.2244 18.4372 21.1154 18.1084H21.12ZM21.4991 29.2815L27.207 47.3356C27.3931 47.9228 28.0901 48.1813 28.6237 47.8616L29.9065 47.0953C30.2856 46.8686 30.4582 46.4128 30.322 45.9979L24.3213 27.8123C24.1056 27.157 23.2701 26.9417 22.7547 27.411L21.7648 28.3111C21.4923 28.5582 21.3902 28.9368 21.4991 29.2837V29.2815ZM17.9641 21.1148L10.474 21.0831C9.94273 21.0831 9.51135 21.5025 9.50908 22.024L9.5 24.3615C9.5 24.8535 9.88143 25.2662 10.3832 25.307L17.8914 25.9123C18.4522 25.9577 18.9313 25.5224 18.9313 24.9691L18.9245 22.058C18.9245 21.5388 18.4954 21.1193 17.9686 21.1171L17.9641 21.1148ZM18.4114 27.606L14.0544 41.1211C13.9636 41.3999 14.0113 41.7038 14.1816 41.9441L14.8582 42.9031C15.3077 43.5425 16.3067 43.4019 16.5587 42.6651L21.145 29.2225C21.2539 28.9074 21.1835 28.5582 20.961 28.3043L20.0552 27.2727C19.5647 26.7149 18.6384 26.9008 18.4114 27.606Z" fill="currentColor"></path></svg><span>Axis</span></div>
+  <div class="with">with Fill My Funnel and LinkedIn</div>
+</div>
+
+<section class="scene" id="s1">
+  <div class="pill">At LinkedIn London HQ</div>
+  <h1 class="display">
+    <span class="mw"><span class="w">LinkedIn Ads,</span></span>
+    <span class="mw"><span class="w">planned and</span></span>
+    <span class="mw"><span class="w">approved</span></span>
+    <span class="mw"><span class="w"><em>together.</em></span></span>
+  </h1>
+</section>
+
+<section class="scene" id="s2">
+  <div class="h2box">
+    <h2 class="display" id="h2a">Five tools.<br>Ten threads.<br><em>No shared plan.</em></h2>
+    <h2 class="display" id="h2b">Strategy to live ad. <em>Without losing the thread.</em></h2>
+  </div>
+  <div class="chip" style="left:80px;top:720px;transform:rotate(-6deg)">Google Sheets</div>
+  <div class="chip" style="left:560px;top:690px;transform:rotate(5deg)">Notion</div>
+  <div class="chip" style="left:300px;top:820px;transform:rotate(-3deg)">Slack</div>
+  <div class="chip" style="left:420px;top:930px;transform:rotate(4deg)">RE: RE: Fwd: approval?</div>
+  <div class="chip" style="left:90px;top:960px;transform:rotate(7deg)">Asana</div>
+  <div class="chip" style="left:520px;top:1060px;transform:rotate(-5deg)">Campaign Manager</div>
+  <div id="steps">
+    <div id="line"></div>
+    <div class="step" style="top:0"><span class="dot"></span>Strategy</div>
+    <div class="step" style="top:110px"><span class="dot"></span>Ad concepts</div>
+    <div class="step" style="top:220px"><span class="dot"></span>Copy and assets</div>
+    <div class="step" style="top:330px"><span class="dot"></span>Feedback and approvals</div>
+    <div class="step live" style="top:440px"><span class="dot"></span>Live in one click</div>
+  </div>
+</section>
+
+<section class="scene" id="s3">
+  <h2 class="display" id="s3h">Two sessions.<br>One free lunch.</h2>
+  <div class="row"><div class="t display">11:00</div><div><div class="n">The LinkedIn roadmap</div><div class="s">With LinkedIn</div></div></div>
+  <div class="row"><div class="t display">12:00</div><div><div class="n">Axis, live</div><div class="s">With Fill My Funnel</div></div></div>
+  <div class="row"><div class="t display">13:00</div><div><div class="n">Lunch</div><div class="s">Free, with the LinkedIn and Axis teams</div></div></div>
+</section>
+
+<section class="scene" id="s4">
+  <div class="date display"><span class="mw"><span class="w">Monday</span></span><span class="mw"><span class="w"><em>16 November</em></span></span></div>
+  <div class="venue" id="venue">LinkedIn London HQ,<br>119 Farringdon Road</div>
+  <div class="arrive" id="arrive">Arrive from 10:45am</div>
+  <div class="tags" id="tags"><span class="tag">Free to attend</span><span class="tag l">25 seats available</span></div>
+  <div class="cta" id="cta">Request a seat &rarr;</div>
+</section>
+
+<div class="bar" id="bar"></div>
+
+<script>
+  // One PAUSED timeline exposed as window.tl (see SKILL.md). Exactly 10 s.
+  const tl = gsap.timeline({paused:true, defaults:{ease:'power3.out'}});
+  window.tl = tl;
+  const show = (s,t)=>tl.set(s,{autoAlpha:1},t), hide=(s,t)=>tl.set(s,{autoAlpha:0},t);
+  const NAVY='#111C33', PAPER='#EEF2F8', WHITE='#ffffff';
+
+  // progress bar across the full 10 s
+  tl.to('#bar',{width:1080,duration:10,ease:'none'},0);
+
+  // ---- S1 0 to 3.0 (light) ----
+  show('#s1',0);
+  tl.from('.pill',{y:24,opacity:0,duration:.5},.15)
+    .from('#s1 .w',{yPercent:110,duration:.75,stagger:.14},.35)
+    .to('#s1 .w',{yPercent:-110,duration:.4,stagger:.05,ease:'power2.in'},2.55)
+    .to('.pill',{opacity:0,duration:.3},2.6);
+  hide('#s1',3.0);
+
+  // ---- S2 3.0 to 5.8 (navy) ----
+  tl.to('#bg',{backgroundColor:NAVY,duration:.4,ease:'power2.inOut'},2.8)
+    .to('#top',{color:WHITE,duration:.4},2.8)
+    .to('#bar',{backgroundColor:'#C6F7A0',duration:.4},2.8);
+  show('#s2',2.9);
+  tl.from('#h2a',{y:50,opacity:0,duration:.6},3.0)
+    .from('.chip',{scale:.4,opacity:0,duration:.45,stagger:.07,ease:'back.out(2)'},3.2)
+    .to('.chip',{rotation:'+=4',duration:.18,repeat:3,yoyo:true,ease:'sine.inOut',stagger:.02},3.6)
+    // swap the headline, collapse the chaos into one thread
+    .to('#h2a',{y:-40,opacity:0,duration:.3,ease:'power2.in'},4.3)
+    .fromTo('#h2b',{y:50,opacity:0},{y:0,opacity:1,duration:.55},4.4)
+    .to('.chip',{x:60,y:-60,scale:0,opacity:0,duration:.4,stagger:.04,ease:'power2.in'},4.3)
+    .from('#line',{scaleY:0,duration:.95,ease:'power1.inOut'},4.55)
+    .from('.step',{x:-40,opacity:0,duration:.4,stagger:.2},4.55)
+    .from('.dot',{scale:0,duration:.3,stagger:.2,ease:'back.out(3)'},4.55)
+    .to('.step',{opacity:0,y:-30,duration:.35,stagger:.03,ease:'power2.in'},5.55)
+    .to(['#h2b','#line'],{opacity:0,duration:.35},5.55);
+  hide('#s2',5.95);
+
+  // ---- S3 5.8 to 7.9 (light) ----
+  tl.to('#bg',{backgroundColor:PAPER,duration:.4,ease:'power2.inOut'},5.7)
+    .to('#top',{color:NAVY,duration:.4},5.7)
+    .to('#bar',{backgroundColor:'#5068FF',duration:.4},5.7);
+  show('#s3',5.8);
+  tl.from('#s3h',{y:50,opacity:0,duration:.6},5.9)
+    .from('.row',{x:140,opacity:0,duration:.55,stagger:.16},6.3)
+    .to('#s3',{opacity:0,y:-30,duration:.35,ease:'power2.in'},7.55);
+  hide('#s3',7.95);
+
+  // ---- S4 7.9 to 10 (navy) ----
+  tl.to('#bg',{backgroundColor:NAVY,duration:.4,ease:'power2.inOut'},7.7)
+    .to('#top',{color:WHITE,duration:.4},7.7)
+    .to('#bar',{backgroundColor:'#C6F7A0',duration:.4},7.7);
+  show('#s4',7.85);
+  tl.from('#s4 .w',{yPercent:110,duration:.7,stagger:.12},7.95)
+    .from(['#venue','#arrive'],{y:30,opacity:0,duration:.5,stagger:.12},8.5)
+    .from('#tags .tag',{y:30,opacity:0,duration:.45,stagger:.12},8.8)
+    .from('#cta',{y:40,opacity:0,scale:.9,duration:.55,ease:'back.out(2)'},9.1)
+    .to('#cta',{scale:1.05,duration:.25,yoyo:true,repeat:1,ease:'sine.inOut'},9.6);
+
+  tl.to({},{duration:0.001},10);   // pin total duration to 10 s
+</script>
+</body>
+</html>
