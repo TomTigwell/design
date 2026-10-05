@@ -1,17 +1,17 @@
 #!/usr/bin/env python3
 """Synthesise an original music bed (no samples, so no licensing issues).
 
-Usage: python3 make-bed.py out.wav [--seconds 15] [--bpm 96]
+Usage: python3 make-bed.py out.wav [--seconds 25] [--bpm 96]
 
-Feel: positive, premium, confident. A tension-to-lift arc over 2.5 s bars at 96 bpm:
-  bar 1  Am7   heartbeat kick on every beat + low pulse (a hook that lands one hit per beat)
-  bar 2  Fmaj7 groove builds: kick, snap, offbeat hats, electric-piano stabs, riser into the drop
-  bar 3  Cmaj9 the lift: soft impact, open chords, 16th hats, plucked arpeggio with ping-pong echo
-  bars 4-6     G6/9, Fmaj9, Cmaj9: the groove carries and resolves on the tonic
-Electric piano (FM), sub bass, soft kick/snap/hats, sidechain-style ducking on the keys and pad, light reverb.
+Feel: positive, premium, confident. 2.5 s bars at 96 bpm, planned bar by bar (PLAN below) as a tension-to-lift arc:
+  heart  / heart+  held-back heartbeat kick on every beat, low pulse, sparse piano (the hook)
+  build  / build+  kick, snap, offbeat hats, electric-piano stabs; a riser leads into the drop
+  lift             the reveal: soft impact, open chords, 16th hats, plucked arpeggio with ping-pong echo
+  outro            groove thins and resolves on the tonic for the call to action
+Electric piano (FM), sub bass, soft kick/snap/hats, sidechain-style ducking on keys and pad, light reverb.
 
-Deterministic. Needs numpy. The mix is kept under captions-free visuals at about -21 LUFS; the renderer adds fades.
-Beats fall on multiples of 60/bpm (0.625 s at 96 bpm); put scene cuts and hits on that grid.
+Deterministic. Needs numpy. About -22 LUFS; the renderer adds fades. Beats fall on multiples of 60/bpm (0.625 s at 96 bpm);
+put scene cuts and hits on that grid. The default PLAN is for 25 s (10 bars): hook bars 0-2, turn 3-4, lift from bar 5 (12.5 s).
 """
 import sys, wave
 import numpy as np
@@ -19,7 +19,7 @@ import numpy as np
 SR = 44100
 out = sys.argv[1]
 arg = lambda n, d: float(sys.argv[sys.argv.index(f'--{n}') + 1]) if f'--{n}' in sys.argv else d
-SECS, BPM = arg('seconds', 15.0), arg('bpm', 96.0)
+SECS, BPM = arg('seconds', 25.0), arg('bpm', 96.0)
 beat = 60.0 / BPM
 bar = 4 * beat
 step = beat / 4
@@ -93,16 +93,16 @@ def impact():
     return boom + air
 
 # ---- score -------------------------------------------------------------------------------------
-BASS = [45, 41, 48, 43, 41, 48]  # A F C G F C
-VOICE = [  # rootless voicings
-    [52, 55, 60, 64],  # Am7
-    [52, 57, 60, 65],  # Fmaj7
-    [55, 59, 62, 64],  # Cmaj9
-    [57, 59, 62, 64],  # G6/9
-    [55, 57, 60, 64],  # Fmaj9
-    [55, 59, 62, 64],  # Cmaj9
-]
+CHORDS = {  # name: (rootless voicing, bass root)
+    'Am7': ([52, 55, 60, 64], 45), 'Fmaj7': ([52, 57, 60, 65], 41), 'Cmaj9': ([55, 59, 62, 64], 48),
+    'G69': ([57, 59, 62, 64], 43), 'Fmaj9': ([55, 57, 60, 64], 41),
+}
+PLAN = [('Am7', 'heart'), ('Am7', 'heart+'), ('Fmaj7', 'heart+'), ('Fmaj7', 'build'), ('G69', 'build+'),
+        ('Cmaj9', 'lift'), ('Fmaj9', 'lift'), ('G69', 'lift'), ('Fmaj9', 'lift'), ('Cmaj9', 'outro')]
+NB = int(np.ceil(SECS / bar))
+PLAN = (PLAN * 4)[:NB] if NB != len(PLAN) else PLAN
 ARP = [0, 2, 3, 1, 3, 2, 1, 0]
+FIRST_LIFT = next((i for i, (_, k) in enumerate(PLAN) if k == 'lift'), None)
 
 drums, kicks_b, keys, arp, padb, bassb, fx = bus(), bus(), bus(), bus(), bus(), bus(), bus()
 kick_times = []
@@ -110,52 +110,73 @@ kick_times = []
 def K(t, v=1.0):
     kick_times.append(t); put(kicks_b, t, kick(), 0.55 * v)
 
-for b in range(int(np.ceil(SECS / bar))):
+for b, (name, kind) in enumerate(PLAN):
     t0 = b * bar
-    ch, v = VOICE[min(b, 5)], VOICE[min(b, 5)]
-    root = BASS[min(b, 5)]
-    at = lambda s: t0 + s * step
+    if t0 >= SECS:
+        break
+    v, root = CHORDS[name]
+    at = lambda s, t0=t0: t0 + s * step
 
-    # pad: sustained, overlaps into the next bar
-    for k, m in enumerate(v):
+    for k, m in enumerate(v):  # pad, sustained into the next bar
         put(padb, t0, pad_tone(mtof(m), bar + 1.4), 0.07, 0.25 + 0.5 * k / 3)
 
-    if b == 0:  # hook: a heartbeat, one hit per beat, matching one question card per beat
-        for j, vel in enumerate([1.0, 0.8, 0.8, 1.0]):
-            K(t0 + j * beat, vel)
+    if kind in ('heart', 'heart+'):
+        for j, vel in enumerate([1.0, 0.8, 0.8, 0.95]):
+            K(t0 + j * beat, vel * (0.8 if kind == 'heart' else 0.9))
         put(bassb, at(0), bass(mtof(root)), 0.30)
         put(bassb, at(10), bass(mtof(root)), 0.22)
+        if kind == 'heart+':
+            put(bassb, at(6), bass(mtof(root)), 0.18)
+            for s_ in (2, 6, 10, 14):
+                put(drums, at(s_), hat(), 0.05, 0.62)
         put(keys, at(0), ep(mtof(v[0]), 1.2, 0.6), 0.10, 0.4)
         put(keys, at(8), ep(mtof(v[3] + 12), 1.2, 0.5), 0.10, 0.6)
-    else:
-        for s_ in ([0, 8] if b != 1 else [0, 8]):
+    elif kind in ('build', 'build+'):
+        for s_ in (0, 8):
             K(at(s_))
-        if b >= 2:
-            K(at(10), 0.6)
+        if kind == 'build+':
+            K(at(10), 0.6); K(at(14), 0.4)
         for s_ in (4, 12):
-            put(drums, at(s_), snap(), 0.24)
-        hat_steps = [2, 6, 10, 14] if b == 1 else list(range(0, 16, 2))
-        for s_ in hat_steps:
+            put(drums, at(s_), snap(), 0.22)
+        for s_ in ([2, 6, 10, 14] if kind == 'build' else range(0, 16, 2)):
             put(drums, at(s_), hat(), 0.10 if s_ % 4 == 2 else 0.06, 0.62)
-        put(drums, at(14), hat(True), 0.07, 0.4)
-        for s_, g in ((0, 0.34), (6, 0.26), (10, 0.26), (14, 0.20)) if b < 5 else ((0, 0.34), (10, 0.22)):
+        for s_, g in ((0, 0.34), (6, 0.26), (10, 0.26), (14, 0.20)):
             put(bassb, at(s_), bass(mtof(root)), g)
-        stabs = (0, 6, 10, 14) if b == 1 else (0, 6, 10)
-        for s_ in stabs:
+        for s_ in (0, 6, 10, 14):
             for k, m in enumerate(v):
                 put(keys, at(s_) + k * 0.012, ep(mtof(m), 0.9, 0.7), 0.075, 0.3 + 0.4 * k / 3)
-        if b >= 2:  # plucked arpeggio, one octave up
-            for j, s_ in enumerate(range(0, 16, 2)):
-                if b == 5 and s_ >= 8:
-                    continue
-                m = v[ARP[j] % 4] + 12
-                put(arp, at(s_) + step, ep(mtof(m), 0.6, 0.55), 0.07, 0.3 if j % 2 == 0 else 0.7)
+    elif kind == 'lift':
+        for s_ in (0, 8):
+            K(at(s_))
+        K(at(10), 0.6)
+        for s_ in (4, 12):
+            put(drums, at(s_), snap(), 0.24)
+        for s_ in range(0, 16, 2):
+            put(drums, at(s_), hat(), 0.10 if s_ % 4 == 2 else 0.06, 0.62)
+        put(drums, at(14), hat(True), 0.07, 0.4)
+        for s_, g in ((0, 0.34), (6, 0.26), (10, 0.26), (14, 0.20)):
+            put(bassb, at(s_), bass(mtof(root)), g)
+        for s_ in (0, 6, 10):
+            for k, m in enumerate(v):
+                put(keys, at(s_) + k * 0.012, ep(mtof(m), 0.9, 0.7), 0.075, 0.3 + 0.4 * k / 3)
+        for j, s_ in enumerate(range(0, 16, 2)):  # plucked arpeggio, an octave up
+            put(arp, at(s_) + step, ep(mtof(v[ARP[j] % 4] + 12), 0.6, 0.55), 0.07, 0.3 if j % 2 == 0 else 0.7)
+    else:  # outro: thin out and resolve
+        K(at(0)); K(at(8), 0.8)
+        for s_ in (2, 6, 10, 14):
+            put(drums, at(s_), hat(), 0.06, 0.62)
+        put(bassb, at(0), bass(mtof(root), 1.2), 0.30)
+        for k, m in enumerate(v):
+            put(keys, at(0) + k * 0.012, ep(mtof(m), 2.4, 0.75), 0.085, 0.3 + 0.4 * k / 3)
+        for j, s_ in enumerate(range(0, 16, 4)):
+            put(arp, at(s_) + step, ep(mtof(v[ARP[j * 2] % 4] + 12), 0.8, 0.5), 0.06, 0.3 if j % 2 == 0 else 0.7)
 
-# transitions: riser into the lift, soft impact on it
-riser_len = 1.25
-put(fx, 2 * bar - riser_len, riser(riser_len), 0.10)
-put(fx, 2 * bar, impact(), 0.55)
-put(fx, 2 * bar, hat(True), 0.25)
+# riser into the first lift, soft impact on it
+if FIRST_LIFT is not None:
+    lt = FIRST_LIFT * bar
+    put(fx, lt - 1.25, riser(1.25), 0.10)
+    put(fx, lt, impact(), 0.55)
+    put(fx, lt, hat(True), 0.25)
 
 # ---- mix ---------------------------------------------------------------------------------------
 def duck_curve():
@@ -177,8 +198,7 @@ def reverb(x, wet, secs=1.5, decay=3.4):
         res[:, ch] += wet * 1.6 * w
     return res
 
-# ping-pong echo (dotted eighth) on the arpeggio only
-d_ = int(beat * 0.75 * SR)
+d_ = int(beat * 0.75 * SR)  # ping-pong echo (dotted eighth) on the arpeggio only
 echo = np.zeros_like(arp)
 for tap, g in enumerate([0.42, 0.26, 0.15], start=1):
     o = d_ * tap
@@ -190,18 +210,24 @@ duck = duck_curve()
 tonal = reverb((keys + arp + echo + padb) * duck, 0.38)
 mix = tonal + kicks_b + drums + bassb + reverb(fx, 0.2)
 
-# energy arc: held-back hook, build, then a clear lift on the reveal (bar 3), settling for the call to action
-ARC = [0.62, 0.80, 1.30, 1.15, 1.15, 1.0]
+# energy arc: held back for the hook, building through the turn, a clear lift on the reveal, settling for the CTA
+ARCV = {'heart': 0.62, 'heart+': 0.72, 'build': 0.84, 'build+': 0.94, 'outro': 1.0}
+LIFTS = [1.30, 1.20, 1.14, 1.10]
+arc, li = [], 0
+for _, k in PLAN:
+    if k == 'lift':
+        arc.append(LIFTS[min(li, 3)]); li += 1
+    else:
+        arc.append(ARCV[k])
 tt = np.arange(n) / SR
-anchors = [(i * bar + bar / 2) for i in range(len(ARC))]
-gain = np.interp(tt, anchors, ARC)
-gain[tt >= 2 * bar] = np.interp(tt[tt >= 2 * bar], anchors, ARC) * 1.0
-# a short ramp up into the drop so the lift lands on beat 1 of bar 3 rather than before it
-jump = (tt > 2 * bar - 0.05)
-gain = np.where(jump & (tt < 2 * bar + 0.05), np.interp(tt, [2 * bar - 0.05, 2 * bar + 0.05], [0.85, 1.30]), gain)
+anchors = [i * bar + bar / 2 for i in range(len(arc))]
+gain = np.interp(tt, anchors, arc)
+if FIRST_LIFT is not None:  # land the lift on beat 1 of the first lift bar
+    lt = FIRST_LIFT * bar
+    gain = np.where((tt > lt - 0.05) & (tt < lt + 0.05), np.interp(tt, [lt - 0.05, lt + 0.05], [0.85, arc[FIRST_LIFT]]), gain)
 mix *= gain[:, None]
 
-# soften the top end (keeps hats airy but never harsh), then limit gently
+# soften the top end, normalise, limit gently
 for ch in (0, 1):
     sp = np.fft.rfft(mix[:, ch]); fr = np.fft.rfftfreq(n, 1 / SR)
     mix[:, ch] = np.fft.irfft(sp / (1 + (fr / 9000.0) ** 4), n)
@@ -215,4 +241,4 @@ pcm = (np.clip(mix, -1, 1) * 32767).astype('<i2')
 with wave.open(out, 'wb') as w:
     w.setnchannels(2); w.setsampwidth(2); w.setframerate(SR)
     w.writeframes(pcm.tobytes())
-print(f'wrote {out}: {SECS:.1f}s @ {BPM:.0f} bpm, peak {20*np.log10(max(np.abs(mix).max(),1e-9)):.1f} dBFS')
+print(f'wrote {out}: {SECS:.1f}s @ {BPM:.0f} bpm, {NB} bars, peak {20*np.log10(max(np.abs(mix).max(),1e-9)):.1f} dBFS')
