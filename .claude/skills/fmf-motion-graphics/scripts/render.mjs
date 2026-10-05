@@ -18,11 +18,15 @@ if (!scene || !out) { console.error('usage: render.mjs <scene.html> <out.mp4> [-
 const fps = opt('fps', 30), width = opt('width', 1920), height = opt('height', 1080);
 const gsapLocal = join(here, 'node_modules/gsap/dist');
 
+const log = (m) => process.env.DEBUG && console.error('[render]', m);
 const browser = await chromium.launch(
   (process.env.CHROMIUM_PATH || existsSync('/opt/pw-browsers/chromium')) ? { executablePath: process.env.CHROMIUM_PATH || '/opt/pw-browsers/chromium' } : {});
+log('launched');
 const page = await browser.newPage({ viewport: { width, height } });
 
 // Serve GSAP (core + plugins) from node_modules so scenes render offline.
+// Fail font CDNs fast (a stalled stylesheet blocks the scripts after it). Self-host fonts for exact type offline.
+await page.route(/fonts\.(googleapis|gstatic)\.com/, (route) => route.abort());
 await page.route(/gsap.*\/dist\/([\w.-]+\.js)$|\/gsap\/([\w.-]+\.js)$/, (route) => {
   const file = route.request().url().split('/').pop();
   const p = join(gsapLocal, file);
@@ -31,8 +35,11 @@ await page.route(/gsap.*\/dist\/([\w.-]+\.js)$|\/gsap\/([\w.-]+\.js)$/, (route) 
 
 // Don't let a slow font CDN hang the render: wait for DOM, then give fonts up to 8s.
 await page.goto(pathToFileURL(resolve(scene)).href, { waitUntil: 'domcontentloaded' });
+log('loaded dom');
 await page.waitForFunction(() => window.gsap, null, { timeout: 15000 });
+log('gsap ready');
 await page.evaluate(() => Promise.race([document.fonts.ready, new Promise((r) => setTimeout(r, 8000))]));
+log('fonts done');
 const total = await page.evaluate(() => {
   if (!window.tl) throw new Error('Scene must expose a paused GSAP timeline as window.tl');
   window.tl.pause(0);
@@ -41,12 +48,14 @@ const total = await page.evaluate(() => {
 const duration = opt('duration', total);
 const frames = Math.round(duration * fps);
 
+log('frames=' + frames);
 const ff = spawn('ffmpeg', ['-y', '-loglevel', 'error', '-f', 'image2pipe', '-framerate', String(fps), '-i', '-',
   '-c:v', 'libx264', '-pix_fmt', 'yuv420p', '-crf', '16', '-movflags', '+faststart', resolve(out)], { stdio: ['pipe', 'inherit', 'inherit'] });
 
 for (let f = 0; f < frames; f++) {
-  await page.evaluate((t) => window.tl.time(t, false), f / fps);
+  await page.evaluate((t) => { window.tl.time(t, false); }, f / fps);
   const buf = await page.screenshot({ type: 'jpeg', quality: 95 });
+  if (f < 3) log('frame ' + f + ' ' + buf.length + 'B');
   if (!ff.stdin.write(buf)) await new Promise((r) => ff.stdin.once('drain', r));
 }
 ff.stdin.end();

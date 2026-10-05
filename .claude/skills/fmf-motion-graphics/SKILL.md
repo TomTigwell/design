@@ -12,9 +12,9 @@ description: >
 
 # FMF Motion Graphics
 
-**Status: renderer UNTESTED.** `scripts/render.mjs` was written but its first end-to-end run hung at browser
-launch in the cloud sandbox. Before relying on it, run the smoke test below. If it fails, fix the launch
-(see Troubleshooting) before building real scenes.
+**Status: renderer verified** (5 Oct 2026, cloud sandbox). The template renders to a 1920x1080 H.264 MP4 in about 10 s
+(88 frames at 24 fps), and frames were checked visually. Known limit: Lora and DM Sans fall back to system fonts in the
+sandbox because Google Fonts is blocked, so self-host the font files in the scene folder when exact type matters.
 
 ## Stack (deliberately small)
 
@@ -63,8 +63,11 @@ ffprobe -v error -show_entries format=duration -of csv=p=0 /tmp/test.mp4   # exp
 - Cloud sandbox: Chromium lives at `/opt/pw-browsers/chromium`; the script uses it by default (override
   with `CHROMIUM_PATH`). Do not run `playwright install`. The npm `playwright-core` version may be newer
   than the pre-installed browser, which is why the executable is passed explicitly.
-- The sandbox proxy blocks Google domains. Fonts from Google Fonts may not load, so Lora/DM Sans can fall
-  back to system fonts in renders there. Self-host the font files in the scene folder if exact type matters.
+- The sandbox proxy blocks Google domains. `render.mjs` aborts Google Fonts requests so they cannot stall the page
+  (a pending stylesheet blocks the GSAP script behind it).
+- `playwright-core` is pinned to 1.56 to match the pre-installed Chromium build (1194). Newer versions fail to launch it.
+- Never return the timeline from `page.evaluate` (e.g. `() => tl.time(1)`): serialising it hangs. Wrap in braces.
+- Set `DEBUG=1` for step-by-step logging from `render.mjs`.
 - Scenes load GSAP from a CDN URL; `render.mjs` serves the local copy from `scripts/node_modules` instead.
 
 ## Candidate additions (from the "28 installs" list, not yet vendored)
