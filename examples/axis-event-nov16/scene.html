@@ -2,70 +2,75 @@
 <html lang="en-GB">
 <head>
 <meta charset="utf-8">
-<title>Axis event, 16 November (15s, 4:5, captions + music)</title>
+<title>Axis event, 16 November (15s, 4:5, hook + CTA)</title>
 <meta name="fmf-size" content="1080x1350">
 <!-- Fonts (ABC Arizona Flare, DM Sans) are injected by render.mjs from the private brand folder. -->
 <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
 <style>
-  :root{ --navy:#111C33; --peri:#5068FF; --peri-soft:#9FB3FF; --lime:#C6F7A0; --paper:#EEF2F8; --white:#fff; }
+  /* FMF palette only: navy, cornflower, soft cornflower, alice-blue, white. No green. */
+  :root{ --navy:#0e1034; --corn:#6A8FFD; --soft:#93A9F6; --alice:#E7ECF3; --white:#fff; }
   *{box-sizing:border-box;margin:0;padding:0}
-  html,body{width:1080px;height:1350px;overflow:hidden;background:var(--paper);font-family:'DM Sans',system-ui,sans-serif;color:var(--navy)}
+  html,body{width:1080px;height:1350px;overflow:hidden;background:var(--navy);font-family:'DM Sans',system-ui,sans-serif;color:var(--white)}
   .display{font-family:'ABC Arizona Flare',Georgia,serif;font-weight:400;letter-spacing:-.02em}
-  #bg{position:absolute;inset:0;background:var(--paper)}
-  .top{position:absolute;left:80px;right:80px;top:64px;display:flex;align-items:center;justify-content:space-between;color:var(--navy);z-index:5}
+  #bg{position:absolute;inset:0;background:var(--navy)}
+  .top{position:absolute;left:80px;right:80px;top:64px;display:flex;align-items:center;justify-content:space-between;color:var(--white);z-index:5}
   .brand{display:flex;align-items:center;gap:16px;font-size:38px;font-weight:600;letter-spacing:-.01em}
   .brand svg{display:block}
   .with{font-size:26px;opacity:.7}
-  .bar{position:absolute;left:0;bottom:0;height:10px;width:0;background:var(--peri);z-index:7}
+  .bar{position:absolute;left:0;bottom:0;height:10px;width:0;background:var(--corn);z-index:7}
   .scene{position:absolute;inset:0;padding:0 80px;opacity:0;visibility:hidden}
   .mw{display:block;overflow:hidden;padding-bottom:.14em;margin-bottom:-.14em}
   .mw>span{display:inline-block}
-  /* captions: burned in, bottom third, clear of the top bar and above LinkedIn's player controls */
-  #caps{position:absolute;left:60px;right:60px;bottom:84px;height:140px;z-index:6}
-  .cap{position:absolute;left:0;right:0;bottom:0;text-align:center;opacity:0;visibility:hidden}
-  .cap span{display:inline-block;max-width:940px;background:var(--navy);border:2px solid rgba(159,179,255,.4);color:var(--white);
-    font-size:38px;font-weight:600;line-height:1.28;padding:14px 30px;border-radius:20px;text-wrap:balance}
-  /* S1 */
-  #s1{display:flex;flex-direction:column;justify-content:center;padding-bottom:70px}
-  .pill{align-self:flex-start;font-size:30px;font-weight:600;padding:14px 28px;border-radius:100px;background:var(--navy);color:var(--white);margin-bottom:44px}
-  #s1 h1{font-size:118px;line-height:1.03;max-width:920px}
-  #s1 h1 em{font-style:normal;color:var(--peri)}
-  /* S2 */
-  #s2{color:var(--white)}
-  .h2box{position:absolute;left:80px;right:80px;top:180px;height:420px}
-  .h2box h2{position:absolute;left:0;top:0;width:920px;font-size:96px;line-height:1.04}
-  .h2box h2 em{font-style:normal;color:var(--lime)}
-  .chip{position:absolute;font-size:36px;font-weight:500;padding:16px 30px;border-radius:16px;background:rgba(255,255,255,.09);border:2px solid rgba(255,255,255,.22);white-space:nowrap}
-  #steps{position:absolute;left:96px;top:660px;width:900px;height:460px}
-  #line{position:absolute;left:19px;top:20px;width:6px;height:392px;background:var(--peri-soft);border-radius:3px;transform-origin:top}
-  .step{position:absolute;left:0;display:flex;align-items:center;gap:38px;font-size:48px;font-weight:500}
-  .dot{width:44px;height:44px;border-radius:50%;background:var(--navy);border:6px solid var(--peri-soft);flex:none}
-  .step.live .dot{background:var(--lime);border-color:var(--lime)}
-  .step.live{color:var(--lime);font-weight:700}
-  /* S3 */
-  #s3{padding-top:176px}
-  #s3 h2{font-size:104px;line-height:1.03;margin-bottom:48px}
-  .row{display:flex;align-items:baseline;gap:34px;background:var(--white);border-radius:28px;padding:30px 40px;margin-bottom:22px;box-shadow:0 10px 30px rgba(17,28,51,.08)}
-  .row .t{font-size:60px;color:var(--peri);width:176px;flex:none}
-  .row .n{font-size:46px;font-weight:700;line-height:1.1}
-  .row .s{font-size:30px;opacity:.7;margin-top:8px}
-  /* S4 */
-  #s4{color:var(--white);display:flex;flex-direction:column;justify-content:center;padding-bottom:70px}
-  #s4 .date{font-size:150px;line-height:.98}
-  #s4 .date em{font-style:normal;color:var(--lime)}
-  #s4 .venue{font-size:44px;font-weight:500;margin-top:44px;line-height:1.25}
-  #s4 .arrive{font-size:34px;opacity:.75;margin-top:14px}
-  .tags{display:flex;gap:18px;margin-top:44px}
-  .tag{font-size:32px;font-weight:600;padding:14px 28px;border-radius:100px;border:2px solid var(--peri-soft);color:var(--white)}
-  .tag.l{background:var(--lime);border-color:var(--lime);color:var(--navy)}
-  /* S5: the call to action points down at the platform CTA button under the video */
-  #s5{color:var(--white);display:flex;flex-direction:column;justify-content:flex-start;padding-top:230px}
-  #s5 h2{font-size:150px;line-height:.98}
-  #s5 h2 em{font-style:normal;color:var(--lime)}
-  #s5 .sub{font-size:42px;font-weight:500;margin-top:36px;opacity:.9;line-height:1.3}
-  #arrows{position:absolute;left:0;right:0;top:820px;height:300px;display:flex;flex-direction:column;align-items:center}
-  #arrows svg{width:200px;height:90px;margin-top:-20px;display:block}
-  #glow{position:absolute;left:0;right:0;bottom:0;height:420px;background:radial-gradient(ellipse 70% 100% at 50% 100%,rgba(198,247,160,.55),rgba(198,247,160,0) 70%);opacity:0}
+
+  /* HOOK: client questions pile up, one per beat. Frame 0 already shows the first. */
+  #sH{opacity:1;visibility:visible}
+  #qmark{position:absolute;right:-60px;bottom:-250px;font-size:1100px;line-height:1;color:var(--corn);opacity:.13}
+  .card{position:absolute;left:80px;width:920px;padding:26px 38px 30px;border-radius:30px;background:rgba(255,255,255,.07);
+    border:2px solid rgba(147,169,246,.38);backdrop-filter:none}
+  .card .tag{font-size:26px;font-weight:700;letter-spacing:.16em;color:var(--soft);margin-bottom:12px}
+  .card .q{font-size:68px;line-height:1.07}
+  #q1{top:190px} #q2{top:446px} #q3{top:702px} #q4{top:958px}
+  #q1 .q{font-size:76px}
+  #q1{transform-origin:50% 0}
+
+  /* TURN: nothing stitched together */
+  #sT .h2box{position:absolute;left:80px;right:80px;top:180px}
+  #sT h2{font-size:100px;line-height:1.03;width:920px}
+  #sT h2 em{font-style:normal;color:var(--corn)}
+  .chip{position:absolute;z-index:2;font-size:36px;font-weight:500;padding:16px 30px;border-radius:16px;background:#1d2060;border:2px solid rgba(255,255,255,.28);white-space:nowrap}
+  #thread{position:absolute;left:0;top:0;width:1080px;height:1350px;z-index:1}
+
+  /* AXIS (light) */
+  #sA{color:var(--navy);padding-top:190px}
+  #sA h2{font-size:168px;line-height:.98}
+  #sA .sub{font-size:44px;line-height:1.28;margin-top:30px;max-width:900px;opacity:.82}
+  #steps{position:absolute;left:96px;top:720px;width:900px;height:460px}
+  #line{position:absolute;left:19px;top:20px;width:6px;height:392px;background:var(--soft);border-radius:3px;transform-origin:top}
+  .step{position:absolute;left:0;display:flex;align-items:center;gap:38px;font-size:46px;font-weight:500}
+  .dot{width:44px;height:44px;border-radius:50%;background:var(--alice);border:6px solid var(--corn);flex:none}
+  .step.live .dot{background:var(--corn)}
+  .step.live span.t{background:var(--corn);color:var(--navy);padding:6px 24px;border-radius:100px;font-weight:700}
+
+  /* EVENT */
+  #sE{display:flex;flex-direction:column;justify-content:center;padding-bottom:40px}
+  #sE h2{font-size:190px;line-height:.96}
+  #sE h2 em{font-style:normal;color:var(--corn)}
+  #sE .where{font-size:46px;font-weight:500;margin-top:40px}
+  #sE .when{font-size:76px;margin-top:10px}
+  #sE .lunch{font-size:34px;opacity:.75;margin-top:26px;max-width:860px;line-height:1.3}
+  .tags{display:flex;gap:18px;margin-top:40px}
+  .tag2{font-size:32px;font-weight:600;padding:14px 28px;border-radius:100px;border:2px solid var(--soft);color:var(--white)}
+  .tag2.f{background:var(--corn);border-color:var(--corn);color:var(--navy)}
+
+  /* CTA: points down at the platform button under the video */
+  #sC{padding-top:200px}
+  #sC h2{font-size:122px;line-height:1.0}
+  #sC h2 em{font-style:normal;color:var(--corn)}
+  #sC .sub{font-size:42px;font-weight:500;margin-top:34px;opacity:.9}
+  #tap{position:absolute;left:0;right:0;top:720px;text-align:center;font-size:50px;font-weight:700}
+  #arrows{position:absolute;left:0;right:0;top:810px;height:300px;display:flex;flex-direction:column;align-items:center}
+  #arrows svg{width:270px;height:124px;margin-top:-30px;display:block}
+  #glow{position:absolute;left:0;right:0;bottom:0;height:460px;background:radial-gradient(ellipse 70% 100% at 50% 100%,rgba(106,143,253,.6),rgba(106,143,253,0) 70%);opacity:0}
 </style>
 </head>
 <body>
@@ -76,141 +81,133 @@
   <div class="with">with Fill My Funnel and LinkedIn</div>
 </div>
 
-<section class="scene" id="s1">
-  <div class="pill">At LinkedIn London HQ</div>
-  <h1 class="display">
-    <span class="mw"><span class="w">LinkedIn Ads,</span></span>
-    <span class="mw"><span class="w">planned and</span></span>
-    <span class="mw"><span class="w">approved</span></span>
-    <span class="mw"><span class="w"><em>together.</em></span></span>
-  </h1>
+<section class="scene" id="sH">
+  <div id="qmark" class="display">?</div>
+  <div class="card" id="q1"><div class="tag">FINANCE</div><div class="q display">Why did we spend £4,200 if it wasn't approved?</div></div>
+  <div class="card" id="q2"><div class="tag">CLIENT</div><div class="q display">This wasn't approved. Why is it live?</div></div>
+  <div class="card" id="q3"><div class="tag">CLIENT</div><div class="q display">We approved it. Why didn't it launch?</div></div>
+  <div class="card" id="q4"><div class="tag">LEADERSHIP</div><div class="q display">What's the overarching plan?</div></div>
 </section>
 
-<section class="scene" id="s2">
-  <div class="h2box">
-    <h2 class="display" id="h2a">Five tools.<br>Ten threads.<br><em>No shared plan.</em></h2>
-    <h2 class="display" id="h2b">Strategy to live ad. <em>Without losing the thread.</em></h2>
-  </div>
-  <div class="chip" style="left:80px;top:690px;transform:rotate(-6deg)">Google Sheets</div>
-  <div class="chip" style="left:560px;top:660px;transform:rotate(5deg)">Notion</div>
-  <div class="chip" style="left:300px;top:780px;transform:rotate(-3deg)">Slack</div>
-  <div class="chip" style="left:420px;top:880px;transform:rotate(4deg)">RE: RE: Fwd: approval?</div>
-  <div class="chip" style="left:90px;top:900px;transform:rotate(7deg)">Asana</div>
-  <div class="chip" style="left:520px;top:985px;transform:rotate(-5deg)">Campaign Manager</div>
+<section class="scene" id="sT">
+  <div class="h2box"><h2 class="display" id="hT">
+    <span class="mw"><span class="w">Five tools.</span></span>
+    <span class="mw"><span class="w">Ten threads.</span></span>
+    <span class="mw"><span class="w"><em>Nothing stitched together.</em></span></span>
+  </h2></div>
+  <div class="chip" id="k1" style="left:80px;top:700px;transform:rotate(-6deg)">Google Sheets</div>
+  <div class="chip" id="k2" style="left:560px;top:670px;transform:rotate(5deg)">Notion</div>
+  <div class="chip" id="k3" style="left:300px;top:800px;transform:rotate(-3deg)">Slack</div>
+  <div class="chip" id="k4" style="left:420px;top:900px;transform:rotate(4deg)">RE: RE: Fwd: approval?</div>
+  <div class="chip" id="k5" style="left:90px;top:920px;transform:rotate(7deg)">Asana</div>
+  <div class="chip" id="k6" style="left:520px;top:1010px;transform:rotate(-5deg)">Campaign Manager</div>
+  <svg id="thread" viewBox="0 0 1080 1350">
+    <defs><mask id="tm"><path id="tmp" d="M230 735 C400 650 520 660 650 705 S480 810 370 825 S520 950 600 925 S300 970 170 945 S520 1070 700 1030" stroke="#fff" stroke-width="16" fill="none" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/></mask></defs>
+    <path d="M230 735 C400 650 520 660 650 705 S480 810 370 825 S520 950 600 925 S300 970 170 945 S520 1070 700 1030" stroke="#6A8FFD" stroke-width="7" fill="none" stroke-linecap="round" stroke-dasharray="18 13" mask="url(#tm)"/>
+  </svg>
+</section>
+
+<section class="scene" id="sA">
+  <h2 class="display"><span class="mw"><span class="w">Meet Axis.</span></span></h2>
+  <div class="sub" id="aSub">The companion that keeps strategy, builds and approvals in one place.</div>
   <div id="steps">
     <div id="line"></div>
-    <div class="step" style="top:0"><span class="dot"></span>Strategy</div>
-    <div class="step" style="top:98px"><span class="dot"></span>Ad concepts</div>
-    <div class="step" style="top:196px"><span class="dot"></span>Copy and assets</div>
-    <div class="step" style="top:294px"><span class="dot"></span>Feedback and approvals</div>
-    <div class="step live" style="top:392px"><span class="dot"></span>Live in one click</div>
+    <div class="step" style="top:0"><span class="dot"></span><span class="t">Strategy</span></div>
+    <div class="step" style="top:98px"><span class="dot"></span><span class="t">Ad concepts</span></div>
+    <div class="step" style="top:196px"><span class="dot"></span><span class="t">Copy and assets</span></div>
+    <div class="step" style="top:294px"><span class="dot"></span><span class="t">Feedback and approvals</span></div>
+    <div class="step live" style="top:392px"><span class="dot"></span><span class="t">Live in one click</span></div>
   </div>
 </section>
 
-<section class="scene" id="s3">
-  <h2 class="display" id="s3h">Two sessions.<br>One free lunch.</h2>
-  <div class="row"><div class="t display">11:00</div><div><div class="n">The LinkedIn roadmap</div><div class="s">With LinkedIn</div></div></div>
-  <div class="row"><div class="t display">12:00</div><div><div class="n">Axis, live</div><div class="s">With Fill My Funnel</div></div></div>
-  <div class="row"><div class="t display">13:00</div><div><div class="n">Lunch</div><div class="s">Free, with the LinkedIn and Axis teams</div></div></div>
+<section class="scene" id="sE">
+  <h2 class="display"><span class="mw"><span class="w">See Axis</span></span><span class="mw"><span class="w"><em>live.</em></span></span></h2>
+  <div class="where" id="eWhere">Launching at LinkedIn London HQ</div>
+  <div class="when display" id="eWhen">Monday 16 November</div>
+  <div class="lunch" id="eLunch">Lunch with the LinkedIn team. Hear what's coming next.</div>
+  <div class="tags" id="eTags"><span class="tag2">Free to attend</span><span class="tag2 f">25 seats available</span></div>
 </section>
 
-<section class="scene" id="s4">
-  <div class="date display"><span class="mw"><span class="w">Monday</span></span><span class="mw"><span class="w"><em>16 November</em></span></span></div>
-  <div class="venue" id="venue">LinkedIn London HQ,<br>119 Farringdon Road</div>
-  <div class="arrive" id="arrive">Arrive from 10:45am</div>
-  <div class="tags" id="tags"><span class="tag">Free to attend</span><span class="tag l">25 seats available</span></div>
-</section>
-
-<section class="scene" id="s5">
-  <h2 class="display"><span class="mw"><span class="w">Request</span></span><span class="mw"><span class="w"><em>a seat.</em></span></span></h2>
-  <div class="sub" id="s5sub">Monday 16 November<br>LinkedIn London HQ</div>
+<section class="scene" id="sC">
+  <h2 class="display"><span class="mw"><span class="w">Learn more and</span></span><span class="mw"><span class="w"><em>request a seat.</em></span></span></h2>
+  <div class="sub" id="cSub">Monday 16 November, LinkedIn London HQ</div>
+  <div id="tap">Tap the button below</div>
   <div id="arrows">
-    <svg viewBox="0 0 200 90" fill="none" stroke="#C6F7A0" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"><path class="ch" d="M30 20 L100 70 L170 20"/></svg>
-    <svg viewBox="0 0 200 90" fill="none" stroke="#C6F7A0" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"><path class="ch" d="M30 20 L100 70 L170 20"/></svg>
-    <svg viewBox="0 0 200 90" fill="none" stroke="#C6F7A0" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"><path class="ch" d="M30 20 L100 70 L170 20"/></svg>
+    <svg viewBox="0 0 200 90" fill="none" stroke="#6A8FFD" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"><path d="M30 20 L100 70 L170 20"/></svg>
+    <svg viewBox="0 0 200 90" fill="none" stroke="#6A8FFD" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"><path d="M30 20 L100 70 L170 20"/></svg>
+    <svg viewBox="0 0 200 90" fill="none" stroke="#6A8FFD" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"><path d="M30 20 L100 70 L170 20"/></svg>
   </div>
 </section>
 <div id="glow"></div>
 
-<div id="caps">
-  <div class="cap" id="c1"><span>Lunch with the LinkedIn team, at LinkedIn London HQ.</span></div>
-  <div class="cap" id="c2"><span>Plans in sheets. Briefs in Notion. Feedback in Slack.</span></div>
-  <div class="cap" id="c3"><span>Axis keeps strategy, builds and approvals in one place.</span></div>
-  <div class="cap" id="c4"><span>Hear what's coming to LinkedIn Ads, from the people building it.</span></div>
-  <div class="cap" id="c5"><span>Then see Axis live, with the Fill My Funnel team.</span></div>
-  <div class="cap" id="c6"><span>Monday 16 November. Free to attend. 25 seats.</span></div>
-  <div class="cap" id="c7"><span>Tap the button below to request your seat.</span></div>
-</div>
-
 <div class="bar" id="bar"></div>
 
 <script>
-  // One PAUSED timeline exposed as window.tl (see SKILL.md). Exactly 15 s.
-  // Scene cuts sit on the music's beat grid (96 bpm = 0.625 s): 3.125, 6.875, 10.0, 12.5.
+  // One PAUSED timeline exposed as window.tl. Exactly 15 s. Music: 96 bpm, so a beat is 0.625 s and a bar 2.5 s.
+  // Hook 0-2.5 | Turn 2.5-5 | Axis 5-7.5 | Event 7.5-10 | CTA 10-15. Hits and cuts sit on the beat grid.
   const tl = gsap.timeline({paused:true, defaults:{ease:'power3.out'}});
   window.tl = tl;
-  const show = (s,t)=>tl.set(s,{autoAlpha:1},t), hide=(s,t)=>tl.set(s,{autoAlpha:0},t);
-  const NAVY='#111C33', PAPER='#EEF2F8', WHITE='#ffffff';
-  const toDark=(t)=>tl.to('#bg',{backgroundColor:NAVY,duration:.4,ease:'power2.inOut'},t).to('#top',{color:WHITE,duration:.4},t).to('#bar',{backgroundColor:'#C6F7A0',duration:.4},t);
-  const toLight=(t)=>tl.to('#bg',{backgroundColor:PAPER,duration:.4,ease:'power2.inOut'},t).to('#top',{color:NAVY,duration:.4},t).to('#bar',{backgroundColor:'#5068FF',duration:.4},t);
-  // caption: pops in, holds, drops out
-  const cap=(id,a,b)=>{ show(id,a); tl.fromTo(id,{y:24,opacity:0},{y:0,opacity:1,duration:.35},a).to(id,{opacity:0,y:-12,duration:.25,ease:'power2.in'},b-.25); hide(id,b); };
+  const show=(s,t)=>tl.set(s,{autoAlpha:1},t), hide=(s,t)=>tl.set(s,{autoAlpha:0},t);
+  const NAVY='#0e1034', ALICE='#E7ECF3', WHITE='#ffffff';
 
   tl.to('#bar',{width:1080,duration:15,ease:'none'},0);
 
-  // ---- S1 0 to 3.125 (light) ----
-  show('#s1',0);
-  tl.from('.pill',{y:24,opacity:0,duration:.5},.15)
-    .from('#s1 .w',{yPercent:110,duration:.75,stagger:.14},.35)
-    .to('#s1 .w',{yPercent:-110,duration:.4,stagger:.05,ease:'power2.in'},2.65)
-    .to('.pill',{opacity:0,duration:.3},2.7);
-  hide('#s1',3.125);
-  cap('#c1',0.6,3.0);
+  // ---- HOOK 0 to 2.5: frame 0 already shows the first question; one more lands on every beat ----
+  tl.fromTo('#q1',{y:300,scale:1.12},{y:300,scale:1.12,duration:.001},0)
+    .to('#q1',{y:0,scale:1,duration:.3,ease:'power3.inOut'},.3)
+    .fromTo('#qmark',{scale:.92},{scale:1.02,duration:2.5,ease:'none'},0);
+  [['#q2',.625],['#q3',1.25],['#q4',1.875]].forEach(([id,t],i)=>{
+    tl.fromTo(id,{opacity:0,scale:1.1,y:-26},{opacity:1,scale:1,y:0,duration:.24,ease:'back.out(2.2)'},t);
+  });
+  tl.to('#q1',{opacity:.5,duration:.2},.625).to('#q2',{opacity:.5,duration:.2},1.25).to('#q3',{opacity:.5,duration:.2},1.875)
+    // swept away together on the last beat
+    .to(['#q1','#q2','#q3','#q4'],{x:-1200,duration:.4,stagger:.05,ease:'power3.in'},2.15)
+    .to('#qmark',{opacity:0,duration:.3},2.2);
+  hide('#sH',2.5);
 
-  // ---- S2 3.125 to 6.875 (navy) ----
-  toDark(2.95); show('#s2',3.05);
-  tl.from('#h2a',{y:50,opacity:0,duration:.6},3.15)
-    .from('.chip',{scale:.4,opacity:0,duration:.45,stagger:.07,ease:'back.out(2)'},3.35)
-    .to('.chip',{rotation:'+=4',duration:.18,repeat:3,yoyo:true,ease:'sine.inOut',stagger:.02},3.75)
-    .to('#h2a',{y:-40,opacity:0,duration:.3,ease:'power2.in'},4.7)
-    .fromTo('#h2b',{y:50,opacity:0},{y:0,opacity:1,duration:.55},4.8)
-    .to('.chip',{x:60,y:-60,scale:0,opacity:0,duration:.4,stagger:.04,ease:'power2.in'},4.7)
-    .from('#line',{scaleY:0,duration:1.0,ease:'power1.inOut'},4.95)
-    .from('.step',{x:-40,opacity:0,duration:.4,stagger:.2},4.95)
-    .from('.dot',{scale:0,duration:.3,stagger:.2,ease:'back.out(3)'},4.95)
-    .to('.step',{opacity:0,y:-30,duration:.35,stagger:.03,ease:'power2.in'},6.4)
-    .to(['#h2b','#line'],{opacity:0,duration:.35},6.4);
-  hide('#s2',6.875);
-  cap('#c2',3.4,4.95); cap('#c3',5.05,6.85);
+  // ---- TURN 2.5 to 5.0: tools everywhere, then stitched ----
+  show('#sT',2.45);
+  tl.from('#hT .w',{yPercent:110,duration:.6,stagger:.12},2.5)
+    .from('.chip',{scale:.4,opacity:0,duration:.4,stagger:.06,ease:'back.out(2)'},2.9)
+    .to('.chip',{rotation:'+=4',duration:.16,repeat:3,yoyo:true,ease:'sine.inOut',stagger:.02},3.3)
+    .to('#tmp',{strokeDashoffset:0,duration:.95,ease:'power1.inOut'},3.55)
+    .to('.chip',{rotation:0,borderColor:'#6A8FFD',duration:.35},4.35)
+    .to(['#hT','.chip','#thread'],{opacity:0,y:-30,duration:.3,ease:'power2.in'},4.7);
+  hide('#sT',5.0);
 
-  // ---- S3 6.875 to 10.0 (light) ----
-  toLight(6.7); show('#s3',6.8);
-  tl.from('#s3h',{y:50,opacity:0,duration:.6},6.9)
-    .from('.row',{x:140,opacity:0,duration:.55,stagger:.16},7.3)
-    .to('#s3',{opacity:0,y:-30,duration:.35,ease:'power2.in'},9.6);
-  hide('#s3',10.0);
-  cap('#c4',7.3,8.85); cap('#c5',8.95,9.95);
+  // ---- AXIS 5.0 to 7.5 (light): relief ----
+  tl.to('#bg',{backgroundColor:ALICE,duration:.3,ease:'power2.inOut'},4.7)
+    .to('#top',{color:NAVY,duration:.3},4.7);
+  show('#sA',4.95);
+  tl.from('#sA .w',{yPercent:110,duration:.6},5.0)
+    .from('#aSub',{y:30,opacity:0,duration:.5},5.25)
+    .from('#line',{scaleY:0,duration:.9,ease:'power1.inOut'},5.5)
+    .from('.step',{x:-40,opacity:0,duration:.35,stagger:.14},5.5)
+    .from('.dot',{scale:0,duration:.28,stagger:.14,ease:'back.out(3)'},5.5)
+    .to('#sA',{opacity:0,y:-30,duration:.3,ease:'power2.in'},7.2);
+  hide('#sA',7.5);
 
-  // ---- S4 10.0 to 12.5 (navy) ----
-  toDark(9.8); show('#s4',9.9);
-  tl.from('#s4 .w',{yPercent:110,duration:.7,stagger:.12},10.0)
-    .from(['#venue','#arrive'],{y:30,opacity:0,duration:.5,stagger:.12},10.5)
-    .from('#tags .tag',{y:30,opacity:0,duration:.45,stagger:.12},10.8)
-    .to('#s4',{opacity:0,y:-30,duration:.3,ease:'power2.in'},12.15);
-  hide('#s4',12.5);
-  cap('#c6',10.3,12.45);
+  // ---- EVENT 7.5 to 10.0 (navy) ----
+  tl.to('#bg',{backgroundColor:NAVY,duration:.3,ease:'power2.inOut'},7.2)
+    .to('#top',{color:WHITE,duration:.3},7.2);
+  show('#sE',7.45);
+  tl.from('#sE .w',{yPercent:110,duration:.65,stagger:.12},7.5)
+    .from(['#eWhere','#eWhen'],{y:30,opacity:0,duration:.45,stagger:.12},8.05)
+    .from(['#eLunch','#eTags .tag2'],{y:26,opacity:0,duration:.4,stagger:.1},8.5)
+    .to('#sE',{opacity:0,y:-30,duration:.3,ease:'power2.in'},9.7);
+  hide('#sE',10.0);
 
-  // ---- S5 12.5 to 15 (navy): CTA pointing down at the platform button ----
-  show('#s5',12.4);
-  tl.from('#s5 .w',{yPercent:110,duration:.7,stagger:.14},12.5)
-    .from('#s5sub',{y:30,opacity:0,duration:.5},13.0)
-    .from('#arrows svg',{y:-30,opacity:0,duration:.4,stagger:.1},13.2)
-    .to('#glow',{opacity:1,duration:.6},13.3)
-    // cascading chevrons, pointing down; four passes, then hold
-    .to('#arrows svg',{y:34,opacity:.25,duration:.3,stagger:.12,yoyo:true,repeat:5,ease:'sine.inOut'},13.75);
-  cap('#c7',12.9,15.0);
+  // ---- CTA 10.0 to 15.0: learn more, request a seat, pointing down at the platform button ----
+  show('#sC',9.95);
+  tl.from('#sC .w',{yPercent:110,duration:.7,stagger:.14},10.0)
+    .from('#cSub',{y:30,opacity:0,duration:.5},10.7)
+    .from('#tap',{y:20,opacity:0,duration:.5},11.2)
+    .from('#arrows svg',{y:-30,opacity:0,duration:.4,stagger:.1},11.4)
+    .to('#glow',{opacity:1,duration:.8},11.4)
+    // cascading chevrons, pointing down, then hold
+    .to('#arrows svg',{y:40,opacity:.4,duration:.3,stagger:.12,yoyo:true,repeat:9,ease:'sine.inOut'},12.0);
 
-  tl.to({},{duration:0.001},15);   // pin total duration to 15 s
+  tl.to({},{duration:0.001},15);
 </script>
 </body>
 </html>

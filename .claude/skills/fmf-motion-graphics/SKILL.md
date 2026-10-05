@@ -38,18 +38,22 @@ GSAP reference skills are vendored beside this one (`gsap-core`, `gsap-timeline`
 `gsap-performance`, MIT, see `../THIRD-PARTY.md`). Read `gsap-timeline` before building anything with more than one beat.
 Their examples assume a live page: in scenes, keep to the one-timeline contract below (no ScrollTrigger, no autoplay).
 
-## Captions, music and CTA (added for the Axis event video)
+## Hook, music and CTA (pattern from the Axis event video)
 
-- **Captions:** burned in, one element per caption, toggled on the timeline (no JS callbacks). Navy pill with a thin
-  periwinkle border so it reads on light and dark scenes, 38px DM Sans 600, `text-wrap:balance`, bottom 84px, kept clear of
-  the top bar and LinkedIn's player controls. Keep content above y=1130 in 4:5. Write them as plain sentences from the source
-  copy, never new claims. See `examples/axis-event-nov16/scene.html` for the pattern (`cap()` helper).
-- **Music bed:** `node scripts/render.mjs ... --audio bed.wav` muxes audio (AAC 192k, 1 s fade in, 1.8 s fade out).
-  `python3 scripts/make-bed.py bed.wav --seconds 15 --bpm 96` synthesises an original ambient bed (needs `pip install numpy`),
-  about -22 LUFS, so there is no licensing question. Put scene cuts on the beat grid (96 bpm = 0.625 s multiples).
-- **CTA on LinkedIn video:** the platform CTA button sits under the video, so the last beat names the action ("Request a
-  seat"), shows cascading down chevrons and a caption "Tap the button below". Do not draw a fake button inside the video.
-  Pick the closest native button label (LinkedIn offers fixed presets such as Register or Sign up).
+- **Hook (first 2 s):** frame 0 must already carry the message. Open on the sharpest real line, big, with no fade from blank
+  (Axis: the £4,200 client question from the landing page). Land one new beat per music beat. Use only real copy from the source.
+- **No captions unless asked.** (The Axis video had them in v2; removed on request. The caption pattern is in git history.)
+- **Palette is FMF only: navy `#0e1034`, cornflower `#6A8FFD`, soft cornflower `#93A9F6`, alice-blue `#E7ECF3`, white.**
+  No green, no other accents. Cornflower text only on navy (it is under 3:1 on alice-blue); on light use navy text and
+  cornflower shapes.
+- **Music bed:** `python3 scripts/make-bed.py bed.wav --seconds 15 --bpm 96` synthesises an original groove (electric
+  piano, sub bass, soft kick/snap/hats, riser and lift; needs `pip install numpy`), about -22 LUFS. It has a deliberate
+  arc: held back for the hook, build, a clear lift on the reveal, then settle. Cuts and hits sit on the beat grid
+  (96 bpm = 0.625 s beats, 2.5 s bars). Mux with `node scripts/render.mjs ... --audio bed.wav` (AAC, 1 s fade in, 1.8 s
+  fade out). A synthesised bed is a decent placeholder, not a substitute for a licensed premium track.
+- **CTA on LinkedIn video:** the platform button sits under the video, so the last beat names the action, shows large
+  cascading down-chevrons and "Tap the button below". Do not draw a fake button. Pick the closest native label (LinkedIn
+  offers fixed presets such as Register or Sign up).
 
 ## Stack (deliberately small)
 
