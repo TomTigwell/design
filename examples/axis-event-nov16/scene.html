@@ -53,13 +53,13 @@
   .step.live span.t{background:var(--corn);color:var(--navy);padding:6px 22px;border-radius:100px;font-weight:700}
 
   /* EVENT */
-  #sE h2{position:absolute;left:112px;top:392px;font-size:168px;line-height:.96}
+  #sE h2{position:absolute;left:112px;top:392px;font-size:190px;line-height:.96}
   #sE h2 em{font-style:normal;color:var(--corn)}
-  #sE .where{position:absolute;left:112px;top:760px;width:758px;font-size:40px;font-weight:500}
-  #sE .when{position:absolute;left:112px;top:822px;font-size:68px}
-  #sE .lunch{position:absolute;left:112px;top:944px;width:758px;font-size:32px;opacity:.78;line-height:1.3}
-  .tags{position:absolute;left:112px;top:1050px;display:flex;gap:16px}
-  .tag2{font-size:29px;font-weight:600;padding:13px 24px;border-radius:100px;border:2px solid var(--soft);color:var(--white);white-space:nowrap}
+  #sE .where{position:absolute;left:112px;top:820px;width:758px;font-size:44px;font-weight:500}
+  #sE .when{position:absolute;left:112px;top:892px;font-size:78px}
+  #sE .lunch{position:absolute;left:112px;top:1030px;width:758px;font-size:36px;opacity:.82;line-height:1.3}
+  .tags{position:absolute;left:112px;top:1170px;display:flex;gap:14px}
+  .tag2{font-size:30px;font-weight:600;padding:14px 24px;border-radius:100px;border:2px solid var(--soft);color:var(--white);white-space:nowrap}
   .tag2.f{background:var(--corn);border-color:var(--corn);color:var(--navy)}
 
   /* CTA: points down at the platform button inside the bottom overlay */
@@ -168,8 +168,8 @@
     gsap.set(id,{left:l,top:t});
     if(i===0){
       // opens big and centred on frame 0, then settles into the first slot
-      tl.fromTo(id,{y:430,scale:1.16,rotation:-1.5},{y:430,scale:1.2,rotation:-2.5,duration:.5,ease:'none'},0)
-        .to(id,{y:0,scale:1,rotation:rot,duration:.45,ease:'power3.inOut'},.5);
+      tl.fromTo(id,{x:22,y:430,scale:1.06,rotation:-1.5},{x:22,y:430,scale:1.1,rotation:-2.5,duration:.5,ease:'none'},0)
+        .to(id,{x:0,y:0,scale:1,rotation:rot,duration:.45,ease:'power3.inOut'},.5);
     } else {
       tl.fromTo(id,{x:fx,y:fy,rotation:fr,scale:1.06},{x:0,y:0,rotation:rot,scale:1,duration:.65,ease:'back.out(1.3)'},land-.5);
     }

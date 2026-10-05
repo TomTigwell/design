@@ -32,7 +32,16 @@ all three sizes with the brand fonts.
 |---|---|---|
 | `templates/scene.html` | 1920x1080 | 16:9, decks, YouTube, site |
 | `templates/scene-square.html` | 1080x1080 | LinkedIn feed 1:1 |
-| `templates/scene-portrait.html` | 1080x1350 | LinkedIn feed 4:5 (most reach on mobile) |
+| `templates/scene-portrait.html` | 1080x1350 | LinkedIn feed 4:5 |
+| `examples/axis-event-nov16/scene.html` | 1080x1920 | **LinkedIn mobile video ad, 9:16: the biggest canvas** |
+
+**LinkedIn mobile video spec (from secondary sources, LinkedIn's own page was not reachable; re-check before a campaign):**
+9:16 = 1080x1920, mobile-only delivery, MP4 H.264 + AAC, 30 fps, 75 KB to 200 MB, 3 s to 30 min (15 to 30 s is the
+usual recommendation). 4:5 (1080x1350) is the next largest. In the full-screen player the platform UI covers about
+260 px at the top, 560 px at the bottom, 112 px left and 210 px right, so keep ALL essential content in
+**x 112-870, y 300-1360** (758 x 1060). That box also sits inside a centred 4:5 crop, so the video survives if cropped.
+Backgrounds and motion may bleed full-frame. The platform CTA button lives in the bottom overlay, so point down at it.
+
 
 GSAP reference skills are vendored beside this one (`gsap-core`, `gsap-timeline`, `gsap-plugins`, `gsap-utils`,
 `gsap-performance`, MIT, see `../THIRD-PARTY.md`). Read `gsap-timeline` before building anything with more than one beat.
