@@ -18,4 +18,6 @@ ehthumbs.db
 Desktop.ini
 
 # Recycle Bin used on file shares
-$RECYCLE.BIN/
+$RECYCLE.BIN/node_modules/
+*.mp4
+*.gif
