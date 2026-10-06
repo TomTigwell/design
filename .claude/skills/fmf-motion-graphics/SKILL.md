@@ -69,7 +69,10 @@ Their examples assume a live page: in scenes, keep to the one-timeline contract 
 - **One H1 style everywhere:** ABC Arizona Flare 142px, line-height .98, top-left of the safe area (x 112, y 300), width 770,
   visible on the scene's first frame. About 11 characters fit per line at 142px, so measure copy first
   (fontTools advance widths) and write headlines that break well.
-- **Logo bottom-right**, inside the safe area (right edge x 870, top y 1302), out of the way of the H1.
+- **Logo bottom-right corner** (right 80px, top 1530px on 9:16), well clear of the H1 and illustrations. This sits below the
+  secondary-source safe box, so check it is not hidden by the caption/button in LinkedIn's full-screen player.
+- Leave clear air between the H1 and illustrations (about 50px to a sub-line, 130px+ to graphics). Illustrations and chat
+  bubbles may use the full width (x 70-1000); only text that must be read stays inside x 112-870.
 - Avoid the generated-design tells: ALL-CAPS tracked labels (use sentence case), one word in a headline picked out in another
   colour (keep headlines one colour; cornflower is for graphics), identical rounded cards, gradient washes and glow orbs,
   a fade-and-slide-up on every element. Spend boldness on one thing per scene; cut between scenes hard, on the beat.
@@ -79,7 +82,9 @@ Their examples assume a live page: in scenes, keep to the one-timeline contract 
 ## Stack (deliberately small)
 
 - **Engine:** GSAP (free, including plugins). Animates HTML/CSS/SVG.
-- **Renderer:** headless Chromium seeks the paused timeline frame by frame, ffmpeg encodes to MP4.
+- **Renderer:** headless Chromium seeks the paused timeline frame by frame, ffmpeg encodes to MP4. For sharpness it renders
+  at `--scale 2` (default) as lossless PNG, Lanczos-downscales to the output size and encodes x264 `-preset slow -tune
+  animation -crf 14`. A 25 s 9:16 render takes about 3 minutes; use `--scale 1` for quick drafts.
 - Not included yet: three.js, Remotion (paid licence at 4+ staff, check before adopting), Blender, After Effects.
   Add one only when a job needs it.
 
