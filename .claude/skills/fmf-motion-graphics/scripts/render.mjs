@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // Render a GSAP scene (HTML) to MP4 by seeking the timeline frame by frame.
-// Usage: node render.mjs <scene.html> <out.mp4> [--fps 30] [--width 1920] [--height 1080] [--duration <s>] [--audio bed.wav]
+// Usage: node render.mjs <scene.html> <out.mp4> [--fps 30] [--width 1920] [--height 1080] [--duration <s>] [--audio bed.wav] [--scale 2]
 // The scene must expose a PAUSED GSAP timeline as `window.tl`.
 import { chromium } from 'playwright-core';
 import { spawn } from 'node:child_process';
@@ -18,6 +18,8 @@ const audio = audioIdx > -1 ? resolve(args[audioIdx + 1]) : null;
 if (!scene || !out) { console.error('usage: render.mjs <scene.html> <out.mp4> [--fps N --width N --height N --duration S]'); process.exit(1); }
 
 const fps = opt('fps', 30), width = opt('width', 1920), height = opt('height', 1080);
+// Sharpness: render at --scale x (default 2) as lossless PNG, then Lanczos-downscale to the output size.
+const scale = opt('scale', 2);
 const gsapLocal = join(here, 'node_modules/gsap/dist');
 
 
@@ -45,7 +47,7 @@ const log = (m) => process.env.DEBUG && console.error('[render]', m);
 const browser = await chromium.launch(
   (process.env.CHROMIUM_PATH || existsSync('/opt/pw-browsers/chromium')) ? { executablePath: process.env.CHROMIUM_PATH || '/opt/pw-browsers/chromium' } : {});
 log('launched');
-const page = await browser.newPage({ viewport: { width, height } });
+const page = await browser.newPage({ viewport: { width, height }, deviceScaleFactor: scale });
 
 // Serve GSAP (core + plugins) from node_modules so scenes render offline.
 // Fail font CDNs fast (a stalled stylesheet blocks the scripts after it). Self-host fonts for exact type offline.
@@ -79,12 +81,15 @@ log('frames=' + frames);
 const audioArgs = audio
   ? ['-i', audio, '-c:a', 'aac', '-b:a', '192k', '-af', `afade=t=in:d=1,afade=t=out:st=${Math.max(0, duration - 1.8).toFixed(2)}:d=1.8`, '-t', String(duration)]
   : [];
-const ff = spawn('ffmpeg', ['-y', '-loglevel', 'error', '-f', 'image2pipe', '-framerate', String(fps), '-i', '-', ...audioArgs,
-  '-c:v', 'libx264', '-pix_fmt', 'yuv420p', '-crf', '16', '-movflags', '+faststart', resolve(out)], { stdio: ['pipe', 'inherit', 'inherit'] });
+const outW = page.viewportSize().width, outH = page.viewportSize().height;
+const ff = spawn('ffmpeg', ['-y', '-loglevel', 'error', '-f', 'image2pipe', '-c:v', 'png', '-framerate', String(fps), '-i', '-', ...audioArgs,
+  '-vf', `scale=${outW}:${outH}:flags=lanczos`,
+  '-c:v', 'libx264', '-preset', 'slow', '-tune', 'animation', '-profile:v', 'high', '-crf', '14', '-pix_fmt', 'yuv420p',
+  '-movflags', '+faststart', resolve(out)], { stdio: ['pipe', 'inherit', 'inherit'] });
 
 for (let f = 0; f < frames; f++) {
   await page.evaluate((t) => { window.tl.time(t, false); }, f / fps);
-  const buf = await page.screenshot({ type: 'jpeg', quality: 95 });
+  const buf = await page.screenshot({ type: 'png' });
   if (f < 3) log('frame ' + f + ' ' + buf.length + 'B');
   if (!ff.stdin.write(buf)) await new Promise((r) => ff.stdin.once('drain', r));
 }
