@@ -71,8 +71,11 @@ Their examples assume a live page: in scenes, keep to the one-timeline contract 
 - **One H1 style everywhere:** ABC Arizona Flare 142px, line-height .98, top-left of the safe area (x 112, y 300), width 770,
   visible on the scene's first frame. About 11 characters fit per line at 142px, so measure copy first
   (fontTools advance widths) and write headlines that break well.
-- **Logo bottom-right corner** (right 80px, top 1530px on 9:16), well clear of the H1 and illustrations. This sits below the
-  secondary-source safe box, so check it is not hidden by the caption/button in LinkedIn's full-screen player.
+- **Logo centred at the bottom, large** (mark 78px + wordmark 60px, top 1720px on 9:16). Small corner logos read as
+  floating. This sits in the bottom overlay zone of LinkedIn's full-screen player, so check it in Campaign Manager preview.
+- **Pacing:** let a finished visual hold 1.5 to 2.5 s before cutting (e.g. once the thread has joined the blocks), and give
+  the reveal scene at least 6 s. Avoid two question headlines in a row. Chat messages from customers are all inbound
+  (left, with a role avatar), never right-aligned as if the viewer sent them.
 - Leave clear air between the H1 and illustrations (about 50px to a sub-line, 130px+ to graphics). Illustrations and chat
   bubbles may use the full width (x 70-1000); only text that must be read stays inside x 112-870.
 - Avoid the generated-design tells: ALL-CAPS tracked labels (use sentence case), one word in a headline picked out in another

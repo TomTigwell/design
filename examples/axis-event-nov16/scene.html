@@ -19,8 +19,8 @@
   .h1{position:absolute;left:112px;top:300px;width:770px;font-size:142px;line-height:.98}
   .sub{position:absolute;left:112px;width:758px;font-size:40px;line-height:1.3;font-weight:500}
   .scene{position:absolute;inset:0;opacity:0;visibility:hidden}
-  #logo{position:absolute;right:80px;top:1530px;display:flex;align-items:center;gap:12px;font-size:36px;font-weight:600;color:var(--white);z-index:9}
-  #logo svg{display:block;width:46px;height:46px}
+  #logo{position:absolute;left:0;right:0;top:1720px;display:flex;justify-content:center;align-items:center;gap:18px;font-size:60px;font-weight:600;color:var(--white);z-index:9}
+  #logo svg{display:block;width:78px;height:78px}
 
   /* S1: still stitching */
   #s1{opacity:1;visibility:visible}
@@ -31,15 +31,13 @@
   .chip .art{font-size:31px;font-weight:500;margin-top:2px}
   #tangle{position:absolute;left:0;top:0;width:1080px;height:1920px;z-index:1}
 
-  /* S2: sound familiar? Voices from different teams, as chat bubbles */
-  .bub{position:absolute;max-width:760px}
-  .bub .in{padding:22px 32px 26px;border-radius:34px}
-  .bub .who{font-size:25px;font-weight:600;margin-bottom:8px}
+  /* S2: these probably sound familiar. All inbound messages (from others), each with a role avatar */
+  .bub{position:absolute;display:flex;align-items:flex-end;gap:16px;max-width:900px}
+  .av{width:68px;height:68px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:700;flex:none;color:var(--navy)}
+  .av.a{background:var(--corn)} .av.b{background:var(--soft)} .av.c{background:var(--alice)}
+  .bub .in{padding:22px 32px 26px;border-radius:34px;border-bottom-left-radius:6px;background:var(--white);color:var(--navy);max-width:780px}
+  .bub .who{font-size:25px;font-weight:600;margin-bottom:8px;color:#4a5bd0}
   .bub .q{font-size:52px;line-height:1.1}
-  .bub.l .in{background:var(--white);color:var(--navy);border-bottom-left-radius:6px}
-  .bub.l .who{color:#4a5bd0}
-  .bub.r .in{background:var(--ink2);color:var(--white);border:2px solid rgba(147,169,246,.45);border-bottom-right-radius:6px}
-  .bub.r .who{color:var(--soft)}
 
   /* S3: Axis (light) */
   #s3{color:var(--navy)}
@@ -89,12 +87,12 @@
 
 <!-- S2 -->
 <section class="scene" id="s2">
-  <h1 class="h1 display">Sound familiar?</h1>
-  <div class="bub l" id="b1"><div class="in"><div class="who">Finance</div><div class="q display">Why did we spend £4,200 if it wasn't approved?</div></div></div>
-  <div class="bub r" id="b2"><div class="in"><div class="who">Leadership</div><div class="q display">What's the overarching plan?</div></div></div>
-  <div class="bub l" id="b3"><div class="in"><div class="who">Sales</div><div class="q display">Why are we running these ads?</div></div></div>
-  <div class="bub r" id="b4"><div class="in"><div class="who">Client</div><div class="q display">What will the ads actually look like?</div></div></div>
-  <div class="bub l" id="b5"><div class="in"><div class="who">Brand team</div><div class="q display">We wanted the creative changed first.</div></div></div>
+  <h1 class="h1 display">These probably sound familiar.</h1>
+  <div class="bub" id="b1"><span class="av a">F</span><div class="in"><div class="who">Finance</div><div class="q display">Why did we spend £4,200 if it wasn't approved?</div></div></div>
+  <div class="bub" id="b2"><span class="av b">L</span><div class="in"><div class="who">Leadership</div><div class="q display">What's the overarching plan?</div></div></div>
+  <div class="bub" id="b3"><span class="av c">S</span><div class="in"><div class="who">Sales</div><div class="q display">Why are we running these ads?</div></div></div>
+  <div class="bub" id="b4"><span class="av a">C</span><div class="in"><div class="who">Client</div><div class="q display">What will the ads actually look like?</div></div></div>
+  <div class="bub" id="b5"><span class="av b">B</span><div class="in"><div class="who">Brand team</div><div class="q display">We wanted the creative changed first.</div></div></div>
 </section>
 
 <!-- S3 -->
@@ -134,66 +132,66 @@
 <div id="logo"><svg width="52" height="52" viewBox="0 0 48 48" aria-hidden="true"><path d="M24.3394 19.7273L30.2766 2.09935C30.4128 1.69804 30.2584 1.2582 29.9019 1.02014L28.6123 0.163113C28.0811 -0.190578 27.3545 0.0565523 27.1593 0.657375L21.4696 18.0971C21.3606 18.4304 21.4492 18.7954 21.6989 19.0448L22.7388 20.09C23.2428 20.5956 24.1124 20.3984 24.3372 19.7273H24.3394ZM24.7458 26.4678L37.4465 27.3792C38.0005 27.42 38.475 26.9893 38.4773 26.4429L38.5 22.3391C38.5023 21.8199 38.08 21.3982 37.5532 21.3892L24.8185 21.21C24.2827 21.2032 23.8422 21.6295 23.8445 22.1555L23.8536 25.5269C23.8536 26.0212 24.2441 26.4293 24.7436 26.4655L24.7458 26.4678ZM21.12 18.1084L16.5178 4.16255C16.2749 3.42796 15.2873 3.27379 14.8264 3.89955L14.1634 4.79738C13.9863 5.03771 13.9341 5.34832 14.0227 5.63173L18.4295 19.5731C18.6475 20.2623 19.542 20.4664 20.0461 19.9404L20.902 19.0471C21.1427 18.7954 21.2244 18.4372 21.1154 18.1084H21.12ZM21.4991 29.2815L27.207 47.3356C27.3931 47.9228 28.0901 48.1813 28.6237 47.8616L29.9065 47.0953C30.2856 46.8686 30.4582 46.4128 30.322 45.9979L24.3213 27.8123C24.1056 27.157 23.2701 26.9417 22.7547 27.411L21.7648 28.3111C21.4923 28.5582 21.3902 28.9368 21.4991 29.2837V29.2815ZM17.9641 21.1148L10.474 21.0831C9.94273 21.0831 9.51135 21.5025 9.50908 22.024L9.5 24.3615C9.5 24.8535 9.88143 25.2662 10.3832 25.307L17.8914 25.9123C18.4522 25.9577 18.9313 25.5224 18.9313 24.9691L18.9245 22.058C18.9245 21.5388 18.4954 21.1193 17.9686 21.1171L17.9641 21.1148ZM18.4114 27.606L14.0544 41.1211C13.9636 41.3999 14.0113 41.7038 14.1816 41.9441L14.8582 42.9031C15.3077 43.5425 16.3067 43.4019 16.5587 42.6651L21.145 29.2225C21.2539 28.9074 21.1835 28.5582 20.961 28.3043L20.0552 27.2727C19.5647 26.7149 18.6384 26.9008 18.4114 27.606Z" fill="currentColor"></path></svg><span>Axis</span></div>
 
 <script>
-  // One PAUSED timeline exposed as window.tl. Exactly 30 s. Music: a steady 96 bpm groove (beat 0.625 s, bar 2.5 s),
-  // with a gentle level lift at 15 s. Even pacing throughout: nothing accelerates.
-  // S1 0-7.5 stitching | S2 7.5-15 sound familiar | S3 15-20 Meet Axis | S4 20-25 event | S5 25-30 CTA.
+  // One PAUSED timeline exposed as window.tl. Exactly 30 s. Music: a steady 96 bpm groove (beat 0.625 s), gentle lift at 15.625 s.
+  // S1 0-9.375 stitching | S2 9.375-15.625 familiar | S3 15.625-21.875 Meet Axis | S4 21.875-26.25 event | S5 26.25-30 CTA.
   const tl = gsap.timeline({paused:true, defaults:{ease:'power3.out'}});
   window.tl = tl;
   const B = .625;
   const on=(s,t)=>tl.set(s,{autoAlpha:1},t), off=(s,t)=>tl.set(s,{autoAlpha:0},t);
   const ground=(bg,fg,t)=>tl.set('#bg',{backgroundColor:bg},t).set('#logo',{color:fg},t);
-  const NAVY='#0e1034', ALICE='#E7ECF3', WHITE='#ffffff';
+  const NAVY='#0e1034', ALICE='#E7ECF3', WHITE='#ffffff', CORN='#6A8FFD';
   const drift=(sel,start,n)=>tl.to(sel,{y:'+=8',rotation:'+=1.4',duration:1.25,yoyo:true,repeat:n,ease:'sine.inOut'},start);
 
-  // ---- S1 0 to 7.5: the headline is there on frame 0; a tool arrives every 1.5 beats ----
+  // ---- S1 0 to 9.375: tools arrive, then a thread animates through them, lighting each one; the joined-up picture holds ----
   [['#k1',-7,0,0,-7,0],['#k2',6,700,-40,20,1.5*B],['#k3',-4,-200,1000,-14,3*B],
    ['#k4',8,800,120,24,4.5*B],['#k5',5,-760,60,-20,6*B],['#k6',-10,700,-80,-26,7.5*B]]
   .forEach(([id,rot,fx,fy,fr,land],i)=>{
     if(i===0){ tl.fromTo(id,{rotation:-9,scale:1.04},{rotation:rot,scale:1,duration:.6},0); }
     else { tl.fromTo(id,{x:fx,y:fy,rotation:fr},{x:0,y:0,rotation:rot,duration:.7,ease:'back.out(1.3)'},land-.5); }
-    drift(id,land+.2,4);
+    drift(id,land+.2,5);
   });
-  tl.to('#tmp',{strokeDashoffset:0,duration:1.4,ease:'power1.inOut'},8*B);    // the stitching tangles
-  tl.set('#s1sub',{visibility:'visible'},9*B);
-  tl.to(['#k1','#k3','#k5'],{x:-90,rotation:'-=6',duration:.3,ease:'power2.out'},10.5*B)   // a tug that goes nowhere
-    .to(['#k2','#k4','#k6'],{x:90,rotation:'+=6',duration:.3,ease:'power2.out'},10.5*B)
-    .to(['#k1','#k2','#k3','#k4','#k5','#k6'],{x:0,duration:.4,ease:'back.out(2)'},10.5*B+.3);
-  off('#s1',12*B);
+  const T0 = 8*B, TD = 2.4;                        // thread draws 5.0 to 7.4 s
+  tl.to('#tmp',{strokeDashoffset:0,duration:TD,ease:'none'},T0);
+  // light each block as the thread reaches it (path order: k1, k2, k3, k6, k5, k4)
+  ['#k1','#k2','#k3','#k6','#k5','#k4'].forEach((id,i)=>{
+    tl.to(id,{borderColor:CORN,backgroundColor:'#262a78',duration:.25},T0+i*(TD/6)+.05);
+  });
+  tl.set('#s1sub',{visibility:'visible'},12*B);     // 7.5 s, then the connected picture holds to 9.375
+  off('#s1',15*B);
 
-  // ---- S2 7.5 to 15: one voice every two beats, from alternating sides; the oldest leaves first ----
-  on('#s2',12*B);
-  const bubs=[['#b1','l',90,690,-2.5,12*B],['#b2','r',990,935,2,14*B],['#b3','l',90,1180,-2,16*B],
-              ['#b4','r',990,690,2.5,18*B],['#b5','l',90,935,-2,20*B]];
-  bubs.forEach(([id,side,x,y,rot,land],i)=>{
-    gsap.set(id, side==='l' ? {left:x,top:y} : {right:1080-x,top:y});
-    if(i===0){ tl.fromTo(id,{x:-120,rotation:-8},{x:0,rotation:rot,duration:.5,ease:'back.out(1.6)'},land); }
-    else { tl.fromTo(id,{x:side==='l'?-900:900,rotation:side==='l'?-16:16},{x:0,rotation:rot,duration:.7,ease:'back.out(1.2)'},land-.5); }
+  // ---- S2 9.375 to 15.625: inbound messages, one every two beats; the oldest leaves first ----
+  on('#s2',15*B);
+  const bubs=[['#b1',90,950,-2.5,15*B],['#b2',130,1190,2,17*B],['#b3',90,1430,-2,19*B],
+              ['#b4',130,950,2.5,21*B],['#b5',90,1190,-2,23*B]];
+  bubs.forEach(([id,x,y,rot,land],i)=>{
+    gsap.set(id,{left:x,top:y});
+    tl.fromTo(id,{x:-1050,rotation:i%2?-14:-20},{x:0,rotation:rot,duration:.75,ease:'back.out(1.2)'},land-.55);
     drift(id+' .in',land+.2,3);
   });
-  tl.to('#b1',{x:-1100,rotation:-18,duration:.45,ease:'power3.in'},18*B-.95)
-    .to('#b2',{x:1100,rotation:18,duration:.45,ease:'power3.in'},20*B-.95);
-  off('#s2',24*B);
+  tl.to('#b1',{x:-1150,rotation:-18,duration:.45,ease:'power3.in'},21*B-1.0)
+    .to('#b2',{x:-1150,rotation:-18,duration:.45,ease:'power3.in'},23*B-1.0);
+  off('#s2',25*B);
 
-  // ---- S3 15 to 20 (light): the reveal ----
-  ground(ALICE,'#0e1034',24*B); on('#s3',24*B);
-  off('#s3sub',24*B); on('#s3sub',25*B);
-  tl.from('#line',{scaleY:0,duration:1.6,ease:'power1.inOut'},26*B)
-    .from('.step',{x:-30,opacity:0,duration:.4,stagger:.3},26*B)
-    .from('.dot',{scale:0,duration:.3,stagger:.3,ease:'back.out(3)'},26*B);
-  off('#s3',32*B);
+  // ---- S3 15.625 to 21.875 (light): Meet Axis, revealed slowly and held ----
+  ground(ALICE,'#0e1034',25*B); on('#s3',25*B);
+  off('#s3sub',25*B); on('#s3sub',26*B);
+  tl.from('#line',{scaleY:0,duration:2.3,ease:'power1.inOut'},27*B)
+    .from('.step',{x:-30,opacity:0,duration:.5,stagger:.45},27*B)
+    .from('.dot',{scale:0,duration:.35,stagger:.45,ease:'back.out(3)'},27*B);
+  off('#s3',35*B);
 
-  // ---- S4 20 to 25 (navy): See Axis live, Axis x LinkedIn, the date ----
-  ground(NAVY,WHITE,32*B); on('#s4',32*B);
-  [['#pair',33],['#date',34],['#s4w',36]].forEach(([id,b])=>{ off(id,32*B); on(id,b*B); });
-  tl.fromTo('#date .num',{yPercent:12},{yPercent:0,duration:.7},34*B)
-    .fromTo('#date .col',{x:-20},{x:0,duration:.6},34*B+.1);
-  off('#s4',40*B);
+  // ---- S4 21.875 to 26.25 (navy): See Axis live, Axis x LinkedIn, the date ----
+  ground(NAVY,WHITE,35*B); on('#s4',35*B);
+  [['#pair',36],['#date',37],['#s4w',39]].forEach(([id,b])=>{ off(id,35*B); on(id,b*B); });
+  tl.fromTo('#date .num',{yPercent:12},{yPercent:0,duration:.7},37*B)
+    .fromTo('#date .col',{x:-20},{x:0,duration:.6},37*B+.1);
+  off('#s4',42*B);
 
-  // ---- S5 25 to 30: call to action ----
-  on('#s5',40*B);
-  [['#s5a',41],['#tap',42.5]].forEach(([id,b])=>{ off(id,40*B); on(id,b*B); });
-  tl.from('#arrows svg',{y:-30,opacity:0,duration:.4,stagger:.12},43*B)
-    .to('#arrows svg',{y:44,opacity:.35,duration:.3,stagger:.12,yoyo:true,repeat:5,ease:'sine.inOut'},44*B);
+  // ---- S5 26.25 to 30: call to action ----
+  on('#s5',42*B);
+  [['#s5a',43],['#tap',44]].forEach(([id,b])=>{ off(id,42*B); on(id,b*B); });
+  tl.from('#arrows svg',{y:-30,opacity:0,duration:.4,stagger:.12},44.5*B)
+    .to('#arrows svg',{y:44,opacity:.35,duration:.3,stagger:.12,yoyo:true,repeat:3,ease:'sine.inOut'},45*B);
 
   tl.to({},{duration:0.001},30);
 </script>

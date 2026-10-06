@@ -249,8 +249,7 @@ for _, k in PLAN:
     else:
         arc.append(ARCV[k])
 if STYLE == 'steady':  # flat level, a gentle lift from the reveal bar onwards
-    rb = int(REVEAL / bar)
-    arc = [0.92 if i < rb else 1.08 for i in range(len(PLAN))]
+    arc = [1.0] * len(PLAN)
     FIRST_LIFT = None
 tt = np.arange(n) / SR
 anchors = [i * bar + bar / 2 for i in range(len(arc))]
@@ -258,6 +257,8 @@ gain = np.interp(tt, anchors, arc)
 if FIRST_LIFT is not None:  # land the lift on beat 1 of the first lift bar
     lt = FIRST_LIFT * bar
     gain = np.where((tt > lt - 0.05) & (tt < lt + 0.05), np.interp(tt, [lt - 0.05, lt + 0.05], [0.85, arc[FIRST_LIFT]]), gain)
+if STYLE == 'steady':  # flat level with a gentle lift exactly at the reveal time (0.3 s ramp)
+    gain = np.interp(tt, [REVEAL - 0.15, REVEAL + 0.15], [0.92, 1.08])
 mix *= gain[:, None]
 
 # soften the top end, normalise, limit gently
