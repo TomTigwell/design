@@ -1,7 +1,11 @@
 #!/usr/bin/env python3
 """Synthesise an original music bed (no samples, so no licensing issues).
 
-Usage: python3 make-bed.py out.wav [--seconds 25] [--bpm 96]
+Usage: python3 make-bed.py out.wav [--seconds 30] [--bpm 96] [--style steady|arc]
+
+steady (default): ONE groove at a constant density from the first bar to the last; only gain and chords move, so the
+  track never feels like it speeds up. A gentle level lift at the reveal bar (default 15 s). Use this for ads.
+arc: the older tension-to-lift plan described below (density builds; can feel like it accelerates).
 
 Feel: positive, premium, confident. 2.5 s bars at 96 bpm, planned bar by bar (PLAN below) as a tension-to-lift arc:
   heart  / heart+  held-back heartbeat kick on every beat, low pulse, sparse piano (the hook)
@@ -19,7 +23,9 @@ import numpy as np
 SR = 44100
 out = sys.argv[1]
 arg = lambda n, d: float(sys.argv[sys.argv.index(f'--{n}') + 1]) if f'--{n}' in sys.argv else d
-SECS, BPM = arg('seconds', 25.0), arg('bpm', 96.0)
+SECS, BPM = arg('seconds', 30.0), arg('bpm', 96.0)
+STYLE = sys.argv[sys.argv.index('--style') + 1] if '--style' in sys.argv else 'steady'
+REVEAL = arg('reveal', 15.0)  # steady style: the bar where the level lifts
 beat = 60.0 / BPM
 bar = 4 * beat
 step = beat / 4
@@ -100,7 +106,12 @@ CHORDS = {  # name: (rootless voicing, bass root)
 PLAN = [('Am7', 'heart'), ('Am7', 'heart+'), ('Fmaj7', 'heart+'), ('Fmaj7', 'build'), ('G69', 'build+'),
         ('Cmaj9', 'lift'), ('Fmaj9', 'lift'), ('G69', 'lift'), ('Fmaj9', 'lift'), ('Cmaj9', 'outro')]
 NB = int(np.ceil(SECS / bar))
-PLAN = (PLAN * 4)[:NB] if NB != len(PLAN) else PLAN
+if STYLE == 'steady':
+    LOOP = ['Am7', 'Fmaj7', 'Cmaj9', 'G69', 'Am7', 'Fmaj7', 'Cmaj9', 'G69', 'Fmaj9', 'G69', 'Cmaj9', 'Cmaj9']
+    PLAN = [(LOOP[i % len(LOOP)], 'groove') for i in range(NB)]
+    PLAN[-1] = (PLAN[-1][0], 'groove_end')
+else:
+    PLAN = (PLAN * 4)[:NB] if NB != len(PLAN) else PLAN
 ARP = [0, 2, 3, 1, 3, 2, 1, 0]
 FIRST_LIFT = next((i for i, (_, k) in enumerate(PLAN) if k == 'lift'), None)
 
@@ -120,7 +131,25 @@ for b, (name, kind) in enumerate(PLAN):
     for k, m in enumerate(v):  # pad, sustained into the next bar
         put(padb, t0, pad_tone(mtof(m), bar + 1.4), 0.07, 0.25 + 0.5 * k / 3)
 
-    if kind in ('heart', 'heart+'):
+    if kind in ('groove', 'groove_end'):
+        # identical pattern every bar: kick 1 and 3, snap 2 and 4, even eighth hats, bass, stabs, a soft eighth arpeggio
+        for s_ in (0, 8):
+            K(at(s_))
+        for s_ in (4, 12):
+            put(drums, at(s_), snap(), 0.20)
+        for s_ in range(0, 16, 2):
+            put(drums, at(s_), hat(), 0.08 if s_ % 4 == 2 else 0.05, 0.62)
+        for s_, g in ((0, 0.32), (6, 0.24), (10, 0.24), (14, 0.18)):
+            put(bassb, at(s_), bass(mtof(root)), g)
+        for s_ in (0, 6, 10):
+            for k, m in enumerate(v):
+                put(keys, at(s_) + k * 0.012, ep(mtof(m), 0.9, 0.65), 0.07, 0.3 + 0.4 * k / 3)
+        for j, s_ in enumerate(range(0, 16, 2)):
+            put(arp, at(s_) + step, ep(mtof(v[ARP[j] % 4] + 12), 0.6, 0.5), 0.05, 0.3 if j % 2 == 0 else 0.7)
+        if kind == 'groove_end':
+            for k, m in enumerate(v):
+                put(keys, at(8) + k * 0.012, ep(mtof(m), 2.6, 0.7), 0.06, 0.3 + 0.4 * k / 3)
+    elif kind in ('heart', 'heart+'):
         for j, vel in enumerate([1.0, 0.8, 0.8, 0.95]):
             K(t0 + j * beat, vel * (0.8 if kind == 'heart' else 0.9))
         put(bassb, at(0), bass(mtof(root)), 0.30)
@@ -172,7 +201,7 @@ for b, (name, kind) in enumerate(PLAN):
             put(arp, at(s_) + step, ep(mtof(v[ARP[j * 2] % 4] + 12), 0.8, 0.5), 0.06, 0.3 if j % 2 == 0 else 0.7)
 
 # riser into the first lift, soft impact on it
-if FIRST_LIFT is not None:
+if FIRST_LIFT is not None and STYLE != 'steady':
     lt = FIRST_LIFT * bar
     put(fx, lt - 1.25, riser(1.25), 0.10)
     put(fx, lt, impact(), 0.55)
@@ -211,7 +240,7 @@ tonal = reverb((keys + arp + echo + padb) * duck, 0.38)
 mix = tonal + kicks_b + drums + bassb + reverb(fx, 0.2)
 
 # energy arc: held back for the hook, building through the turn, a clear lift on the reveal, settling for the CTA
-ARCV = {'heart': 0.62, 'heart+': 0.72, 'build': 0.84, 'build+': 0.94, 'outro': 1.0}
+ARCV = {'heart': 0.62, 'heart+': 0.72, 'build': 0.84, 'build+': 0.94, 'outro': 1.0, 'groove': 1.0, 'groove_end': 1.0}
 LIFTS = [1.30, 1.20, 1.14, 1.10]
 arc, li = [], 0
 for _, k in PLAN:
@@ -219,6 +248,10 @@ for _, k in PLAN:
         arc.append(LIFTS[min(li, 3)]); li += 1
     else:
         arc.append(ARCV[k])
+if STYLE == 'steady':  # flat level, a gentle lift from the reveal bar onwards
+    rb = int(REVEAL / bar)
+    arc = [0.92 if i < rb else 1.08 for i in range(len(PLAN))]
+    FIRST_LIFT = None
 tt = np.arange(n) / SR
 anchors = [i * bar + bar / 2 for i in range(len(arc))]
 gain = np.interp(tt, anchors, arc)

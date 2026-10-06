@@ -55,9 +55,11 @@ Their examples assume a live page: in scenes, keep to the one-timeline contract 
 - **Palette is FMF only: navy `#0e1034`, cornflower `#6A8FFD`, soft cornflower `#93A9F6`, alice-blue `#E7ECF3`, white.**
   No green, no other accents. Cornflower text only on navy (it is under 3:1 on alice-blue); on light use navy text and
   cornflower shapes.
-- **Music bed:** `python3 scripts/make-bed.py bed.wav --seconds 15 --bpm 96` synthesises an original groove (electric
-  piano, sub bass, soft kick/snap/hats, riser and lift; needs `pip install numpy`), about -22 LUFS. It has a deliberate
-  arc: held back for the hook, build, a clear lift on the reveal, then settle. Cuts and hits sit on the beat grid
+- **Music bed:** `python3 scripts/make-bed.py bed.wav --seconds 30 --bpm 96` synthesises an original groove (electric
+  piano, sub bass, soft kick/snap/hats; needs `pip install numpy`), about -22 LUFS. Default `--style steady`: the SAME
+  pattern every bar, so it flows at one speed; only chords and a gentle level lift (`--reveal 15`) change. The older
+  `--style arc` builds density (heartbeat, then groove, then 16ths and a riser) and was rejected because it sounds like it
+  speeds up. Cuts and hits sit on the beat grid
   (96 bpm = 0.625 s beats, 2.5 s bars). Mux with `node scripts/render.mjs ... --audio bed.wav` (AAC, 1 s fade in, 1.8 s
   fade out). A synthesised bed is a decent placeholder, not a substitute for a licensed premium track.
 - **CTA on LinkedIn video:** the platform button sits under the video, so the last beat names the action, shows large

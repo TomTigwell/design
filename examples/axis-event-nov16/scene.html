@@ -52,13 +52,14 @@
   .step.live span.t{background:var(--navy);color:var(--white);padding:6px 22px;border-radius:100px;font-weight:700}
 
   /* S4: event */
-  #s4 .where{top:520px}
-  #s4 .when{position:absolute;left:112px;top:592px;font-size:84px;line-height:1}
-  #s4 .with{top:735px;opacity:.8;font-size:36px}
-  #s4 .lunch{top:840px;opacity:.85;font-size:38px}
-  .tags{position:absolute;left:112px;top:1010px;display:flex;flex-wrap:wrap;gap:16px;width:758px}
-  .tag2{font-size:31px;font-weight:600;padding:14px 26px;border-radius:100px;border:2px solid var(--soft);white-space:nowrap}
-  .tag2.f{background:var(--white);border-color:var(--white);color:var(--navy)}
+  #pair{position:absolute;left:112px;top:500px;display:flex;align-items:center;gap:22px;font-size:46px;font-weight:700}
+  #pair .ax{display:flex;align-items:center;gap:12px}
+  #pair .ax svg{width:50px;height:50px;display:block}
+  #pair .x{color:var(--corn);font-weight:400;font-size:52px}
+  #date{position:absolute;left:112px;top:630px;display:flex;align-items:flex-start;gap:34px}
+  #date .num{font-size:440px;line-height:.78;color:var(--corn)}
+  #date .col{padding-top:36px;font-size:78px;line-height:1.1}
+  #s4 .where{top:1040px;font-size:44px}
 
   /* S5: call to action, pointing down at the platform button */
   #s5 .sub{top:780px;opacity:.85;font-size:38px}
@@ -113,17 +114,15 @@
 <!-- S4 -->
 <section class="scene" id="s4">
   <h1 class="h1 display">See Axis live.</h1>
-  <div class="sub where" id="s4a">Launching at LinkedIn London HQ</div>
-  <div class="when display" id="s4b">Monday 16 November</div>
-  <div class="sub with" id="s4c">With Fill My Funnel and LinkedIn</div>
-  <div class="sub lunch" id="s4d">Lunch with the LinkedIn team. Hear what's coming next.</div>
-  <div class="tags" id="s4e"><span class="tag2">Free to attend, lunch included</span><span class="tag2 f">25 seats</span></div>
+  <div id="pair"><span class="ax"><svg width="52" height="52" viewBox="0 0 48 48" aria-hidden="true"><path d="M24.3394 19.7273L30.2766 2.09935C30.4128 1.69804 30.2584 1.2582 29.9019 1.02014L28.6123 0.163113C28.0811 -0.190578 27.3545 0.0565523 27.1593 0.657375L21.4696 18.0971C21.3606 18.4304 21.4492 18.7954 21.6989 19.0448L22.7388 20.09C23.2428 20.5956 24.1124 20.3984 24.3372 19.7273H24.3394ZM24.7458 26.4678L37.4465 27.3792C38.0005 27.42 38.475 26.9893 38.4773 26.4429L38.5 22.3391C38.5023 21.8199 38.08 21.3982 37.5532 21.3892L24.8185 21.21C24.2827 21.2032 23.8422 21.6295 23.8445 22.1555L23.8536 25.5269C23.8536 26.0212 24.2441 26.4293 24.7436 26.4655L24.7458 26.4678ZM21.12 18.1084L16.5178 4.16255C16.2749 3.42796 15.2873 3.27379 14.8264 3.89955L14.1634 4.79738C13.9863 5.03771 13.9341 5.34832 14.0227 5.63173L18.4295 19.5731C18.6475 20.2623 19.542 20.4664 20.0461 19.9404L20.902 19.0471C21.1427 18.7954 21.2244 18.4372 21.1154 18.1084H21.12ZM21.4991 29.2815L27.207 47.3356C27.3931 47.9228 28.0901 48.1813 28.6237 47.8616L29.9065 47.0953C30.2856 46.8686 30.4582 46.4128 30.322 45.9979L24.3213 27.8123C24.1056 27.157 23.2701 26.9417 22.7547 27.411L21.7648 28.3111C21.4923 28.5582 21.3902 28.9368 21.4991 29.2837V29.2815ZM17.9641 21.1148L10.474 21.0831C9.94273 21.0831 9.51135 21.5025 9.50908 22.024L9.5 24.3615C9.5 24.8535 9.88143 25.2662 10.3832 25.307L17.8914 25.9123C18.4522 25.9577 18.9313 25.5224 18.9313 24.9691L18.9245 22.058C18.9245 21.5388 18.4954 21.1193 17.9686 21.1171L17.9641 21.1148ZM18.4114 27.606L14.0544 41.1211C13.9636 41.3999 14.0113 41.7038 14.1816 41.9441L14.8582 42.9031C15.3077 43.5425 16.3067 43.4019 16.5587 42.6651L21.145 29.2225C21.2539 28.9074 21.1835 28.5582 20.961 28.3043L20.0552 27.2727C19.5647 26.7149 18.6384 26.9008 18.4114 27.606Z" fill="currentColor"></path></svg><span>Axis</span></span><span class="x">&times;</span><span>LinkedIn</span></div>
+  <div id="date" class="display"><span class="num">16</span><span class="col">Monday<br>November</span></div>
+  <div class="sub where" id="s4w">Launching at LinkedIn London HQ</div>
 </section>
 
 <!-- S5 -->
 <section class="scene" id="s5">
   <h1 class="h1 display">Learn more and request a seat.</h1>
-  <div class="sub" id="s5a">Monday 16 November, LinkedIn London HQ</div>
+  <div class="sub" id="s5a">Free to attend, lunch included. 25 seats.</div>
   <div id="tap">Tap the button below</div>
   <div id="arrows">
     <svg viewBox="0 0 200 90" fill="none" stroke="#6A8FFD" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"><path d="M30 20 L100 70 L170 20"/></svg>
@@ -135,9 +134,9 @@
 <div id="logo"><svg width="52" height="52" viewBox="0 0 48 48" aria-hidden="true"><path d="M24.3394 19.7273L30.2766 2.09935C30.4128 1.69804 30.2584 1.2582 29.9019 1.02014L28.6123 0.163113C28.0811 -0.190578 27.3545 0.0565523 27.1593 0.657375L21.4696 18.0971C21.3606 18.4304 21.4492 18.7954 21.6989 19.0448L22.7388 20.09C23.2428 20.5956 24.1124 20.3984 24.3372 19.7273H24.3394ZM24.7458 26.4678L37.4465 27.3792C38.0005 27.42 38.475 26.9893 38.4773 26.4429L38.5 22.3391C38.5023 21.8199 38.08 21.3982 37.5532 21.3892L24.8185 21.21C24.2827 21.2032 23.8422 21.6295 23.8445 22.1555L23.8536 25.5269C23.8536 26.0212 24.2441 26.4293 24.7436 26.4655L24.7458 26.4678ZM21.12 18.1084L16.5178 4.16255C16.2749 3.42796 15.2873 3.27379 14.8264 3.89955L14.1634 4.79738C13.9863 5.03771 13.9341 5.34832 14.0227 5.63173L18.4295 19.5731C18.6475 20.2623 19.542 20.4664 20.0461 19.9404L20.902 19.0471C21.1427 18.7954 21.2244 18.4372 21.1154 18.1084H21.12ZM21.4991 29.2815L27.207 47.3356C27.3931 47.9228 28.0901 48.1813 28.6237 47.8616L29.9065 47.0953C30.2856 46.8686 30.4582 46.4128 30.322 45.9979L24.3213 27.8123C24.1056 27.157 23.2701 26.9417 22.7547 27.411L21.7648 28.3111C21.4923 28.5582 21.3902 28.9368 21.4991 29.2837V29.2815ZM17.9641 21.1148L10.474 21.0831C9.94273 21.0831 9.51135 21.5025 9.50908 22.024L9.5 24.3615C9.5 24.8535 9.88143 25.2662 10.3832 25.307L17.8914 25.9123C18.4522 25.9577 18.9313 25.5224 18.9313 24.9691L18.9245 22.058C18.9245 21.5388 18.4954 21.1193 17.9686 21.1171L17.9641 21.1148ZM18.4114 27.606L14.0544 41.1211C13.9636 41.3999 14.0113 41.7038 14.1816 41.9441L14.8582 42.9031C15.3077 43.5425 16.3067 43.4019 16.5587 42.6651L21.145 29.2225C21.2539 28.9074 21.1835 28.5582 20.961 28.3043L20.0552 27.2727C19.5647 26.7149 18.6384 26.9008 18.4114 27.606Z" fill="currentColor"></path></svg><span>Axis</span></div>
 
 <script>
-  // One PAUSED timeline exposed as window.tl. Exactly 25 s. Music: 96 bpm (beat 0.625 s, bar 2.5 s); the lift lands at 12.5.
-  // S1 0-6.25 stitching | S2 6.25-12.5 sound familiar | S3 12.5-16.25 Meet Axis | S4 16.25-20 event | S5 20-25 CTA.
-  // Scene changes are hard cuts on the beat; the motion lives inside each scene.
+  // One PAUSED timeline exposed as window.tl. Exactly 30 s. Music: a steady 96 bpm groove (beat 0.625 s, bar 2.5 s),
+  // with a gentle level lift at 15 s. Even pacing throughout: nothing accelerates.
+  // S1 0-7.5 stitching | S2 7.5-15 sound familiar | S3 15-20 Meet Axis | S4 20-25 event | S5 25-30 CTA.
   const tl = gsap.timeline({paused:true, defaults:{ease:'power3.out'}});
   window.tl = tl;
   const B = .625;
@@ -146,57 +145,57 @@
   const NAVY='#0e1034', ALICE='#E7ECF3', WHITE='#ffffff';
   const drift=(sel,start,n)=>tl.to(sel,{y:'+=8',rotation:'+=1.4',duration:1.25,yoyo:true,repeat:n,ease:'sine.inOut'},start);
 
-  // ---- S1 0 to 6.25: the headline is there on frame 0; the tools arrive messily around it ----
-  // [id, rest angle, from x, from y, from angle, land time]
-  [['#k1',-7,0,0,-7,0],['#k2',6,700,-40,20,B],['#k3',-4,-200,1000,-14,2*B],
-   ['#k4',8,800,120,24,3*B],['#k5',5,-760,60,-20,4*B],['#k6',-10,700,-80,-26,5*B]]
+  // ---- S1 0 to 7.5: the headline is there on frame 0; a tool arrives every 1.5 beats ----
+  [['#k1',-7,0,0,-7,0],['#k2',6,700,-40,20,1.5*B],['#k3',-4,-200,1000,-14,3*B],
+   ['#k4',8,800,120,24,4.5*B],['#k5',5,-760,60,-20,6*B],['#k6',-10,700,-80,-26,7.5*B]]
   .forEach(([id,rot,fx,fy,fr,land],i)=>{
-    if(i===0){ tl.fromTo(id,{rotation:-9,scale:1.04},{rotation:rot,scale:1,duration:.5},0); }
-    else { tl.fromTo(id,{x:fx,y:fy,rotation:fr},{x:0,y:0,rotation:rot,duration:.6,ease:'back.out(1.4)'},land-.45); }
-    drift(id,land+.2,3);
+    if(i===0){ tl.fromTo(id,{rotation:-9,scale:1.04},{rotation:rot,scale:1,duration:.6},0); }
+    else { tl.fromTo(id,{x:fx,y:fy,rotation:fr},{x:0,y:0,rotation:rot,duration:.7,ease:'back.out(1.3)'},land-.5); }
+    drift(id,land+.2,4);
   });
-  tl.to('#tmp',{strokeDashoffset:0,duration:1.2,ease:'power1.inOut'},3.25);   // the stitching tangles
-  tl.set('#s1sub',{visibility:'visible'},7*B);                                                          // 4.375, on the beat
-  tl.to(['#k1','#k3','#k5'],{x:-90,rotation:'-=6',duration:.25,ease:'power2.out'},9*B)   // a tug that goes nowhere
-    .to(['#k2','#k4','#k6'],{x:90,rotation:'+=6',duration:.25,ease:'power2.out'},9*B)
-    .to(['#k1','#k2','#k3','#k4','#k5','#k6'],{x:0,duration:.35,ease:'back.out(2)'},9*B+.25);
-  off('#s1',10*B);
+  tl.to('#tmp',{strokeDashoffset:0,duration:1.4,ease:'power1.inOut'},8*B);    // the stitching tangles
+  tl.set('#s1sub',{visibility:'visible'},9*B);
+  tl.to(['#k1','#k3','#k5'],{x:-90,rotation:'-=6',duration:.3,ease:'power2.out'},10.5*B)   // a tug that goes nowhere
+    .to(['#k2','#k4','#k6'],{x:90,rotation:'+=6',duration:.3,ease:'power2.out'},10.5*B)
+    .to(['#k1','#k2','#k3','#k4','#k5','#k6'],{x:0,duration:.4,ease:'back.out(2)'},10.5*B+.3);
+  off('#s1',12*B);
 
-  // ---- S2 6.25 to 12.5: one voice per two beats, angled, from alternating sides; oldest leaves first ----
-  on('#s2',10*B);
-  // [id, side, left, top, rest angle, land]
-  const bubs=[['#b1','l',90,690,-2.5,10*B],['#b2','r',990,935,2,12*B],['#b3','l',90,1180,-2,14*B],
-              ['#b4','r',990,690,2.5,16*B],['#b5','l',90,935,-2,18*B]];
+  // ---- S2 7.5 to 15: one voice every two beats, from alternating sides; the oldest leaves first ----
+  on('#s2',12*B);
+  const bubs=[['#b1','l',90,690,-2.5,12*B],['#b2','r',990,935,2,14*B],['#b3','l',90,1180,-2,16*B],
+              ['#b4','r',990,690,2.5,18*B],['#b5','l',90,935,-2,20*B]];
   bubs.forEach(([id,side,x,y,rot,land],i)=>{
     gsap.set(id, side==='l' ? {left:x,top:y} : {right:1080-x,top:y});
-    if(i===0){ tl.fromTo(id,{x:-120,rotation:-8},{x:0,rotation:rot,duration:.45,ease:'back.out(1.6)'},land); }
-    else { tl.fromTo(id,{x:side==='l'?-900:900,rotation:side==='l'?-16:16},{x:0,rotation:rot,duration:.6,ease:'back.out(1.3)'},land-.45); }
+    if(i===0){ tl.fromTo(id,{x:-120,rotation:-8},{x:0,rotation:rot,duration:.5,ease:'back.out(1.6)'},land); }
+    else { tl.fromTo(id,{x:side==='l'?-900:900,rotation:side==='l'?-16:16},{x:0,rotation:rot,duration:.7,ease:'back.out(1.2)'},land-.5); }
     drift(id+' .in',land+.2,3);
   });
-  tl.to('#b1',{x:-1100,rotation:-18,duration:.4,ease:'power3.in'},16*B-.85)
-    .to('#b2',{x:1100,rotation:18,duration:.4,ease:'power3.in'},18*B-.85);
-  off('#s2',20*B);
+  tl.to('#b1',{x:-1100,rotation:-18,duration:.45,ease:'power3.in'},18*B-.95)
+    .to('#b2',{x:1100,rotation:18,duration:.45,ease:'power3.in'},20*B-.95);
+  off('#s2',24*B);
 
-  // ---- S3 12.5 to 16.25 (light): the reveal, on the music's lift ----
-  ground(ALICE,'#0e1034',20*B); on('#s3',20*B);
-  tl.from('#line',{scaleY:0,duration:1.1,ease:'power1.inOut'},21*B)
-    .from('.step',{x:-30,opacity:0,duration:.35,stagger:.2},21*B)
-    .from('.dot',{scale:0,duration:.28,stagger:.2,ease:'back.out(3)'},21*B);
-  off('#s3sub',20*B); on('#s3sub',20*B+B/2);
-  off('#s3',26*B);
+  // ---- S3 15 to 20 (light): the reveal ----
+  ground(ALICE,'#0e1034',24*B); on('#s3',24*B);
+  off('#s3sub',24*B); on('#s3sub',25*B);
+  tl.from('#line',{scaleY:0,duration:1.6,ease:'power1.inOut'},26*B)
+    .from('.step',{x:-30,opacity:0,duration:.4,stagger:.3},26*B)
+    .from('.dot',{scale:0,duration:.3,stagger:.3,ease:'back.out(3)'},26*B);
+  off('#s3',32*B);
 
-  // ---- S4 16.25 to 20 (navy) ----
-  ground(NAVY,WHITE,26*B); on('#s4',26*B);
-  [['#s4a',27],['#s4b',27],['#s4c',28],['#s4d',29],['#s4e',30]].forEach(([id,b])=>{ off(id,26*B); on(id,b*B); });
-  off('#s4',32*B);
+  // ---- S4 20 to 25 (navy): See Axis live, Axis x LinkedIn, the date ----
+  ground(NAVY,WHITE,32*B); on('#s4',32*B);
+  [['#pair',33],['#date',34],['#s4w',36]].forEach(([id,b])=>{ off(id,32*B); on(id,b*B); });
+  tl.fromTo('#date .num',{yPercent:12},{yPercent:0,duration:.7},34*B)
+    .fromTo('#date .col',{x:-20},{x:0,duration:.6},34*B+.1);
+  off('#s4',40*B);
 
-  // ---- S5 20 to 25: call to action ----
-  on('#s5',32*B);
-  [['#s5a',33],['#tap',34]].forEach(([id,b])=>{ off(id,32*B); on(id,b*B); });
-  tl.from('#arrows svg',{y:-30,opacity:0,duration:.35,stagger:.1},35*B)
-    .to('#arrows svg',{y:44,opacity:.35,duration:.3,stagger:.12,yoyo:true,repeat:7,ease:'sine.inOut'},36*B);
+  // ---- S5 25 to 30: call to action ----
+  on('#s5',40*B);
+  [['#s5a',41],['#tap',42.5]].forEach(([id,b])=>{ off(id,40*B); on(id,b*B); });
+  tl.from('#arrows svg',{y:-30,opacity:0,duration:.4,stagger:.12},43*B)
+    .to('#arrows svg',{y:44,opacity:.35,duration:.3,stagger:.12,yoyo:true,repeat:5,ease:'sine.inOut'},44*B);
 
-  tl.to({},{duration:0.001},25);
+  tl.to({},{duration:0.001},30);
 </script>
 </body>
 </html>
