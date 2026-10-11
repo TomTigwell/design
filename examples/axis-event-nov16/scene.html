@@ -6,6 +6,7 @@
 <meta name="fmf-size" content="1080x1920">
 <!-- Fonts (ABC Arizona Flare, DM Sans) are injected by render.mjs from the private brand folder. -->
 <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/CustomEase.min.js"></script>
 <style>
   /* 1080x1920. Essential content in the platform safe area x 112-870, y 300-1360 (inside a centred 4:5 crop too).
      Design plan (frontend-design pass): one H1 size for every scene (Arizona Flare 142px, top-left, frame-0 visible),
@@ -38,16 +39,32 @@
   .bub .in{padding:22px 32px 26px;border-radius:34px;border-bottom-left-radius:6px;background:var(--white);color:var(--navy);max-width:780px}
   .bub .who{font-size:25px;font-weight:600;margin-bottom:8px;color:#4a5bd0}
   .bub .q{font-size:52px;line-height:1.1}
+  #typ{position:absolute;visibility:hidden}
+  #typ .in{padding:30px 34px;border-radius:34px;border-bottom-left-radius:6px;background:var(--white);display:flex;gap:12px}
+  .td{width:18px;height:18px;border-radius:50%;background:#9aa3b8;display:block}
+  #badge{position:absolute;left:640px;top:752px;width:76px;height:76px;border-radius:50%;background:var(--corn);color:var(--navy);font-size:40px;font-weight:700;visibility:hidden}
+  .bn{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;visibility:hidden}
 
   /* S3: Axis (light) */
   #s3{color:var(--navy)}
   #s3 .sub{top:500px;opacity:.85}
-  #steps{position:absolute;left:112px;top:740px;width:758px;height:520px}
-  #line{position:absolute;left:19px;top:20px;width:6px;height:416px;background:var(--soft);border-radius:3px;transform-origin:top}
-  .step{position:absolute;left:0;display:flex;align-items:center;gap:34px;font-size:46px;font-weight:500;white-space:nowrap}
-  .dot{width:44px;height:44px;border-radius:50%;background:var(--alice);border:6px solid var(--corn);flex:none}
-  .step.live .dot{background:var(--corn)}
-  .step.live span.t{background:var(--navy);color:var(--white);padding:6px 22px;border-radius:100px;font-weight:700}
+  #s3h,#s3sub{visibility:hidden}
+  #morph{position:absolute;left:0;top:0;width:1080px;height:1920px;z-index:1}
+  #fill{position:absolute;left:147px;top:740px;width:6px;height:480px;background:var(--corn);border-radius:3px;transform-origin:top;transform:scaleY(0);z-index:2}
+  .nd{position:absolute;left:132px;width:36px;height:36px;border-radius:50%;background:var(--alice);border:6px solid var(--soft);z-index:3;visibility:hidden}
+  #card{position:absolute;left:230px;top:720px;width:700px;background:#fff;border:2px solid #d3dbea;border-radius:26px;padding:26px 28px;color:var(--navy);visibility:hidden}
+  .ch{display:flex;align-items:center;gap:16px}
+  .cav{width:58px;height:58px;border-radius:50%;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;flex:none}
+  .cav svg{width:36px;height:36px;display:block}
+  .cn{font-size:30px;font-weight:700;line-height:1.1} .cp{font-size:22px;color:#5b6478}
+  #pills{margin-left:auto;position:relative;height:48px;width:290px}
+  .pill{position:absolute;right:0;top:0;font-size:24px;font-weight:700;padding:9px 20px;border-radius:100px;white-space:nowrap;visibility:hidden}
+  .p1{background:#e4e8f1;color:var(--navy)} .p2{background:#dfe6ff;color:#2c3a8f} .p3{background:var(--navy);color:#fff} .p4{background:var(--corn);color:var(--navy)}
+  .ci{font-size:32px;line-height:1.3;margin:18px 0}
+  .cimg{height:210px;border-radius:16px;background:var(--navy);color:#fff;display:flex;align-items:flex-end;padding:24px 28px;font-size:60px}
+  .cf{display:flex;align-items:center;justify-content:space-between;margin-top:18px}
+  .cu{font-size:24px;color:#5b6478} .cb{font-size:24px;font-weight:700;border:2px solid var(--navy);border-radius:100px;padding:8px 22px}
+  #done{position:absolute;left:230px;top:1290px;width:700px;font-size:40px;font-weight:600;line-height:1.25;visibility:hidden}
 
   /* S4: event */
   #pair{position:absolute;left:112px;top:500px;display:flex;align-items:center;gap:22px;font-size:46px;font-weight:700}
@@ -88,6 +105,8 @@
 <!-- S2 -->
 <section class="scene" id="s2">
   <h1 class="h1 display">These probably sound familiar.</h1>
+  <div id="badge"><span class="bn" id="n1">1</span><span class="bn" id="n2">2</span><span class="bn" id="n3">3</span><span class="bn" id="n4">4</span><span class="bn" id="n5">5</span></div>
+  <div id="typ"><div class="in"><span class="td"></span><span class="td"></span><span class="td"></span></div></div>
   <div class="bub" id="b1"><span class="av a">F</span><div class="in"><div class="who">Finance</div><div class="q display">Why did we spend £4,200 if it wasn't approved?</div></div></div>
   <div class="bub" id="b2"><span class="av b">L</span><div class="in"><div class="who">Leadership</div><div class="q display">What's the overarching plan?</div></div></div>
   <div class="bub" id="b3"><span class="av c">S</span><div class="in"><div class="who">Sales</div><div class="q display">Why are we running these ads?</div></div></div>
@@ -97,16 +116,18 @@
 
 <!-- S3 -->
 <section class="scene" id="s3">
-  <h1 class="h1 display">Meet Axis.</h1>
+  <svg id="morph" viewBox="0 0 1080 1920"><path id="mp2" d="M240 1086 C430 980 700 1260 800 1066 C890 880 330 1340 490 1216 C630 1110 1050 1090 910 1206 C790 1340 430 1090 240 1386 C110 1470 690 1460 800 1346 C710 1200 170 1240 330 1080" style="stroke:#6A8FFD;stroke-dasharray:16 12" stroke-width="6" fill="none" stroke-linecap="round"/></svg>
+  <h1 class="h1 display" id="s3h">Meet Axis.</h1>
   <div class="sub" id="s3sub">The companion that keeps strategy, builds and approvals in one place.</div>
-  <div id="steps">
-    <div id="line"></div>
-    <div class="step" style="top:0"><span class="dot"></span><span class="t">Strategy</span></div>
-    <div class="step" style="top:104px"><span class="dot"></span><span class="t">Ad concepts</span></div>
-    <div class="step" style="top:208px"><span class="dot"></span><span class="t">Copy and assets</span></div>
-    <div class="step" style="top:312px"><span class="dot"></span><span class="t">Feedback and approvals</span></div>
-    <div class="step live" style="top:416px"><span class="dot"></span><span class="t">Live in one click</span></div>
+  <div id="fill"></div><span class="nd" id="d1" style="top:722px"></span><span class="nd" id="d2" style="top:882px"></span><span class="nd" id="d3" style="top:1042px"></span><span class="nd" id="d4" style="top:1202px"></span>
+  <div id="card">
+    <div class="ch"><span class="cav"><svg width="52" height="52" viewBox="0 0 48 48" aria-hidden="true"><path d="M24.3394 19.7273L30.2766 2.09935C30.4128 1.69804 30.2584 1.2582 29.9019 1.02014L28.6123 0.163113C28.0811 -0.190578 27.3545 0.0565523 27.1593 0.657375L21.4696 18.0971C21.3606 18.4304 21.4492 18.7954 21.6989 19.0448L22.7388 20.09C23.2428 20.5956 24.1124 20.3984 24.3372 19.7273H24.3394ZM24.7458 26.4678L37.4465 27.3792C38.0005 27.42 38.475 26.9893 38.4773 26.4429L38.5 22.3391C38.5023 21.8199 38.08 21.3982 37.5532 21.3892L24.8185 21.21C24.2827 21.2032 23.8422 21.6295 23.8445 22.1555L23.8536 25.5269C23.8536 26.0212 24.2441 26.4293 24.7436 26.4655L24.7458 26.4678ZM21.12 18.1084L16.5178 4.16255C16.2749 3.42796 15.2873 3.27379 14.8264 3.89955L14.1634 4.79738C13.9863 5.03771 13.9341 5.34832 14.0227 5.63173L18.4295 19.5731C18.6475 20.2623 19.542 20.4664 20.0461 19.9404L20.902 19.0471C21.1427 18.7954 21.2244 18.4372 21.1154 18.1084H21.12ZM21.4991 29.2815L27.207 47.3356C27.3931 47.9228 28.0901 48.1813 28.6237 47.8616L29.9065 47.0953C30.2856 46.8686 30.4582 46.4128 30.322 45.9979L24.3213 27.8123C24.1056 27.157 23.2701 26.9417 22.7547 27.411L21.7648 28.3111C21.4923 28.5582 21.3902 28.9368 21.4991 29.2837V29.2815ZM17.9641 21.1148L10.474 21.0831C9.94273 21.0831 9.51135 21.5025 9.50908 22.024L9.5 24.3615C9.5 24.8535 9.88143 25.2662 10.3832 25.307L17.8914 25.9123C18.4522 25.9577 18.9313 25.5224 18.9313 24.9691L18.9245 22.058C18.9245 21.5388 18.4954 21.1193 17.9686 21.1171L17.9641 21.1148ZM18.4114 27.606L14.0544 41.1211C13.9636 41.3999 14.0113 41.7038 14.1816 41.9441L14.8582 42.9031C15.3077 43.5425 16.3067 43.4019 16.5587 42.6651L21.145 29.2225C21.2539 28.9074 21.1835 28.5582 20.961 28.3043L20.0552 27.2727C19.5647 26.7149 18.6384 26.9008 18.4114 27.606Z" fill="currentColor"></path></svg></span><div><div class="cn">Axis</div><div class="cp">Promoted</div></div>
+      <div id="pills"><span class="pill p1" id="p1">Draft</span><span class="pill p2" id="p2">Ready for review</span><span class="pill p3" id="p3">&#10003; Approved</span><span class="pill p4" id="p4">Live on LinkedIn</span></div></div>
+    <div class="ci">LinkedIn Ads, planned and approved together.</div>
+    <div class="cimg display">Strategy to live ad.</div>
+    <div class="cf"><span class="cu">Axis by Fill My Funnel</span><span class="cb">Learn more</span></div>
   </div>
+  <div id="done">Published to LinkedIn. Nothing rebuilt.</div>
 </section>
 
 <!-- S4 -->
@@ -132,52 +153,82 @@
 <div id="logo"><svg width="52" height="52" viewBox="0 0 48 48" aria-hidden="true"><path d="M24.3394 19.7273L30.2766 2.09935C30.4128 1.69804 30.2584 1.2582 29.9019 1.02014L28.6123 0.163113C28.0811 -0.190578 27.3545 0.0565523 27.1593 0.657375L21.4696 18.0971C21.3606 18.4304 21.4492 18.7954 21.6989 19.0448L22.7388 20.09C23.2428 20.5956 24.1124 20.3984 24.3372 19.7273H24.3394ZM24.7458 26.4678L37.4465 27.3792C38.0005 27.42 38.475 26.9893 38.4773 26.4429L38.5 22.3391C38.5023 21.8199 38.08 21.3982 37.5532 21.3892L24.8185 21.21C24.2827 21.2032 23.8422 21.6295 23.8445 22.1555L23.8536 25.5269C23.8536 26.0212 24.2441 26.4293 24.7436 26.4655L24.7458 26.4678ZM21.12 18.1084L16.5178 4.16255C16.2749 3.42796 15.2873 3.27379 14.8264 3.89955L14.1634 4.79738C13.9863 5.03771 13.9341 5.34832 14.0227 5.63173L18.4295 19.5731C18.6475 20.2623 19.542 20.4664 20.0461 19.9404L20.902 19.0471C21.1427 18.7954 21.2244 18.4372 21.1154 18.1084H21.12ZM21.4991 29.2815L27.207 47.3356C27.3931 47.9228 28.0901 48.1813 28.6237 47.8616L29.9065 47.0953C30.2856 46.8686 30.4582 46.4128 30.322 45.9979L24.3213 27.8123C24.1056 27.157 23.2701 26.9417 22.7547 27.411L21.7648 28.3111C21.4923 28.5582 21.3902 28.9368 21.4991 29.2837V29.2815ZM17.9641 21.1148L10.474 21.0831C9.94273 21.0831 9.51135 21.5025 9.50908 22.024L9.5 24.3615C9.5 24.8535 9.88143 25.2662 10.3832 25.307L17.8914 25.9123C18.4522 25.9577 18.9313 25.5224 18.9313 24.9691L18.9245 22.058C18.9245 21.5388 18.4954 21.1193 17.9686 21.1171L17.9641 21.1148ZM18.4114 27.606L14.0544 41.1211C13.9636 41.3999 14.0113 41.7038 14.1816 41.9441L14.8582 42.9031C15.3077 43.5425 16.3067 43.4019 16.5587 42.6651L21.145 29.2225C21.2539 28.9074 21.1835 28.5582 20.961 28.3043L20.0552 27.2727C19.5647 26.7149 18.6384 26.9008 18.4114 27.606Z" fill="currentColor"></path></svg><span>Axis</span></div>
 
 <script>
-  // One PAUSED timeline exposed as window.tl. Exactly 30 s. Music: a steady 96 bpm groove (beat 0.625 s), gentle lift at 15.625 s.
-  // S1 0-9.375 stitching | S2 9.375-15.625 familiar | S3 15.625-21.875 Meet Axis | S4 21.875-26.25 event | S5 26.25-30 CTA.
-  const tl = gsap.timeline({paused:true, defaults:{ease:'power3.out'}});
+  // One PAUSED timeline exposed as window.tl. Exactly 30 s, and it loops cleanly back to frame 0.
+  // Music: steady 96 bpm groove (beat 0.625 s), gentle lift at 14.375 s.
+  // S1 0-7.5 stitching | S2 7.5-14.375 familiar | S3 14.375-21.875 Meet Axis | S4 21.875-26.25 event | S5 26.25-30 CTA + loop.
+  gsap.registerPlugin(CustomEase);
+  // Axis signature motion: one family of curves for every designed move
+  CustomEase.create('axis',       'M0,0 C0.16,0.84 0.3,1 1,1');                               // settle
+  CustomEase.create('axisSpring', 'M0,0 C0.14,0.9 0.24,1.12 0.42,1.04 0.6,0.98 0.78,1 1,1');  // arrive with a small overshoot
+  CustomEase.create('axisIn',     'M0,0 C0.55,0 0.85,0.4 1,1');                                // leave
+  CustomEase.create('axisInOut',  'M0,0 C0.62,0 0.18,1 1,1');                                  // transform
+  const tl = gsap.timeline({paused:true, defaults:{ease:'axis'}});
   window.tl = tl;
   const B = .625;
   const on=(s,t)=>tl.set(s,{autoAlpha:1},t), off=(s,t)=>tl.set(s,{autoAlpha:0},t);
+  const vis=(s,t,v=true)=>tl.set(s,{visibility:v?'visible':'hidden'},t);
   const ground=(bg,fg,t)=>tl.set('#bg',{backgroundColor:bg},t).set('#logo',{color:fg},t);
-  const NAVY='#0e1034', ALICE='#E7ECF3', WHITE='#ffffff', CORN='#6A8FFD';
+  const NAVY='#0e1034', ALICE='#E7ECF3', WHITE='#ffffff', CORN='#6A8FFD', INK2='#1d2060', EDGE='rgba(255, 255, 255, 0.26)';
   const drift=(sel,start,n)=>tl.to(sel,{y:'+=8',rotation:'+=1.4',duration:1.25,yoyo:true,repeat:n,ease:'sine.inOut'},start);
 
-  // ---- S1 0 to 9.375: tools arrive, then a thread animates through them, lighting each one; the joined-up picture holds ----
-  [['#k1',-7,0,0,-7,0],['#k2',6,700,-40,20,1.5*B],['#k3',-4,-200,1000,-14,3*B],
-   ['#k4',8,800,120,24,4.5*B],['#k5',5,-760,60,-20,6*B],['#k6',-10,700,-80,-26,7.5*B]]
-  .forEach(([id,rot,fx,fy,fr,land],i)=>{
-    if(i===0){ tl.fromTo(id,{rotation:-9,scale:1.04},{rotation:rot,scale:1,duration:.6},0); }
-    else { tl.fromTo(id,{x:fx,y:fy,rotation:fr},{x:0,y:0,rotation:rot,duration:.7,ease:'back.out(1.3)'},land-.5); }
+  // ---- S1 0 to 7.5: frame 0 already shows the mess; the thread joins the blocks; the joined-up picture holds ----
+  // [id, rest angle, frame-0 x, y, angle, land]. k1 and k3 are on screen at frame 0, k2 is mid-flight.
+  const S1 = [['#k1',-7,0,0,-9,.6],['#k3',-4,0,0,-6,.6],['#k2',6,260,-20,14,.45],
+              ['#k4',8,800,120,24,1.0],['#k5',5,-760,60,-20,1.6],['#k6',-10,700,-80,-26,2.2]];
+  S1.forEach(([id,rot,fx,fy,fr,land],i)=>{
+    const d = i<2 ? .6 : (i===2 ? .45 : .7);
+    tl.fromTo(id,{x:fx,y:fy,rotation:fr},{x:0,y:0,rotation:rot,duration:d,ease:i<2?'axis':'axisSpring'},Math.max(0,land-d));
     drift(id,land+.2,5);
   });
-  const T0 = 8*B, TD = 2.4;                        // thread draws 5.0 to 7.4 s
+  const T0 = 5*B, TD = 2.4;                        // the thread draws from 3.125 to 5.525 s
   tl.to('#tmp',{strokeDashoffset:0,duration:TD,ease:'none'},T0);
-  // light each block as the thread reaches it (path order: k1, k2, k3, k6, k5, k4)
-  ['#k1','#k2','#k3','#k6','#k5','#k4'].forEach((id,i)=>{
+  ['#k1','#k2','#k3','#k6','#k5','#k4'].forEach((id,i)=>{     // path order
     tl.to(id,{borderColor:CORN,backgroundColor:'#262a78',duration:.25},T0+i*(TD/6)+.05);
   });
-  tl.set('#s1sub',{visibility:'visible'},12*B);     // 7.5 s, then the connected picture holds to 9.375
-  off('#s1',15*B);
+  vis('#s1sub',9*B);                                // 5.625 s; the connected picture then holds to 7.5
+  off('#s1',12*B);
 
-  // ---- S2 9.375 to 15.625: inbound messages, one every two beats; the oldest leaves first ----
-  on('#s2',15*B);
-  const bubs=[['#b1',90,950,-2.5,15*B],['#b2',130,1190,2,17*B],['#b3',90,1430,-2,19*B],
-              ['#b4',130,950,2.5,21*B],['#b5',90,1190,-2,23*B]];
+  // ---- S2 7.5 to 14.375: inbound messages, each preceded by typing dots; the unread count ticks up ----
+  on('#s2',12*B); vis('#badge',13*B);
+  const bubs=[['#b1',90,950,-2.5,13*B],['#b2',130,1190,2,15*B],['#b3',90,1430,-2,17*B],
+              ['#b4',130,950,2.5,19*B],['#b5',90,1190,-2,21*B]];
   bubs.forEach(([id,x,y,rot,land],i)=>{
     gsap.set(id,{left:x,top:y});
-    tl.fromTo(id,{x:-1050,rotation:i%2?-14:-20},{x:0,rotation:rot,duration:.75,ease:'back.out(1.2)'},land-.55);
-    drift(id+' .in',land+.2,3);
+    tl.set('#typ',{left:x+84,top:y+40,visibility:'visible',scale:.6,transformOrigin:'0% 100%'},land-.6)
+      .to('#typ',{scale:1,duration:.25,ease:'axisSpring'},land-.6)
+      .fromTo('#typ .td',{y:0},{y:-10,duration:.12,stagger:.07,yoyo:true,repeat:3,ease:'sine.inOut'},land-.55)
+      .set('#typ',{visibility:'hidden'},land)
+      .fromTo(id,{autoAlpha:0,scale:.82,rotation:rot-5,transformOrigin:'0% 100%'},
+                 {autoAlpha:1,scale:1,rotation:rot,duration:.5,ease:'axisSpring'},land);
+    vis('#n'+(i+1),land); if(i) vis('#n'+i,land,false);
+    tl.fromTo('#badge',{scale:1.25},{scale:1,duration:.35,ease:'axisSpring'},land);
+    drift(id+' .in',land+.3,3);
   });
-  tl.to('#b1',{x:-1150,rotation:-18,duration:.45,ease:'power3.in'},21*B-1.0)
-    .to('#b2',{x:-1150,rotation:-18,duration:.45,ease:'power3.in'},23*B-1.0);
-  off('#s2',25*B);
+  tl.to('#b1',{x:-1150,rotation:-18,duration:.4,ease:'axisIn'},19*B-1.25)
+    .to('#b2',{x:-1150,rotation:-18,duration:.4,ease:'axisIn'},21*B-1.25);
+  off('#s2',23*B);
 
-  // ---- S3 15.625 to 21.875 (light): Meet Axis, revealed slowly and held ----
-  ground(ALICE,'#0e1034',25*B); on('#s3',25*B);
-  off('#s3sub',25*B); on('#s3sub',26*B);
-  tl.from('#line',{scaleY:0,duration:2.3,ease:'power1.inOut'},27*B)
-    .from('.step',{x:-30,opacity:0,duration:.5,stagger:.45},27*B)
-    .from('.dot',{scale:0,duration:.35,stagger:.45,ease:'back.out(3)'},27*B);
+  // ---- S3 14.375 to 21.875: the tangle pulls taut into the Axis line, and an ad moves along it ----
+  const A = 23*B;
+  on('#s3',A);
+  // straight target with the same command structure as the tangle (1 M + 6 C segments = 19 points)
+  const pts=[]; for(let k=0;k<19;k++){ pts.push('150 '+(740+480*k/18).toFixed(1)); }
+  const STRAIGHT='M'+pts[0]+' '+[0,1,2,3,4,5].map(j=>'C'+pts[1+3*j]+' '+pts[2+3*j]+' '+pts[3+3*j]).join(' ');
+  tl.to('#mp2',{attr:{d:STRAIGHT},strokeDasharray:'16 0',stroke:'#93A9F6',duration:1.2,ease:'axisInOut'},A+.1)
+    .to('#bg',{backgroundColor:ALICE,duration:.4,ease:'axisInOut'},A+.75)
+    .to('#logo',{color:NAVY,duration:.4,ease:'axisInOut'},A+.75);
+  vis('#s3h',A+1.5*B); vis('#s3sub',A+2.5*B);
+  ['#card','#d1','#d2','#d3','#d4'].forEach(id=>vis(id,A+3*B));
+  tl.fromTo('#card',{scale:.94,y:24},{scale:1,y:0,duration:.6,ease:'axisSpring'},A+3*B)
+    .fromTo('.nd',{scale:0},{scale:1,duration:.35,stagger:.08,ease:'axisSpring'},A+3*B);
+  [['#p1','#d1',0,3],['#p2','#d2',1/3,5],['#p3','#d3',2/3,7],['#p4','#d4',1,9]].forEach(([p,d,f,b],i)=>{
+    const t=A+b*B;
+    vis(p,t); if(i) vis(['#p1','#p2','#p3'][i-1],t,false);
+    tl.fromTo(p,{scale:1.18},{scale:1,duration:.35,ease:'axisSpring'},t)
+      .to(d,{backgroundColor:CORN,borderColor:CORN,duration:.25},t)
+      .to('#fill',{scaleY:f,duration:.5,ease:'axisInOut'},Math.max(A,t-.05));
+  });
+  vis('#done',A+10*B);
   off('#s3',35*B);
 
   // ---- S4 21.875 to 26.25 (navy): See Axis live, Axis x LinkedIn, the date ----
@@ -187,11 +238,18 @@
     .fromTo('#date .col',{x:-20},{x:0,duration:.6},37*B+.1);
   off('#s4',42*B);
 
-  // ---- S5 26.25 to 30: call to action ----
+  // ---- S5 26.25 to 30: call to action, then dissolve back into frame 0 so the loop is seamless ----
   on('#s5',42*B);
   [['#s5a',43],['#tap',44]].forEach(([id,b])=>{ off(id,42*B); on(id,b*B); });
   tl.from('#arrows svg',{y:-30,opacity:0,duration:.4,stagger:.12},44.5*B)
     .to('#arrows svg',{y:44,opacity:.35,duration:.3,stagger:.12,yoyo:true,repeat:3,ease:'sine.inOut'},45*B);
+  const L = 29.3;                                   // reset S1 to its exact frame-0 state, then cross-fade into it
+  S1.forEach(([id,rot,fx,fy,fr])=>tl.set(id,{x:fx,y:fy,rotation:fr,borderColor:EDGE,backgroundColor:INK2},L));
+  tl.set('#tmp',{strokeDashoffset:1},L);
+  vis('#s1sub',L,false);
+  tl.set('#s1',{autoAlpha:0},L)                    // dip through navy: CTA out, then frame 0 in
+    .to('#s5',{autoAlpha:0,duration:.3,ease:'none'},L)
+    .to('#s1',{autoAlpha:1,duration:.35,ease:'none'},L+.32);
 
   tl.to({},{duration:0.001},30);
 </script>

@@ -81,6 +81,13 @@ Their examples assume a live page: in scenes, keep to the one-timeline contract 
 - Avoid the generated-design tells: ALL-CAPS tracked labels (use sentence case), one word in a headline picked out in another
   colour (keep headlines one colour; cornflower is for graphics), identical rounded cards, gradient washes and glow orbs,
   a fade-and-slide-up on every element. Spend boldness on one thing per scene; cut between scenes hard, on the beat.
+- **Signature motion:** register CustomEase and use the Axis family (`axis` settle, `axisSpring` small overshoot, `axisIn`
+  leave, `axisInOut` transform) for every designed move; keep `sine.inOut` only for ambient drift. See the Axis event scene.
+- **Match cuts:** carry one graphic across a cut and transform it (the tangle's path tweens into the straight progress
+  line via `attr:{d}`; both paths need the same command structure). Show product states on a real-looking card rather than
+  a bullet list.
+- **Seamless loop:** LinkedIn loops video. In the last 0.7 s, reset the opening elements to their exact frame-0 values and
+  dip through the background colour into them, so the final frame equals frame 0.
 - Gotcha: a `tl.set()` at exactly t=0 is skipped when the renderer seeks to 0. Hide later-revealed elements in CSS and
   reveal them with a set at their beat.
 
