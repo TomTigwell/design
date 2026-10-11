@@ -7,6 +7,7 @@
 <!-- Fonts (ABC Arizona Flare, DM Sans) are injected by render.mjs from the private brand folder. -->
 <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/CustomEase.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/MotionPathPlugin.min.js"></script>
 <style>
   /* 1080x1920. Essential content in the platform safe area x 112-870, y 300-1360 (inside a centred 4:5 crop too).
      Design plan (frontend-design pass): one H1 size for every scene (Arizona Flare 142px, top-left, frame-0 visible),
@@ -18,9 +19,9 @@
   .display{font-family:'ABC Arizona Flare',Georgia,serif;font-weight:400;letter-spacing:-.02em}
   #bg{position:absolute;inset:0;background:var(--navy)}
   /* 4:5 organic: the 1080x1920 stage is scaled to 0.793 and centred; backgrounds stay full-bleed, logo sits outside the stage */
-  #stage{position:absolute;left:0;top:0;width:1080px;height:1920px;transform-origin:0 0;transform:translate(111.8px,-194px) scale(.793)}
-  .h1{position:absolute;left:112px;top:300px;width:770px;font-size:142px;line-height:.98}
-  .sub{position:absolute;left:112px;width:758px;font-size:40px;line-height:1.3;font-weight:500}
+  #stage{position:absolute;left:0;top:0;width:1080px;height:1920px;transform-origin:0 0;transform:translate(111.8px,-176px) scale(.793)}
+  .h1{position:absolute;left:40px;top:300px;width:1000px;text-align:center;font-size:142px;line-height:.98}
+  .sub{position:absolute;left:40px;width:1000px;text-align:center;font-size:40px;line-height:1.3;font-weight:500}
   .scene{position:absolute;inset:0;opacity:0;visibility:hidden}
   #logo{position:absolute;left:0;right:0;top:1218px;display:flex;justify-content:center;align-items:center;gap:14px;font-size:46px;font-weight:600;color:var(--white);z-index:9}
   #logo svg{display:block;width:60px;height:60px}
@@ -44,7 +45,7 @@
   #typ{position:absolute;visibility:hidden}
   #typ .in{padding:30px 34px;border-radius:34px;border-bottom-left-radius:6px;background:var(--white);display:flex;gap:12px}
   .td{width:18px;height:18px;border-radius:50%;background:#9aa3b8;display:block}
-  #badge{position:absolute;left:640px;top:752px;width:76px;height:76px;border-radius:50%;background:var(--corn);color:var(--navy);font-size:40px;font-weight:700;visibility:hidden}
+  #badge{position:relative;display:inline-block;vertical-align:middle;margin-left:22px;top:-10px;width:76px;height:76px;border-radius:50%;background:var(--corn);color:var(--navy);font-family:'DM Sans',sans-serif;font-size:40px;font-weight:700;letter-spacing:0;visibility:hidden}
   .bn{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;visibility:hidden}
 
   /* S3: Axis (light) */
@@ -52,9 +53,9 @@
   #s3 .sub{top:500px;opacity:.85}
   #s3h,#s3sub{visibility:hidden}
   #morph{position:absolute;left:0;top:0;width:1080px;height:1920px;z-index:1}
-  #fill{position:absolute;left:147px;top:740px;width:6px;height:480px;background:var(--corn);border-radius:3px;transform-origin:top;transform:scaleY(0);z-index:2}
-  .nd{position:absolute;left:132px;width:36px;height:36px;border-radius:50%;background:var(--alice);border:6px solid var(--soft);z-index:3;visibility:hidden}
-  #card{position:absolute;left:230px;top:720px;width:700px;background:#fff;border:2px solid #d3dbea;border-radius:26px;padding:26px 28px;color:var(--navy);visibility:hidden}
+  #fill{position:absolute;left:107px;top:740px;width:6px;height:480px;background:var(--corn);border-radius:3px;transform-origin:top;transform:scaleY(0);z-index:2}
+  .nd{position:absolute;left:92px;width:36px;height:36px;border-radius:50%;background:var(--alice);border:6px solid var(--soft);z-index:3;visibility:hidden}
+  #card{position:absolute;left:190px;top:720px;width:700px;background:#fff;border:2px solid #d3dbea;border-radius:26px;padding:26px 28px;color:var(--navy);visibility:hidden}
   .ch{display:flex;align-items:center;gap:16px}
   .cav{width:58px;height:58px;border-radius:50%;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;flex:none}
   .cav svg{width:36px;height:36px;display:block}
@@ -66,7 +67,7 @@
   .cimg{height:210px;border-radius:16px;background:var(--navy);color:#fff;display:flex;align-items:flex-end;padding:24px 28px;font-size:60px}
   .cf{display:flex;align-items:center;justify-content:space-between;margin-top:18px}
   .cu{font-size:24px;color:#5b6478} .cb{font-size:24px;font-weight:700;border:2px solid var(--navy);border-radius:100px;padding:8px 22px}
-  #done{position:absolute;left:230px;top:1290px;width:700px;font-size:40px;font-weight:600;line-height:1.25;visibility:hidden}
+  #done{position:absolute;left:190px;top:1290px;width:700px;text-align:center;font-size:40px;font-weight:600;line-height:1.25;visibility:hidden}
 
   /* S4: event */
   #pair{position:absolute;left:112px;top:500px;display:flex;align-items:center;gap:22px;font-size:46px;font-weight:700}
@@ -84,6 +85,18 @@
   #url{position:absolute;left:112px;top:990px;font-size:66px;font-weight:700;color:var(--white);white-space:nowrap}
   #uline{position:absolute;left:112px;top:1080px;width:800px;height:7px;border-radius:4px;background:var(--corn);transform-origin:left;transform:scaleX(0)}
   #inpost{position:absolute;left:112px;top:1130px;font-size:36px;font-weight:600;color:var(--soft)}
+  /* Final scene: See Axis live + call to action in one */
+  #fsub{top:478px;font-size:46px;opacity:.9;visibility:hidden}
+  #fchev{position:absolute;left:470px;top:566px;width:140px;height:64px;visibility:hidden}
+  #fcard{position:absolute;left:140px;top:660px;width:800px;padding:46px 40px 50px;border:3px solid rgba(147,169,246,.5);border-radius:36px;background:#15184c;display:flex;flex-direction:column;align-items:center;text-align:center;visibility:hidden}
+  #fpair{display:flex;align-items:center;gap:16px;font-size:40px;font-weight:700}
+  #fpair .ax{display:flex;align-items:center;gap:10px} #fpair .ax svg{width:46px;height:46px;display:block} #fpair .x{color:var(--corn);font-weight:400}
+  #fdate{display:flex;align-items:center;gap:30px;margin-top:22px}
+  #fdate .num{font-size:300px;line-height:.86;color:var(--corn)} #fdate .col{font-size:70px;line-height:1.1;text-align:left}
+  #fwhere{font-size:40px;font-weight:500;margin-top:16px;opacity:.9}
+  #furl{font-size:58px;font-weight:700;margin-top:40px}
+  #fuline{width:660px;height:6px;border-radius:3px;background:var(--corn);transform-origin:left;transform:scaleX(0);margin-top:8px}
+  #fseats{font-size:32px;margin-top:22px;color:var(--soft)}
 </style>
 </head>
 <body>
@@ -95,21 +108,22 @@
   <h1 class="h1 display">Still stitching LinkedIn campaigns together?</h1>
   <div class="sub" id="s1sub">Five tools. Ten threads. No shared plan.</div>
   <svg id="tangle" viewBox="0 0 1080 1920">
-    <defs><mask id="tm"><path id="tmp" d="M255 1027 C420 960 600 1110 750 1057 C700 1150 400 1140 295 1227 C460 1180 600 1320 745 1277 C690 1370 380 1350 235 1437 C400 1390 600 1520 765 1467 C820 1450 870 1500 900 1540" stroke="#fff" stroke-width="16" fill="none" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/></mask></defs>
-    <path d="M255 1027 C420 960 600 1110 750 1057 C700 1150 400 1140 295 1227 C460 1180 600 1320 745 1277 C690 1370 380 1350 235 1437 C400 1390 600 1520 765 1467 C820 1450 870 1500 900 1540" stroke="#6A8FFD" stroke-width="6" fill="none" stroke-linecap="round" stroke-dasharray="16 12" mask="url(#tm)"/>
+    <defs><mask id="tm"><path id="tmp" d="M255 1027 C420 960 600 1110 750 1057 C700 1150 360 1140 245 1227 C330 1215 380 1250 452 1245 C530 1193 582 1232 549 1277 C516 1323 438 1290 464 1245 C490 1199 568 1212 575 1260 C582 1310 497 1316 484 1271 C471 1229 536 1216 556 1242 C640 1300 720 1290 825 1277 C760 1370 380 1350 235 1437 C330 1420 400 1460 430 1470 C460 1440 470 1480 440 1490 C420 1500 470 1520 500 1490 C560 1450 680 1500 765 1467 C820 1450 870 1500 900 1540" stroke="#fff" stroke-width="16" fill="none" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/></mask></defs>
+    <path d="M255 1027 C420 960 600 1110 750 1057 C700 1150 360 1140 245 1227 C330 1215 380 1250 452 1245 C530 1193 582 1232 549 1277 C516 1323 438 1290 464 1245 C490 1199 568 1212 575 1260 C582 1310 497 1316 484 1271 C471 1229 536 1216 556 1242 C640 1300 720 1290 825 1277 C760 1370 380 1350 235 1437 C330 1420 400 1460 430 1470 C460 1440 470 1480 440 1490 C420 1500 470 1520 500 1490 C560 1450 680 1500 765 1467 C820 1450 870 1500 900 1540" id="thr" stroke="#93A9F6" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round" mask="url(#tm)"/>
+    <path id="toknot" d="M255 1027 C420 960 600 1110 750 1057 C700 1150 360 1140 245 1227 C330 1215 380 1250 452 1245 C530 1193 582 1232 549 1277 C516 1323 438 1290 464 1245" fill="none" stroke="none"/>
+    <g id="pk"><circle class="pkt" id="pk1" r="11" fill="#ffffff" opacity="0"/><circle class="pkt" id="pk2" r="11" fill="#ffffff" opacity="0"/><circle class="pkt" id="pk3" r="11" fill="#ffffff" opacity="0"/></g>
   </svg>
   <div class="chip" id="k1" style="left:90px;top:980px"><div class="tool">Google Sheets</div><div class="art">Plan_v7_FINAL.xlsx</div></div>
   <div class="chip" id="k2" style="left:600px;top:1010px"><div class="tool">Notion</div><div class="art">Q4 campaign brief</div></div>
-  <div class="chip" id="k3" style="left:150px;top:1180px"><div class="tool">Slack</div><div class="art">#client-linkedin</div></div>
-  <div class="chip" id="k4" style="left:560px;top:1230px"><div class="tool">Email</div><div class="art">RE: RE: Fwd: approval?</div></div>
+  <div class="chip" id="k3" style="left:100px;top:1180px"><div class="tool">Slack</div><div class="art">#client-linkedin</div></div>
+  <div class="chip" id="k4" style="left:640px;top:1230px"><div class="tool">Email</div><div class="art">RE: RE: Fwd: approval?</div></div>
   <div class="chip" id="k5" style="left:110px;top:1390px"><div class="tool">Asana</div><div class="art">Launch Q4 ads</div></div>
   <div class="chip" id="k6" style="left:600px;top:1420px"><div class="tool">Campaign Manager</div><div class="art">3 ad sets live</div></div>
 </section>
 
 <!-- S2 -->
 <section class="scene" id="s2">
-  <h1 class="h1 display">These probably sound familiar.</h1>
-  <div id="badge"><span class="bn" id="n1">1</span><span class="bn" id="n2">2</span><span class="bn" id="n3">3</span><span class="bn" id="n4">4</span><span class="bn" id="n5">5</span></div>
+  <h1 class="h1 display">These probably<br>sound familiar.<span id="badge"><span class="bn" id="n1">1</span><span class="bn" id="n2">2</span><span class="bn" id="n3">3</span><span class="bn" id="n4">4</span><span class="bn" id="n5">5</span></span></h1>
   <div id="typ"><div class="in"><span class="td"></span><span class="td"></span><span class="td"></span></div></div>
   <div class="bub" id="b1"><span class="av a">F</span><div class="in"><div class="who">Finance</div><div class="q display">Why did we spend £4,200 if it wasn't approved?</div></div></div>
   <div class="bub" id="b2"><span class="av b">L</span><div class="in"><div class="who">Leadership</div><div class="q display">What's the overarching plan?</div></div></div>
@@ -120,7 +134,7 @@
 
 <!-- S3 -->
 <section class="scene" id="s3">
-  <svg id="morph" viewBox="0 0 1080 1920"><path id="mp2" d="M255 1027 C420 960 600 1110 750 1057 C700 1150 400 1140 295 1227 C460 1180 600 1320 745 1277 C690 1370 380 1350 235 1437 C400 1390 600 1520 765 1467 C820 1450 870 1500 900 1540" style="stroke:#6A8FFD;stroke-dasharray:16 12" stroke-width="6" fill="none" stroke-linecap="round"/></svg>
+  <svg id="morph" viewBox="0 0 1080 1920"><path id="mp2" d="M255 1027 C420 960 600 1110 750 1057 C700 1150 360 1140 245 1227 C330 1215 380 1250 452 1245 C530 1193 582 1232 549 1277 C516 1323 438 1290 464 1245 C490 1199 568 1212 575 1260 C582 1310 497 1316 484 1271 C471 1229 536 1216 556 1242 C640 1300 720 1290 825 1277 C760 1370 380 1350 235 1437 C330 1420 400 1460 430 1470 C460 1440 470 1480 440 1490 C420 1500 470 1520 500 1490 C560 1450 680 1500 765 1467 C820 1450 870 1500 900 1540" style="stroke:#93A9F6" stroke-width="5" fill="none" stroke-linecap="round"/></svg>
   <h1 class="h1 display" id="s3h">Meet Axis.</h1>
   <div class="sub" id="s3sub">The companion that keeps strategy, builds and approvals in one place.</div>
   <div id="fill"></div><span class="nd" id="d1" style="top:722px"></span><span class="nd" id="d2" style="top:882px"></span><span class="nd" id="d3" style="top:1042px"></span><span class="nd" id="d4" style="top:1202px"></span>
@@ -137,19 +151,15 @@
 <!-- S4 -->
 <section class="scene" id="s4">
   <h1 class="h1 display">See Axis live.</h1>
-  <div id="pair"><span class="ax"><svg width="52" height="52" viewBox="0 0 48 48" aria-hidden="true"><path d="M24.3394 19.7273L30.2766 2.09935C30.4128 1.69804 30.2584 1.2582 29.9019 1.02014L28.6123 0.163113C28.0811 -0.190578 27.3545 0.0565523 27.1593 0.657375L21.4696 18.0971C21.3606 18.4304 21.4492 18.7954 21.6989 19.0448L22.7388 20.09C23.2428 20.5956 24.1124 20.3984 24.3372 19.7273H24.3394ZM24.7458 26.4678L37.4465 27.3792C38.0005 27.42 38.475 26.9893 38.4773 26.4429L38.5 22.3391C38.5023 21.8199 38.08 21.3982 37.5532 21.3892L24.8185 21.21C24.2827 21.2032 23.8422 21.6295 23.8445 22.1555L23.8536 25.5269C23.8536 26.0212 24.2441 26.4293 24.7436 26.4655L24.7458 26.4678ZM21.12 18.1084L16.5178 4.16255C16.2749 3.42796 15.2873 3.27379 14.8264 3.89955L14.1634 4.79738C13.9863 5.03771 13.9341 5.34832 14.0227 5.63173L18.4295 19.5731C18.6475 20.2623 19.542 20.4664 20.0461 19.9404L20.902 19.0471C21.1427 18.7954 21.2244 18.4372 21.1154 18.1084H21.12ZM21.4991 29.2815L27.207 47.3356C27.3931 47.9228 28.0901 48.1813 28.6237 47.8616L29.9065 47.0953C30.2856 46.8686 30.4582 46.4128 30.322 45.9979L24.3213 27.8123C24.1056 27.157 23.2701 26.9417 22.7547 27.411L21.7648 28.3111C21.4923 28.5582 21.3902 28.9368 21.4991 29.2837V29.2815ZM17.9641 21.1148L10.474 21.0831C9.94273 21.0831 9.51135 21.5025 9.50908 22.024L9.5 24.3615C9.5 24.8535 9.88143 25.2662 10.3832 25.307L17.8914 25.9123C18.4522 25.9577 18.9313 25.5224 18.9313 24.9691L18.9245 22.058C18.9245 21.5388 18.4954 21.1193 17.9686 21.1171L17.9641 21.1148ZM18.4114 27.606L14.0544 41.1211C13.9636 41.3999 14.0113 41.7038 14.1816 41.9441L14.8582 42.9031C15.3077 43.5425 16.3067 43.4019 16.5587 42.6651L21.145 29.2225C21.2539 28.9074 21.1835 28.5582 20.961 28.3043L20.0552 27.2727C19.5647 26.7149 18.6384 26.9008 18.4114 27.606Z" fill="currentColor"></path></svg><span>Axis</span></span><span class="x">&times;</span><span>LinkedIn</span></div>
-  <div id="date" class="display"><span class="num">16</span><span class="col">Monday<br>November</span></div>
-  <div class="sub where" id="s4w">Launching at LinkedIn London HQ</div>
-</section>
-
-<!-- S5 -->
-<section class="scene" id="s5">
-  <h1 class="h1 display">Learn more and request a seat.</h1>
-  <div class="sub" id="s5a">Free to attend, lunch included. 25 seats.</div>
-  <div id="more">Learn more at</div>
-  <div id="url">axis.fillmyfunnel.co.uk</div>
-  <div id="uline"></div>
-  <div id="inpost">Link in the post</div>
+  <div class="sub" id="fsub">Learn more and request your seat.</div>
+  <svg id="fchev" viewBox="0 0 200 90" fill="none" stroke="#6A8FFD" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"><path d="M30 20 L100 70 L170 20"/></svg>
+  <div id="fcard">
+    <div id="fpair"><span class="ax"><svg width="52" height="52" viewBox="0 0 48 48" aria-hidden="true"><path d="M24.3394 19.7273L30.2766 2.09935C30.4128 1.69804 30.2584 1.2582 29.9019 1.02014L28.6123 0.163113C28.0811 -0.190578 27.3545 0.0565523 27.1593 0.657375L21.4696 18.0971C21.3606 18.4304 21.4492 18.7954 21.6989 19.0448L22.7388 20.09C23.2428 20.5956 24.1124 20.3984 24.3372 19.7273H24.3394ZM24.7458 26.4678L37.4465 27.3792C38.0005 27.42 38.475 26.9893 38.4773 26.4429L38.5 22.3391C38.5023 21.8199 38.08 21.3982 37.5532 21.3892L24.8185 21.21C24.2827 21.2032 23.8422 21.6295 23.8445 22.1555L23.8536 25.5269C23.8536 26.0212 24.2441 26.4293 24.7436 26.4655L24.7458 26.4678ZM21.12 18.1084L16.5178 4.16255C16.2749 3.42796 15.2873 3.27379 14.8264 3.89955L14.1634 4.79738C13.9863 5.03771 13.9341 5.34832 14.0227 5.63173L18.4295 19.5731C18.6475 20.2623 19.542 20.4664 20.0461 19.9404L20.902 19.0471C21.1427 18.7954 21.2244 18.4372 21.1154 18.1084H21.12ZM21.4991 29.2815L27.207 47.3356C27.3931 47.9228 28.0901 48.1813 28.6237 47.8616L29.9065 47.0953C30.2856 46.8686 30.4582 46.4128 30.322 45.9979L24.3213 27.8123C24.1056 27.157 23.2701 26.9417 22.7547 27.411L21.7648 28.3111C21.4923 28.5582 21.3902 28.9368 21.4991 29.2837V29.2815ZM17.9641 21.1148L10.474 21.0831C9.94273 21.0831 9.51135 21.5025 9.50908 22.024L9.5 24.3615C9.5 24.8535 9.88143 25.2662 10.3832 25.307L17.8914 25.9123C18.4522 25.9577 18.9313 25.5224 18.9313 24.9691L18.9245 22.058C18.9245 21.5388 18.4954 21.1193 17.9686 21.1171L17.9641 21.1148ZM18.4114 27.606L14.0544 41.1211C13.9636 41.3999 14.0113 41.7038 14.1816 41.9441L14.8582 42.9031C15.3077 43.5425 16.3067 43.4019 16.5587 42.6651L21.145 29.2225C21.2539 28.9074 21.1835 28.5582 20.961 28.3043L20.0552 27.2727C19.5647 26.7149 18.6384 26.9008 18.4114 27.606Z" fill="currentColor"></path></svg><span>Axis</span></span><span class="x">&times;</span><span>LinkedIn</span></div>
+    <div id="fdate"><span class="num display">16</span><span class="col display">Monday<br>November</span></div>
+    <div id="fwhere">LinkedIn London HQ</div>
+    <div id="furl">axis.fillmyfunnel.co.uk</div><div id="fuline"></div>
+    <div id="fseats">Free to attend, lunch included. 25 seats.</div>
+  </div>
 </section>
 
 </div>
@@ -158,8 +168,8 @@
 <script>
   // One PAUSED timeline exposed as window.tl. Exactly 30 s, and it loops cleanly back to frame 0.
   // Music: steady 96 bpm groove (beat 0.625 s), gentle lift at 14.375 s.
-  // S1 0-7.5 stitching | S2 7.5-14.375 familiar | S3 14.375-21.875 Meet Axis | S4 21.875-26.25 event | S5 26.25-30 CTA + loop.
-  gsap.registerPlugin(CustomEase);
+  // S1 0-7.5 stitching | S2 7.5-14.375 familiar | S3 14.375-21.875 Meet Axis | Final 21.875-30 See Axis live + CTA + loop.
+  gsap.registerPlugin(CustomEase, MotionPathPlugin);
   // Axis signature motion: one family of curves for every designed move
   CustomEase.create('axis',       'M0,0 C0.16,0.84 0.3,1 1,1');                               // settle
   CustomEase.create('axisSpring', 'M0,0 C0.14,0.9 0.24,1.12 0.42,1.04 0.6,0.98 0.78,1 1,1');  // arrive with a small overshoot
@@ -184,18 +194,25 @@
     tl.fromTo(id,{x:fx,y:fy,rotation:fr},{x:0,y:0,rotation:rot,duration:d,ease:'axisSpring'},Math.max(0,land-d));
     drift(id,land+.2,5);
   });
-  const T0 = 3.4, TD = 2.4;                        // the thread draws from 3.125 to 5.525 s
+  const T0 = 3.2, TD = 2.0;                        // the thread draws from 3.125 to 5.525 s
   tl.to('#tmp',{strokeDashoffset:0,duration:TD,ease:'none'},T0);
   ['#k1','#k2','#k3','#k4','#k5','#k6'].forEach((id,i)=>{     // path order (zigzag)
     tl.to(id,{borderColor:CORN,backgroundColor:'#262a78',duration:.25},T0+i*(TD/6)+.05);
+  });
+  // packets set off along the thread and jam in the knot
+  [1,2,3].forEach(i=>{
+    const t=T0+TD-.2+(i-1)*.28;
+    tl.set('#pk'+i,{opacity:1},t)
+      .to('#pk'+i,{motionPath:{path:'#toknot',start:0,end:1-(i-1)*.04},duration:1.05,ease:'axisInOut'},t)
+      .to('#pk'+i,{x:'+=6',y:'-=4',duration:.09,yoyo:true,repeat:7,ease:'sine.inOut'},t+1.05);
   });
   vis('#s1sub',9.5*B);                              // 5.94 s; the connected picture then holds to 7.5
   off('#s1',12*B);
 
   // ---- S2 7.5 to 14.375: inbound messages, each preceded by typing dots; the unread count ticks up ----
   on('#s2',12*B); vis('#badge',13*B);
-  const NEWY=1380, STEP=240, LANDS=[13*B,15*B,17*B,19*B,21*B];
-  ['#b1','#b2','#b3','#b4','#b5'].forEach(id=>gsap.set(id,{left:90,top:NEWY,autoAlpha:0}));
+  const NEWY=1250, STEP=240, LANDS=[13*B,15*B,17*B,19*B,21*B];
+  ['#b1','#b2','#b3','#b4','#b5'].forEach(id=>gsap.set(id,{left:140,top:NEWY,autoAlpha:0}));
   LANDS.forEach((land,i)=>{
     const id='#b'+(i+1);
     // make room: every earlier message moves up one step; one that would pass the top of the window leaves
@@ -203,7 +220,7 @@
       const steps=i-j, leaving = steps>=3;
       tl.to('#b'+(j+1),{y:-STEP*steps,autoAlpha:leaving?0:1,duration:.45,ease:'axisInOut'},land-.75);
     }
-    tl.set('#typ',{left:174,top:NEWY+40,visibility:'visible',scale:.6,transformOrigin:'0% 100%'},land-.6)
+    tl.set('#typ',{left:224,top:NEWY+40,visibility:'visible',scale:.6,transformOrigin:'0% 100%'},land-.6)
       .to('#typ',{scale:1,duration:.25,ease:'axisSpring'},land-.6)
       .fromTo('#typ .td',{y:0},{y:-10,duration:.12,stagger:.07,yoyo:true,repeat:3,ease:'sine.inOut'},land-.55)
       .set('#typ',{visibility:'hidden'},land)
@@ -217,8 +234,9 @@
   const A = 23*B;
   on('#s3',A);
   // straight target with the same command structure as the tangle (1 M + 6 C segments = 19 points)
-  const pts=[]; for(let k=0;k<19;k++){ pts.push('150 '+(740+480*k/18).toFixed(1)); }
-  const STRAIGHT='M'+pts[0]+' '+[0,1,2,3,4,5].map(j=>'C'+pts[1+3*j]+' '+pts[2+3*j]+' '+pts[3+3*j]).join(' ');
+  const NSEG=(document.querySelector('#mp2').getAttribute('d').match(/C/g)||[]).length, NP=1+3*NSEG;
+  const pts=[]; for(let k=0;k<NP;k++){ pts.push('110 '+(740+480*k/(NP-1)).toFixed(1)); }
+  const STRAIGHT='M'+pts[0]+' '+Array.from({length:NSEG},(_,j)=>'C'+pts[1+3*j]+' '+pts[2+3*j]+' '+pts[3+3*j]).join(' ');
   tl.to('#mp2',{attr:{d:STRAIGHT},strokeDasharray:'16 0',stroke:'#93A9F6',duration:1.2,ease:'axisInOut'},A+.1)
     .to('#bg',{backgroundColor:ALICE,duration:.4,ease:'axisInOut'},A+.75)
     .to('#logo',{color:NAVY,duration:.4,ease:'axisInOut'},A+.75);
@@ -236,24 +254,21 @@
   vis('#done',A+10*B);
   off('#s3',35*B);
 
-  // ---- S4 21.875 to 26.25 (navy): See Axis live, Axis x LinkedIn, the date ----
+  // ---- Final 21.875 to 30: See Axis live, request your seat, the details in one callout, then loop ----
   ground(NAVY,WHITE,35*B); on('#s4',35*B);
-  [['#pair',36],['#date',37],['#s4w',39]].forEach(([id,b])=>{ off(id,35*B); on(id,b*B); });
-  tl.fromTo('#date .num',{yPercent:12},{yPercent:0,duration:.7},37*B)
-    .fromTo('#date .col',{x:-20},{x:0,duration:.6},37*B+.1);
-  off('#s4',42*B);
+  vis('#fsub',36*B); vis('#fchev',36.5*B); vis('#fcard',37*B);
+  tl.fromTo('#fchev',{y:-14,opacity:0},{y:0,opacity:1,duration:.4},36.5*B)
+    .to('#fchev',{y:12,duration:.45,yoyo:true,repeat:5,ease:'sine.inOut'},37.5*B)
+    .fromTo('#fcard',{y:30,scale:.97},{y:0,scale:1,duration:.6,ease:'axisSpring'},37*B)
+    .fromTo('#fdate .num',{yPercent:10},{yPercent:0,duration:.7},37.5*B)
+    .to('#fuline',{scaleX:1,duration:.8,ease:'axisInOut'},39*B);
 
-  // ---- S5 26.25 to 30: call to action, then dissolve back into frame 0 so the loop is seamless ----
-  on('#s5',42*B);
-  [['#s5a',43],['#more',44],['#url',44],['#inpost',46]].forEach(([id,b])=>{ off(id,42*B); on(id,b*B); });
-  tl.fromTo('#url',{y:20},{y:0,duration:.5},44*B)
-    .to('#uline',{scaleX:1,duration:.8,ease:'axisInOut'},44.5*B);
   const L = 29.3;                                   // reset S1 to its exact frame-0 state, then cross-fade into it
   S1.forEach(([id,rot,fx,fy,fr])=>tl.set(id,{x:fx,y:fy,rotation:fr,borderColor:EDGE,backgroundColor:INK2},L));
-  tl.set('#tmp',{strokeDashoffset:1},L);
+  tl.set('#tmp',{strokeDashoffset:1},L).set('.pkt',{opacity:0,x:0,y:0},L);
   vis('#s1sub',L,false);
   tl.set('#s1',{autoAlpha:0},L)                    // dip through navy: CTA out, then frame 0 in
-    .to('#s5',{autoAlpha:0,duration:.3,ease:'none'},L)
+    .to('#s4',{autoAlpha:0,duration:.3,ease:'none'},L)
     .to('#s1',{autoAlpha:1,duration:.35,ease:'none'},L+.32);
 
   tl.to({},{duration:0.001},30);
