@@ -95,6 +95,9 @@ Their examples assume a live page: in scenes, keep to the one-timeline contract 
 - **Show collaboration, not a status list:** type the draft in, pin comments over the card that go back and forth by
   role (Strategist, Campaign manager, Client), and have a labelled multiplayer cursor click the real button
   ("Send to client", then "Publish to LinkedIn"). Keep at most two comments on screen.
+- **Credibility:** FMF is a LinkedIn Marketing Partner. On navy use the reversed badge (white tile, white wordmark), built
+  from `examples/axis-event-nov16/assets/` and animated like LinkedIn's GIF: tile lands, wordmark wipes in, one pulse.
+  Show it early (on the product introduction), not only at the end.
 - Music: `--style calm` gives a half-time feel on the same beat grid when the steady groove feels too intense.
 - Gotcha: a `tl.set()` at exactly t=0 is skipped when the renderer seeks to 0. Hide later-revealed elements in CSS and
   reveal them with a set at their beat.

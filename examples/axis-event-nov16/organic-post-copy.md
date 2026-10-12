@@ -17,7 +17,7 @@ On Monday 16 November we're at LinkedIn London HQ to show you a better way.
 
 Free to attend. 25 seats.
 
-👉 Learn more and request a seat: https://axis.fillmyfunnel.co.uk
+👉 Book your seat: https://axis.fillmyfunnel.co.uk
 
 #LinkedInAds #PaidMedia #B2BMarketing
 

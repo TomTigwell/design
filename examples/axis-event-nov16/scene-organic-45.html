@@ -48,11 +48,23 @@
   #badge{position:relative;display:inline-block;vertical-align:middle;margin-left:22px;top:-10px;width:76px;height:76px;border-radius:50%;background:var(--corn);color:var(--navy);font-family:'DM Sans',sans-serif;font-size:40px;font-weight:700;letter-spacing:0;visibility:hidden}
   .bn{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;visibility:hidden}
 
-  /* S3: Axis (light) */
-  #s3{color:var(--navy)}
-  #s3 .sub{top:452px;opacity:.85}
-  #s3h,#s3sub{visibility:hidden}
+  /* S3a: Meet Axis by Fill My Funnel, LinkedIn Marketing Partner (navy, so the badge uses its reversed lockup) */
   #morph{position:absolute;left:0;top:0;width:1080px;height:1920px;z-index:1}
+  #bysub{position:absolute;left:40px;width:1000px;top:448px;text-align:center;font-size:56px;font-weight:600;color:var(--soft);visibility:hidden}
+  #tagline{top:548px;opacity:.9;visibility:hidden}
+  /* LinkedIn Marketing Partner lockup, built from the partner badge: reversed tile + white wordmark (1747 x 730 source px) */
+  .lmp{position:absolute;width:1747px;height:730px;transform-origin:0 0;visibility:hidden}
+  .lmp img{position:absolute;display:block}
+  .lmp .tile{left:0;top:0;width:780px;height:730px;transform-origin:360px 360px}
+  .lmp .word{left:887px;top:87px;width:860px;height:560px}
+  #lmpA{left:103px;top:790px;transform:scale(.5)}
+  #ringA{position:absolute;left:107px;top:794px;width:355px;height:355px;border-radius:28px;border:6px solid var(--soft);visibility:hidden}
+
+  /* S3b: the collaboration, larger (light) */
+  #s3b{color:var(--navy)}
+  #s3bh{position:absolute;left:-40px;width:1160px;top:300px;text-align:center;font-size:84px;line-height:1}
+  #demo{position:absolute;inset:0;transform-origin:540px 720px;transform:translateY(-120px) scale(1.2)}
+  #track{position:absolute;left:107.5px;top:740px;width:5px;height:480px;background:var(--soft);border-radius:3px}
   #fill{position:absolute;left:107px;top:740px;width:6px;height:480px;background:var(--corn);border-radius:3px;transform-origin:top;transform:scaleY(0);z-index:2}
   .nd{position:absolute;left:92px;width:36px;height:36px;border-radius:50%;background:var(--alice);border:6px solid var(--soft);z-index:3;visibility:hidden}
   #card{position:absolute;left:190px;top:720px;width:700px;background:#fff;border:3px solid #d3dbea;box-shadow:0 0 0 0 rgba(124,196,167,0);border-radius:26px;padding:26px 28px;color:var(--navy);visibility:hidden}
@@ -100,18 +112,23 @@
   #url{position:absolute;left:112px;top:990px;font-size:66px;font-weight:700;color:var(--white);white-space:nowrap}
   #uline{position:absolute;left:112px;top:1080px;width:800px;height:7px;border-radius:4px;background:var(--corn);transform-origin:left;transform:scaleX(0)}
   #inpost{position:absolute;left:112px;top:1130px;font-size:36px;font-weight:600;color:var(--soft)}
-  /* Final scene: See Axis live + call to action in one */
-  #fsub{top:452px;font-size:46px;opacity:.9;visibility:hidden}
-  #fchev{position:absolute;left:470px;top:548px;width:140px;height:64px;visibility:hidden}
-  #fcard{position:absolute;left:140px;top:650px;width:800px;padding:46px 40px 50px;border:3px solid rgba(147,169,246,.5);border-radius:36px;background:#15184c;display:flex;flex-direction:column;align-items:center;text-align:center;visibility:hidden}
-  #fpair{display:flex;align-items:center;gap:16px;font-size:40px;font-weight:700}
-  #fpair .ax{display:flex;align-items:center;gap:10px} #fpair .ax svg{width:46px;height:46px;display:block} #fpair .x{color:var(--corn);font-weight:400}
-  #fdate{display:flex;align-items:center;gap:30px;margin-top:22px}
-  #fdate .num{font-size:300px;line-height:.86;color:var(--corn)} #fdate .col{font-size:70px;line-height:1.1;text-align:left}
-  #fwhere{font-size:40px;font-weight:500;margin-top:16px;opacity:.9}
-  #furl{font-size:58px;font-weight:700;margin-top:40px}
-  #fuline{width:660px;height:6px;border-radius:3px;background:var(--corn);transform-origin:left;transform:scaleX(0);margin-top:8px}
-  #fseats{font-size:32px;margin-top:22px;color:var(--soft)}
+  /* Final scene: who (Axis by Fill My Funnel, LinkedIn Marketing Partner), what, when, and the button */
+  #frow{position:absolute;left:0;width:1080px;top:470px;display:flex;justify-content:center;align-items:center;gap:44px}
+  #fax{display:flex;align-items:center;gap:14px}
+  #fax svg{width:92px;height:92px;display:block}
+  #fax .n{font-size:76px;font-weight:700;line-height:1} #fax .by{font-size:32px;font-weight:500;color:var(--soft);margin-top:4px}
+  #fdiv{width:2px;height:170px;background:rgba(147,169,246,.45)}
+  #fbadge{position:relative;width:420px;height:175px}
+  #lmpF{left:0;top:0;transform:scale(.24)}
+  #ringF{position:absolute;left:2px;top:2px;width:171px;height:171px;border-radius:14px;border:5px solid var(--soft);visibility:hidden}
+  #fh{top:760px}
+  #fdate{position:absolute;left:40px;width:1000px;top:920px;text-align:center;font-size:120px;line-height:1;color:var(--corn)}
+  #fdet{position:absolute;left:40px;width:1000px;top:1090px;text-align:center;font-size:46px;font-weight:500;opacity:.92}
+  #fbtn{position:absolute;left:160px;top:1210px;width:760px;height:150px;border-radius:100px;background:var(--corn);color:var(--navy);display:flex;align-items:center;justify-content:center;gap:22px;font-size:58px;font-weight:700}
+  #fbtn svg{width:46px;height:46px;display:block}
+  #furl{position:absolute;left:40px;width:1000px;top:1415px;text-align:center;font-size:48px;font-weight:600}
+  #fuline{position:absolute;left:290px;top:1482px;width:500px;height:5px;border-radius:3px;background:var(--corn);transform-origin:left;transform:scaleX(0)}
+  #frow,#fh,#fdate,#fdet,#fbtn,#furl{visibility:hidden}
 </style>
 </head>
 <body>
@@ -147,12 +164,21 @@
   <div class="bub" id="b5"><span class="av b">B</span><div class="in"><div class="who">Brand team</div><div class="q display">We wanted the creative changed first.</div></div></div>
 </section>
 
-<!-- S3 -->
-<section class="scene" id="s3">
+<!-- S3a: Meet Axis, by Fill My Funnel, LinkedIn Marketing Partner -->
+<section class="scene" id="s3a">
   <svg id="morph" viewBox="0 0 1080 1920"><path id="mp2" d="M255 847 C420 780 600 930 750 877 C700 970 360 960 245 1047 C330 1035 380 1070 452 1065 C530 1013 582 1052 549 1097 C516 1143 438 1110 464 1065 C490 1019 568 1032 575 1080 C582 1130 497 1136 484 1091 C471 1049 536 1036 556 1062 C640 1120 720 1110 825 1097 C760 1190 380 1170 235 1257 C330 1240 400 1280 430 1290 C460 1260 470 1300 440 1310 C420 1320 470 1340 500 1310 C560 1270 680 1320 765 1287 C820 1270 870 1320 900 1360" style="stroke:#93A9F6" stroke-width="5" fill="none" stroke-linecap="round"/></svg>
-  <h1 class="h1 display" id="s3h">Meet Axis.</h1>
-  <div class="sub" id="s3sub">The companion that keeps strategy, builds and approvals in one place.</div>
-  <div id="fill"></div><span class="nd" id="d1" style="top:722px"></span><span class="nd" id="d2" style="top:882px"></span><span class="nd" id="d3" style="top:1042px"></span><span class="nd" id="d4" style="top:1202px"></span>
+  <h1 class="h1 display">Meet Axis.</h1>
+  <div id="bysub">by Fill My Funnel</div>
+  <div class="sub" id="tagline">Your strategic companion,<br>from strategy to live ad.</div>
+  <div id="ringA"></div>
+  <div class="lmp" id="lmpA"><img class="tile" src="assets/li-tile-reversed.png" alt=""><img class="word" src="assets/li-partner-text-white.png" alt="LinkedIn Marketing Partner"></div>
+</section>
+
+<!-- S3b: drafted, discussed, approved, live -->
+<section class="scene" id="s3b">
+  <h1 class="display" id="s3bh">Drafts, feedback and<br>approvals in one place.</h1>
+  <div id="demo">
+  <div id="track"></div><div id="fill"></div><span class="nd" id="d1" style="top:722px"></span><span class="nd" id="d2" style="top:882px"></span><span class="nd" id="d3" style="top:1042px"></span><span class="nd" id="d4" style="top:1202px"></span>
   <div id="card">
     <div class="ch"><span class="cav"><svg width="52" height="52" viewBox="0 0 48 48" aria-hidden="true"><path d="M24.3394 19.7273L30.2766 2.09935C30.4128 1.69804 30.2584 1.2582 29.9019 1.02014L28.6123 0.163113C28.0811 -0.190578 27.3545 0.0565523 27.1593 0.657375L21.4696 18.0971C21.3606 18.4304 21.4492 18.7954 21.6989 19.0448L22.7388 20.09C23.2428 20.5956 24.1124 20.3984 24.3372 19.7273H24.3394ZM24.7458 26.4678L37.4465 27.3792C38.0005 27.42 38.475 26.9893 38.4773 26.4429L38.5 22.3391C38.5023 21.8199 38.08 21.3982 37.5532 21.3892L24.8185 21.21C24.2827 21.2032 23.8422 21.6295 23.8445 22.1555L23.8536 25.5269C23.8536 26.0212 24.2441 26.4293 24.7436 26.4655L24.7458 26.4678ZM21.12 18.1084L16.5178 4.16255C16.2749 3.42796 15.2873 3.27379 14.8264 3.89955L14.1634 4.79738C13.9863 5.03771 13.9341 5.34832 14.0227 5.63173L18.4295 19.5731C18.6475 20.2623 19.542 20.4664 20.0461 19.9404L20.902 19.0471C21.1427 18.7954 21.2244 18.4372 21.1154 18.1084H21.12ZM21.4991 29.2815L27.207 47.3356C27.3931 47.9228 28.0901 48.1813 28.6237 47.8616L29.9065 47.0953C30.2856 46.8686 30.4582 46.4128 30.322 45.9979L24.3213 27.8123C24.1056 27.157 23.2701 26.9417 22.7547 27.411L21.7648 28.3111C21.4923 28.5582 21.3902 28.9368 21.4991 29.2837V29.2815ZM17.9641 21.1148L10.474 21.0831C9.94273 21.0831 9.51135 21.5025 9.50908 22.024L9.5 24.3615C9.5 24.8535 9.88143 25.2662 10.3832 25.307L17.8914 25.9123C18.4522 25.9577 18.9313 25.5224 18.9313 24.9691L18.9245 22.058C18.9245 21.5388 18.4954 21.1193 17.9686 21.1171L17.9641 21.1148ZM18.4114 27.606L14.0544 41.1211C13.9636 41.3999 14.0113 41.7038 14.1816 41.9441L14.8582 42.9031C15.3077 43.5425 16.3067 43.4019 16.5587 42.6651L21.145 29.2225C21.2539 28.9074 21.1835 28.5582 20.961 28.3043L20.0552 27.2727C19.5647 26.7149 18.6384 26.9008 18.4114 27.606Z" fill="currentColor"></path></svg></span><div><div class="cn">Axis</div><div class="cp">Promoted</div></div>
       <div id="pills"><span class="pill p1" id="p1">Draft</span><span class="pill p2" id="p2">Ready for review</span><span class="pill p3" id="p3">&#10003; Approved</span><span class="pill p4" id="p4"><span class="dot"></span>Live on LinkedIn</span></div></div>
@@ -171,20 +197,17 @@
   <div id="rip"></div>
   <div id="cur"><svg id="ar" viewBox="0 0 22 28"><path d="M1.5 1.5 L1.5 22 L7 17 L10.5 25.5 L14 24 L10.6 15.8 L18 15.8 Z" fill="#0e1034" stroke="#fff" stroke-width="2" stroke-linejoin="round"/></svg><svg id="hand" viewBox="0 0 24 24"><path d="M10 7.5c0-.83.67-1.5 1.5-1.5S13 6.67 13 7.5v5.75h.76c.19 0 .37.04.54.11l4.54 2.26c.53.22.91.76.91 1.38 0 .06-.01.13-.02.2l-.75 5.27c-.11.73-.69 1.28-1.44 1.28h-6.79c-.41 0-.79-.17-1.06-.44L4.75 18.4l.79-.8c.2-.2.48-.33.79-.33.09 0 .16.02.24.03l3.43.72V7.5z" fill="#0e1034" stroke="#fff" stroke-width="1.2" stroke-linejoin="round"/></svg><span class="tag">Campaign manager</span></div>
   <div id="done">Published to LinkedIn.<br>Nothing rebuilt.</div>
+  </div>
 </section>
 
-<!-- S4 -->
+<!-- Final: who, what, when, book -->
 <section class="scene" id="s4">
-  <h1 class="h1 display">See Axis live.</h1>
-  <div class="sub" id="fsub">Learn more and request your seat.</div>
-  <svg id="fchev" viewBox="0 0 200 90" fill="none" stroke="#6A8FFD" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"><path d="M30 20 L100 70 L170 20"/></svg>
-  <div id="fcard">
-    <div id="fpair"><span class="ax"><svg width="52" height="52" viewBox="0 0 48 48" aria-hidden="true"><path d="M24.3394 19.7273L30.2766 2.09935C30.4128 1.69804 30.2584 1.2582 29.9019 1.02014L28.6123 0.163113C28.0811 -0.190578 27.3545 0.0565523 27.1593 0.657375L21.4696 18.0971C21.3606 18.4304 21.4492 18.7954 21.6989 19.0448L22.7388 20.09C23.2428 20.5956 24.1124 20.3984 24.3372 19.7273H24.3394ZM24.7458 26.4678L37.4465 27.3792C38.0005 27.42 38.475 26.9893 38.4773 26.4429L38.5 22.3391C38.5023 21.8199 38.08 21.3982 37.5532 21.3892L24.8185 21.21C24.2827 21.2032 23.8422 21.6295 23.8445 22.1555L23.8536 25.5269C23.8536 26.0212 24.2441 26.4293 24.7436 26.4655L24.7458 26.4678ZM21.12 18.1084L16.5178 4.16255C16.2749 3.42796 15.2873 3.27379 14.8264 3.89955L14.1634 4.79738C13.9863 5.03771 13.9341 5.34832 14.0227 5.63173L18.4295 19.5731C18.6475 20.2623 19.542 20.4664 20.0461 19.9404L20.902 19.0471C21.1427 18.7954 21.2244 18.4372 21.1154 18.1084H21.12ZM21.4991 29.2815L27.207 47.3356C27.3931 47.9228 28.0901 48.1813 28.6237 47.8616L29.9065 47.0953C30.2856 46.8686 30.4582 46.4128 30.322 45.9979L24.3213 27.8123C24.1056 27.157 23.2701 26.9417 22.7547 27.411L21.7648 28.3111C21.4923 28.5582 21.3902 28.9368 21.4991 29.2837V29.2815ZM17.9641 21.1148L10.474 21.0831C9.94273 21.0831 9.51135 21.5025 9.50908 22.024L9.5 24.3615C9.5 24.8535 9.88143 25.2662 10.3832 25.307L17.8914 25.9123C18.4522 25.9577 18.9313 25.5224 18.9313 24.9691L18.9245 22.058C18.9245 21.5388 18.4954 21.1193 17.9686 21.1171L17.9641 21.1148ZM18.4114 27.606L14.0544 41.1211C13.9636 41.3999 14.0113 41.7038 14.1816 41.9441L14.8582 42.9031C15.3077 43.5425 16.3067 43.4019 16.5587 42.6651L21.145 29.2225C21.2539 28.9074 21.1835 28.5582 20.961 28.3043L20.0552 27.2727C19.5647 26.7149 18.6384 26.9008 18.4114 27.606Z" fill="currentColor"></path></svg><span>Axis</span></span><span class="x">&times;</span><span>LinkedIn</span></div>
-    <div id="fdate"><span class="num display">16</span><span class="col display">Monday<br>November</span></div>
-    <div id="fwhere">LinkedIn London HQ</div>
-    <div id="furl">axis.fillmyfunnel.co.uk</div><div id="fuline"></div>
-    <div id="fseats">Free to attend, lunch included. 25 seats.</div>
-  </div>
+  <div id="frow"><div id="fax"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24.3394 19.7273L30.2766 2.09935C30.4128 1.69804 30.2584 1.2582 29.9019 1.02014L28.6123 0.163113C28.0811 -0.190578 27.3545 0.0565523 27.1593 0.657375L21.4696 18.0971C21.3606 18.4304 21.4492 18.7954 21.6989 19.0448L22.7388 20.09C23.2428 20.5956 24.1124 20.3984 24.3372 19.7273H24.3394ZM24.7458 26.4678L37.4465 27.3792C38.0005 27.42 38.475 26.9893 38.4773 26.4429L38.5 22.3391C38.5023 21.8199 38.08 21.3982 37.5532 21.3892L24.8185 21.21C24.2827 21.2032 23.8422 21.6295 23.8445 22.1555L23.8536 25.5269C23.8536 26.0212 24.2441 26.4293 24.7436 26.4655L24.7458 26.4678ZM21.12 18.1084L16.5178 4.16255C16.2749 3.42796 15.2873 3.27379 14.8264 3.89955L14.1634 4.79738C13.9863 5.03771 13.9341 5.34832 14.0227 5.63173L18.4295 19.5731C18.6475 20.2623 19.542 20.4664 20.0461 19.9404L20.902 19.0471C21.1427 18.7954 21.2244 18.4372 21.1154 18.1084H21.12ZM21.4991 29.2815L27.207 47.3356C27.3931 47.9228 28.0901 48.1813 28.6237 47.8616L29.9065 47.0953C30.2856 46.8686 30.4582 46.4128 30.322 45.9979L24.3213 27.8123C24.1056 27.157 23.2701 26.9417 22.7547 27.411L21.7648 28.3111C21.4923 28.5582 21.3902 28.9368 21.4991 29.2837V29.2815ZM17.9641 21.1148L10.474 21.0831C9.94273 21.0831 9.51135 21.5025 9.50908 22.024L9.5 24.3615C9.5 24.8535 9.88143 25.2662 10.3832 25.307L17.8914 25.9123C18.4522 25.9577 18.9313 25.5224 18.9313 24.9691L18.9245 22.058C18.9245 21.5388 18.4954 21.1193 17.9686 21.1171L17.9641 21.1148ZM18.4114 27.606L14.0544 41.1211C13.9636 41.3999 14.0113 41.7038 14.1816 41.9441L14.8582 42.9031C15.3077 43.5425 16.3067 43.4019 16.5587 42.6651L21.145 29.2225C21.2539 28.9074 21.1835 28.5582 20.961 28.3043L20.0552 27.2727C19.5647 26.7149 18.6384 26.9008 18.4114 27.606Z" fill="currentColor"></path></svg><div><div class="n">Axis</div><div class="by">by Fill My Funnel</div></div></div><span id="fdiv"></span><div id="fbadge"><div id="ringF"></div><div class="lmp" id="lmpF"><img class="tile" src="assets/li-tile-reversed.png" alt=""><img class="word" src="assets/li-partner-text-white.png" alt="LinkedIn Marketing Partner"></div></div></div>
+  <h1 class="h1 display" id="fh">Live demo.</h1>
+  <div class="display" id="fdate">16 November 2026</div>
+  <div id="fdet">LinkedIn London HQ. Free lunch. 25 spaces.</div>
+  <div id="fbtn">Book your seat now<svg viewBox="0 0 24 24" fill="none" stroke="#0e1034" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+  <div id="furl">axis.fillmyfunnel.co.uk</div><div id="fuline"></div>
 </section>
 
 </div>
@@ -193,7 +216,7 @@
 <script>
   // One PAUSED timeline exposed as window.tl. Exactly 30 s, and it loops cleanly back to frame 0.
   // Music: steady 96 bpm groove (beat 0.625 s), gentle lift at 14.375 s.
-  // S1 0-7.5 stitching | S2 7.5-14.375 familiar | S3 14.375-23.75 Meet Axis | Final 23.75-30 See Axis live + CTA + loop.
+  // S1 0-7.5 stitching | S2 7.5-14.375 familiar | S3a 14.375-17.5 Meet Axis + partner badge | S3b 17.5-24.375 collaboration | Final 24.375-30 CTA See Axis live + CTA + loop.
   gsap.registerPlugin(CustomEase, MotionPathPlugin);
   // Axis signature motion: one family of curves for every designed move
   CustomEase.create('axis',       'M0,0 C0.16,0.84 0.3,1 1,1');                               // settle
@@ -269,20 +292,32 @@
   });
   off('#s2',23*B);
 
-  // ---- S3 14.375 to 23.75: the tangle pulls taut into the Axis line; an ad is drafted, discussed, approved and published ----
+  // ---- S3a 14.375 to 17.5 (navy): Meet Axis, by Fill My Funnel; the tangle pulls taut; the LinkedIn Marketing Partner badge ----
   const A = 23*B;
-  on('#s3',A);
+  on('#s3a',A);
   // straight target with the same command structure as the tangle (1 M + 6 C segments = 19 points)
   const NSEG=(document.querySelector('#mp2').getAttribute('d').match(/C/g)||[]).length, NP=1+3*NSEG;
-  const pts=[]; for(let k=0;k<NP;k++){ pts.push('110 '+(740+480*k/(NP-1)).toFixed(1)); }
+  const pts=[]; for(let k=0;k<NP;k++){ pts.push((300+480*k/(NP-1)).toFixed(1)+' 722'); }
   const STRAIGHT='M'+pts[0]+' '+Array.from({length:NSEG},(_,j)=>'C'+pts[1+3*j]+' '+pts[2+3*j]+' '+pts[3+3*j]).join(' ');
-  tl.to('#mp2',{attr:{d:STRAIGHT},strokeDasharray:'16 0',stroke:'#93A9F6',duration:1.2,ease:'axisInOut'},A+.1)
-    .to('#bg',{backgroundColor:ALICE,duration:.4,ease:'axisInOut'},A+.75)
-    .to('#logo',{color:NAVY,duration:.4,ease:'axisInOut'},A+.75);
-  vis('#s3h',A+1.5*B); vis('#s3sub',A+2.5*B);
+  tl.to('#mp2',{attr:{d:STRAIGHT},duration:1.0,ease:'axisInOut'},A+.05);
+  vis('#bysub',A+.3); tl.fromTo('#bysub',{y:14,opacity:0},{y:0,opacity:1,duration:.45},A+.3);
+  vis('#tagline',A+.7); tl.fromTo('#tagline',{y:14,opacity:0},{y:0,opacity:.9,duration:.45},A+.7);
+  // the partner badge, animated like LinkedIn's GIF: the tile lands, the wordmark wipes in, then a pulse
+  const badge=(sel,ring,t)=>{ vis(sel,t);
+    tl.fromTo(sel+' .tile',{scale:.5,opacity:0},{scale:1,opacity:1,duration:.5,ease:'axisSpring'},t)
+      .fromTo(sel+' .word',{clipPath:'inset(0% 100% 0% 0%)'},{clipPath:'inset(0% 0% 0% 0%)',duration:.55,ease:'axisInOut'},t+.3)
+      .set(ring,{visibility:'visible'},t+.85)
+      .fromTo(ring,{scale:1,opacity:.9},{scale:1.35,opacity:0,duration:.7,ease:'axis'},t+.85)
+      .to(sel+' .tile',{scale:1.06,duration:.16,yoyo:true,repeat:1,ease:'sine.inOut'},t+.85); };
+  badge('#lmpA','#ringA',A+1.05);
+  off('#s3a',28*B);
+
+  // ---- S3b 17.5 to 24.375 (light): the collaboration, larger ----
+  const D = 28*B;
+  ground(ALICE,NAVY,D); on('#s3b',D);
   // 1. the draft is written  2. comments go back and forth  3. the campaign manager sends it to the client, who
   // replies and approves  4. the campaign manager publishes and the ad goes live (sage, the FMF status green)
-  const SAGE='#7CC4A7', SAGED='#4A8F76', TC=A+3*B;
+  const SAGE='#7CC4A7', SAGED='#4A8F76', TC=D;
   ['#card','#d1','#d2','#d3','#d4'].forEach(id=>vis(id,TC));
   tl.fromTo('#card',{scale:.94,y:24},{scale:1,y:0,duration:.6,ease:'axisSpring'},TC)
     .fromTo('.nd',{scale:0},{scale:1,duration:.35,stagger:.08,ease:'axisSpring'},TC);
@@ -294,21 +329,21 @@
   // typing, one character at a time, with a caret
   const ci=document.querySelector('#ci'), txt=ci.dataset.text;
   ci.innerHTML=[...txt].map(c=>'<span class="ch1">'+c+'</span>').join('')+'<span id="caret"></span>';
-  const T1=TC+.15, TT=.95;
+  const T1=TC+.15, TT=.8;
   ci.querySelectorAll('.ch1').forEach((el,i)=>tl.set(el,{display:'inline'},T1+TT*i/txt.length));
   vis('#caret',TC-.01,false); vis('#caret',TC);
-  const C1=A+3.15;
+  const C1=D+1.1;
   vis('#caret',C1,false);
   const say=(id,t)=>tl.set(id,{display:'flex'},t)
     .fromTo(id,{autoAlpha:0,y:18,scale:.92,transformOrigin:'0% 0%'},{autoAlpha:1,y:0,scale:1,duration:.45,ease:'axisSpring'},t);
   const gone=(ids,t)=>tl.to(ids,{autoAlpha:0,x:30,duration:.3,ease:'axisIn'},t).set(ids,{display:'none'},t+.3);
-  say('#c1',C1); say('#c2',C1+.7);
+  say('#c1',C1); say('#c2',C1+.6);
   // the campaign manager's cursor comes in and sends it to the client
-  const BX=540, BY=1334, CL1=A+4.75;
-  vis('#pub',A+4.0); vis('#lb1',A+4.0);
-  tl.fromTo('#pub',{scale:.9,autoAlpha:0},{scale:1,autoAlpha:1,duration:.4,ease:'axisSpring'},A+4.0);
-  vis('#cur',A+4.1);
-  tl.fromTo('#cur',{x:1000,y:1560},{x:BX+40,y:BY+6,duration:.55,ease:'axisInOut'},A+4.1);
+  const BX=540, BY=1334, CL1=D+2.55;
+  vis('#pub',D+1.9); vis('#lb1',D+1.9);
+  tl.fromTo('#pub',{scale:.9,autoAlpha:0},{scale:1,autoAlpha:1,duration:.4,ease:'axisSpring'},D+1.9);
+  vis('#cur',D+1.95);
+  tl.fromTo('#cur',{x:1000,y:1560},{x:BX+40,y:BY+6,duration:.5,ease:'axisInOut'},D+1.95);
   const click=t=>{ vis('#ar',t-.15,false); vis('#hand',t-.15);
     tl.to('#pub',{scale:.95,duration:.08,yoyo:true,repeat:1,ease:'sine.inOut'},t)
       .to('#cur',{scale:.9,duration:.08,yoyo:true,repeat:1,ease:'sine.inOut'},t)
@@ -319,16 +354,16 @@
   click(CL1);
   step('#p2','#d2',1/3,CL1+.1,'#p1');
   gone(['#c1','#c2'],CL1+.1);
-  tl.to('#cur',{x:930,y:1470,duration:.5,ease:'axisInOut'},CL1+.4);
+  tl.to('#cur',{x:840,y:1470,duration:.5,ease:'axisInOut'},CL1+.4);
   // the client and the campaign manager go back and forth, then it is approved
-  const C3=A+5.3;
-  say('#c3',C3); say('#c4',C3+.75); gone(['#c3'],C3+1.2); say('#c5',C3+1.5);
-  step('#p3','#d3',2/3,C3+1.6,'#p2');
+  const C3=D+3.0;
+  say('#c3',C3); say('#c4',C3+.65); gone(['#c3'],C3+1.05); say('#c5',C3+1.3);
+  step('#p3','#d3',2/3,C3+1.4,'#p2');
   // publish to LinkedIn: the outline and the pill turn sage
-  const SW=A+7.05, CL2=A+7.6;
+  const SW=D+4.6, CL2=D+5.05;
   vis('#lb1',SW,false); vis('#lb2',SW);
   tl.fromTo('#lb2',{y:14,opacity:0},{y:0,opacity:1,duration:.3},SW)
-    .to('#cur',{x:BX+40,y:BY+6,duration:.5,ease:'axisInOut'},SW+.05);
+    .to('#cur',{x:BX+40,y:BY+6,duration:.4,ease:'axisInOut'},SW+.05);
   click(CL2);
   const LV=CL2+.12;
   step('#p4','#d4',1,LV,'#p3');
@@ -340,16 +375,23 @@
   gone(['#c4','#c5'],LV+.15);
   vis('#done',LV+.55);
   tl.fromTo('#done',{y:16,opacity:0},{y:0,opacity:1,duration:.45},LV+.55);
-  off('#s3',38*B);
+  off('#s3b',39*B);
 
-  // ---- Final 23.75 to 30: See Axis live, request your seat, the details in one callout, then loop ----
-  ground(NAVY,WHITE,38*B); on('#s4',38*B);
-  vis('#fsub',38.5*B); vis('#fchev',39*B); vis('#fcard',39.5*B);
-  tl.fromTo('#fchev',{y:-14,opacity:0},{y:0,opacity:1,duration:.4},39*B)
-    .to('#fchev',{y:12,duration:.45,yoyo:true,repeat:5,ease:'sine.inOut'},40*B)
-    .fromTo('#fcard',{y:30,scale:.97},{y:0,scale:1,duration:.6,ease:'axisSpring'},39.5*B)
-    .fromTo('#fdate .num',{yPercent:10},{yPercent:0,duration:.7},40*B)
-    .to('#fuline',{scaleX:1,duration:.8,ease:'axisInOut'},41*B);
+  // ---- Final 24.375 to 30 (navy): who, what, when, and the button; then loop ----
+  const F = 39*B;
+  ground(NAVY,WHITE,F); on('#s4',F); tl.set('#logo',{autoAlpha:0},F);   // the lockup row replaces the corner logo here
+  vis('#frow',F);
+  tl.fromTo('#fax',{x:-24,opacity:0},{x:0,opacity:1,duration:.5},F)
+    .fromTo('#fdiv',{scaleY:0},{scaleY:1,duration:.4,ease:'axisInOut'},F+.1);
+  badge('#lmpF','#ringF',F+.15);
+  [['#fh',F+.6],['#fdate',F+.9],['#fdet',F+1.2]].forEach(([id,t])=>{ vis(id,t); tl.fromTo(id,{y:16,opacity:0},{y:0,opacity:id==='#fdet'?.92:1,duration:.45},t); });
+  vis('#fbtn',F+1.55); vis('#furl',F+1.9);
+  tl.fromTo('#fbtn',{scale:.85,opacity:0},{scale:1,opacity:1,duration:.5,ease:'axisSpring'},F+1.55)
+    .fromTo('#furl',{opacity:0},{opacity:1,duration:.4},F+1.9)
+    .to('#fuline',{scaleX:1,duration:.6,ease:'axisInOut'},F+2.0)
+    .to('#fbtn',{scale:1.05,duration:.22,yoyo:true,repeat:1,ease:'sine.inOut'},F+2.7)
+    .to('#fbtn svg',{x:10,duration:.25,yoyo:true,repeat:3,ease:'sine.inOut'},F+2.7)
+    .to('#fbtn',{scale:1.05,duration:.22,yoyo:true,repeat:1,ease:'sine.inOut'},F+3.8);
 
   const L = 29.3;                                   // reset S1 to its exact frame-0 state, then cross-fade into it
   S1.forEach(([id,rot,fx,fy,fr])=>tl.set(id,{x:fx,y:fy,rotation:fr,borderColor:EDGE,backgroundColor:INK2},L));
@@ -357,7 +399,8 @@
   vis('#s1sub',L,false);
   tl.set('#s1',{autoAlpha:0},L)                    // dip through navy: CTA out, then frame 0 in
     .to('#s4',{autoAlpha:0,duration:.3,ease:'none'},L)
-    .to('#s1',{autoAlpha:1,duration:.35,ease:'none'},L+.32);
+    .to('#s1',{autoAlpha:1,duration:.35,ease:'none'},L+.32)
+    .to('#logo',{autoAlpha:1,duration:.35,ease:'none'},L+.32);
 
   tl.to({},{duration:0.001},30);
 </script>
