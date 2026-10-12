@@ -53,7 +53,8 @@ Their examples assume a live page: in scenes, keep to the one-timeline contract 
   (Axis: the £4,200 client question from the landing page). Land one new beat per music beat. Use only real copy from the source.
 - **No captions unless asked.** (The Axis video had them in v2; removed on request. The caption pattern is in git history.)
 - **Palette is FMF only: navy `#0e1034`, cornflower `#6A8FFD`, soft cornflower `#93A9F6`, alice-blue `#E7ECF3`, white.**
-  No green, no other accents. Cornflower text only on navy (it is under 3:1 on alice-blue); on light use navy text and
+  No other accents, except sage `#7CC4A7` (dark `#4A8F76`) as the status colour for "live" (Axis: the card outline,
+  pill and last node turn sage when the ad is published). Cornflower text only on navy (it is under 3:1 on alice-blue); on light use navy text and
   cornflower shapes.
 - **Music bed:** `python3 scripts/make-bed.py bed.wav --seconds 30 --bpm 96` synthesises an original groove (electric
   piano, sub bass, soft kick/snap/hats; needs `pip install numpy`), about -22 LUFS. Default `--style steady`: the SAME
@@ -91,6 +92,9 @@ Their examples assume a live page: in scenes, keep to the one-timeline contract 
 - Gotcha: drawing a line with a mask whose path uses `pathLength="1"` does not animate in the renderer (it pops in at
   the end). Draw the visible path itself: `strokeDasharray = L + ' ' + L`, tween `strokeDashoffset` from `L` to 0, with
   `L = path.getTotalLength()`. Measure prefix lengths the same way to stage a draw (fast, slow into a knot, stall, resume).
+- **Show collaboration, not a status list:** type the draft in, pin comments over the card that go back and forth by
+  role (Strategist, Campaign manager, Client), and have a labelled multiplayer cursor click the real button
+  ("Send to client", then "Publish to LinkedIn"). Keep at most two comments on screen.
 - Music: `--style calm` gives a half-time feel on the same beat grid when the steady groove feels too intense.
 - Gotcha: a `tl.set()` at exactly t=0 is skipped when the renderer seeks to 0. Hide later-revealed elements in CSS and
   reveal them with a set at their beat.
