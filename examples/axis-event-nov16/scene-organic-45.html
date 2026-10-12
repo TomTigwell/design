@@ -109,7 +109,7 @@
   <div class="sub" id="s1sub">Five tools. Ten threads. No shared plan.</div>
   <svg id="tangle" viewBox="0 0 1080 1920">
     <defs><mask id="tm"><path id="tmp" d="M255 847 C420 780 600 930 750 877 C700 970 360 960 245 1047 C330 1035 380 1070 452 1065 C530 1013 582 1052 549 1097 C516 1143 438 1110 464 1065 C490 1019 568 1032 575 1080 C582 1130 497 1136 484 1091 C471 1049 536 1036 556 1062 C640 1120 720 1110 825 1097 C760 1190 380 1170 235 1257 C330 1240 400 1280 430 1290 C460 1260 470 1300 440 1310 C420 1320 470 1340 500 1310 C560 1270 680 1320 765 1287 C820 1270 870 1320 900 1360" stroke="#fff" stroke-width="16" fill="none" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/></mask></defs>
-    <path d="M255 847 C420 780 600 930 750 877 C700 970 360 960 245 1047 C330 1035 380 1070 452 1065 C530 1013 582 1052 549 1097 C516 1143 438 1110 464 1065 C490 1019 568 1032 575 1080 C582 1130 497 1136 484 1091 C471 1049 536 1036 556 1062 C640 1120 720 1110 825 1097 C760 1190 380 1170 235 1257 C330 1240 400 1280 430 1290 C460 1260 470 1300 440 1310 C420 1320 470 1340 500 1310 C560 1270 680 1320 765 1287 C820 1270 870 1320 900 1360" id="thr" stroke="#93A9F6" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round" mask="url(#tm)"/>
+    <path d="M255 847 C420 780 600 930 750 877 C700 970 360 960 245 1047 C330 1035 380 1070 452 1065 C530 1013 582 1052 549 1097 C516 1143 438 1110 464 1065 C490 1019 568 1032 575 1080 C582 1130 497 1136 484 1091 C471 1049 536 1036 556 1062 C640 1120 720 1110 825 1097 C760 1190 380 1170 235 1257 C330 1240 400 1280 430 1290 C460 1260 470 1300 440 1310 C420 1320 470 1340 500 1310 C560 1270 680 1320 765 1287 C820 1270 870 1320 900 1360" id="thr" stroke="#93A9F6" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
     <path id="toknot" d="M255 847 C420 780 600 930 750 877 C700 970 360 960 245 1047 C330 1035 380 1070 452 1065 C530 1013 582 1052 549 1097 C516 1143 438 1110 464 1065" fill="none" stroke="none"/>
     <g id="pk"><circle class="pkt" id="pk1" r="11" fill="#ffffff" opacity="0"/><circle class="pkt" id="pk2" r="11" fill="#ffffff" opacity="0"/><circle class="pkt" id="pk3" r="11" fill="#ffffff" opacity="0"/></g>
   </svg>
@@ -194,17 +194,31 @@
     tl.fromTo(id,{x:fx,y:fy,rotation:fr},{x:0,y:0,rotation:rot,duration:d,ease:'axisSpring'},Math.max(0,land-d));
     drift(id,land+.2,5);
   });
-  const T0 = 3.2, TD = 2.0;                        // the thread draws from 3.125 to 5.525 s
-  tl.to('#tmp',{strokeDashoffset:0,duration:TD,ease:'none'},T0);
-  ['#k1','#k2','#k3','#k4','#k5','#k6'].forEach((id,i)=>{     // path order (zigzag)
-    tl.to(id,{borderColor:CORN,backgroundColor:'#262a78',duration:.25},T0+i*(TD/6)+.05);
+  // The thread is drawn along its real length (stroke-dash on the path itself; the earlier mask reveal did not
+  // animate in the renderer). It runs freely between the first tools, slows as it winds into the knot, catches,
+  // and then limps on to the rest.
+  const thr=document.querySelector('#thr'), TL=thr.getTotalLength();
+  const cmds=thr.getAttribute('d').match(/[MC][^MC]*/g);
+  const lenTo=k=>{ const p=document.createElementNS('http://www.w3.org/2000/svg','path');
+    p.setAttribute('d',cmds.slice(0,k).join(' ')); thr.parentNode.appendChild(p);
+    const l=p.getTotalLength(); p.remove(); return l; };
+  const KS=lenTo(4), KE=lenTo(9), MID=KE+(TL-KE)*.5;          // knot start, knot end, half way after it
+  gsap.set(thr,{strokeDasharray:TL+' '+TL,strokeDashoffset:TL});
+  tl.to(thr,{strokeDashoffset:TL-KS,duration:1.1,ease:'sine.inOut'},2.6)     // Sheets -> Notion -> Slack
+    .to(thr,{strokeDashoffset:TL-KE,duration:1.1,ease:'power2.out'},3.7)     // winds into the knot and slows
+    .to(['#k3'],{x:-14,duration:.18,yoyo:true,repeat:1,ease:'sine.inOut'},4.9) // caught: a tug that goes nowhere
+    .to(['#k4'],{x:14,duration:.18,yoyo:true,repeat:1,ease:'sine.inOut'},4.9)
+    .to(thr,{strokeDashoffset:TL-MID,duration:.4,ease:'sine.inOut'},5.2)      // limps on
+    .to(thr,{strokeDashoffset:0,duration:.35,ease:'sine.inOut'},5.75);
+  [['#k1',2.6],['#k2',3.0],['#k3',3.6],['#k4',5.3],['#k5',5.6],['#k6',6.0]].forEach(([id,t])=>{
+    tl.to(id,{borderColor:CORN,backgroundColor:'#262a78',duration:.25},t);
   });
-  // packets set off along the thread and jam in the knot
+  // packets follow the thread and jam in the knot
   [1,2,3].forEach(i=>{
-    const t=T0+TD-.2+(i-1)*.28;
+    const t=4.1+(i-1)*.25;
     tl.set('#pk'+i,{opacity:1},t)
-      .to('#pk'+i,{motionPath:{path:'#toknot',start:0,end:1-(i-1)*.04},duration:1.05,ease:'axisInOut'},t)
-      .to('#pk'+i,{x:'+=6',y:'-=4',duration:.09,yoyo:true,repeat:7,ease:'sine.inOut'},t+1.05);
+      .to('#pk'+i,{motionPath:{path:'#toknot',start:0,end:1-(i-1)*.04},duration:.95,ease:'axisInOut'},t)
+      .to('#pk'+i,{x:'+=6',y:'-=4',duration:.09,yoyo:true,repeat:9,ease:'sine.inOut'},t+.95);
   });
   vis('#s1sub',9.5*B);                              // 5.94 s; the connected picture then holds to 7.5
   off('#s1',12*B);
@@ -265,7 +279,7 @@
 
   const L = 29.3;                                   // reset S1 to its exact frame-0 state, then cross-fade into it
   S1.forEach(([id,rot,fx,fy,fr])=>tl.set(id,{x:fx,y:fy,rotation:fr,borderColor:EDGE,backgroundColor:INK2},L));
-  tl.set('#tmp',{strokeDashoffset:1},L).set('.pkt',{opacity:0,x:0,y:0},L);
+  tl.set(thr,{strokeDashoffset:TL},L).set('.pkt',{opacity:0,x:0,y:0},L);
   vis('#s1sub',L,false);
   tl.set('#s1',{autoAlpha:0},L)                    // dip through navy: CTA out, then frame 0 in
     .to('#s4',{autoAlpha:0,duration:.3,ease:'none'},L)

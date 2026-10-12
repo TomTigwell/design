@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 """Synthesise an original music bed (no samples, so no licensing issues).
 
-Usage: python3 make-bed.py out.wav [--seconds 30] [--bpm 96] [--style steady|arc]
+Usage: python3 make-bed.py out.wav [--seconds 30] [--bpm 96] [--style steady|calm|arc]
+
+calm: the steady plan in a half-time feel (kick on 1, snare on 3, quarter hats, sustained chords), a little quieter.
 
 steady (default): ONE groove at a constant density from the first bar to the last; only gain and chords move, so the
   track never feels like it speeds up. A gentle level lift at the reveal bar (default 15 s). Use this for ads.
@@ -106,10 +108,12 @@ CHORDS = {  # name: (rootless voicing, bass root)
 PLAN = [('Am7', 'heart'), ('Am7', 'heart+'), ('Fmaj7', 'heart+'), ('Fmaj7', 'build'), ('G69', 'build+'),
         ('Cmaj9', 'lift'), ('Fmaj9', 'lift'), ('G69', 'lift'), ('Fmaj9', 'lift'), ('Cmaj9', 'outro')]
 NB = int(np.ceil(SECS / bar))
-if STYLE == 'steady':
+STEADY = STYLE in ('steady', 'calm')
+if STEADY:
     LOOP = ['Am7', 'Fmaj7', 'Cmaj9', 'G69', 'Am7', 'Fmaj7', 'Cmaj9', 'G69', 'Fmaj9', 'G69', 'Cmaj9', 'Cmaj9']
-    PLAN = [(LOOP[i % len(LOOP)], 'groove') for i in range(NB)]
-    PLAN[-1] = (PLAN[-1][0], 'groove_end')
+    K_ = 'calm' if STYLE == 'calm' else 'groove'
+    PLAN = [(LOOP[i % len(LOOP)], K_) for i in range(NB)]
+    PLAN[-1] = (PLAN[-1][0], K_ + '_end')
 else:
     PLAN = (PLAN * 4)[:NB] if NB != len(PLAN) else PLAN
 ARP = [0, 2, 3, 1, 3, 2, 1, 0]
@@ -131,7 +135,24 @@ for b, (name, kind) in enumerate(PLAN):
     for k, m in enumerate(v):  # pad, sustained into the next bar
         put(padb, t0, pad_tone(mtof(m), bar + 1.4), 0.07, 0.25 + 0.5 * k / 3)
 
-    if kind in ('groove', 'groove_end'):
+    if kind in ('calm', 'calm_end'):
+        # half-time feel on the same beat grid: kick on 1 (soft pickup on the "and" of 3), snare on 3, quarter-note
+        # hats, long bass notes and sustained chords; reads as roughly half the pace and much less busy
+        K(at(0), 0.85); K(at(10), 0.4)
+        put(drums, at(8), snap(), 0.15)
+        for s_ in (0, 4, 8, 12):
+            put(drums, at(s_), hat(), 0.04, 0.62)
+        put(bassb, at(0), bass(mtof(root), 1.1), 0.30)
+        put(bassb, at(8), bass(mtof(root), 0.9), 0.20)
+        for s_, d in ((0, 1.6), (8, 1.4)):
+            for k, m in enumerate(v):
+                put(keys, at(s_) + k * 0.02, ep(mtof(m), d, 0.55), 0.065, 0.3 + 0.4 * k / 3)
+        for j, s_ in enumerate((2, 6, 10, 14)):
+            put(arp, at(s_), ep(mtof(v[ARP[j * 2] % 4] + 12), 0.9, 0.45), 0.04, 0.3 if j % 2 == 0 else 0.7)
+        if kind == 'calm_end':
+            for k, m in enumerate(v):
+                put(keys, at(8) + k * 0.02, ep(mtof(m), 2.6, 0.6), 0.06, 0.3 + 0.4 * k / 3)
+    elif kind in ('groove', 'groove_end'):
         # identical pattern every bar: kick 1 and 3, snap 2 and 4, even eighth hats, bass, stabs, a soft eighth arpeggio
         for s_ in (0, 8):
             K(at(s_))
@@ -201,7 +222,7 @@ for b, (name, kind) in enumerate(PLAN):
             put(arp, at(s_) + step, ep(mtof(v[ARP[j * 2] % 4] + 12), 0.8, 0.5), 0.06, 0.3 if j % 2 == 0 else 0.7)
 
 # riser into the first lift, soft impact on it
-if FIRST_LIFT is not None and STYLE != 'steady':
+if FIRST_LIFT is not None and not STEADY:
     lt = FIRST_LIFT * bar
     put(fx, lt - 1.25, riser(1.25), 0.10)
     put(fx, lt, impact(), 0.55)
@@ -240,7 +261,7 @@ tonal = reverb((keys + arp + echo + padb) * duck, 0.38)
 mix = tonal + kicks_b + drums + bassb + reverb(fx, 0.2)
 
 # energy arc: held back for the hook, building through the turn, a clear lift on the reveal, settling for the CTA
-ARCV = {'heart': 0.62, 'heart+': 0.72, 'build': 0.84, 'build+': 0.94, 'outro': 1.0, 'groove': 1.0, 'groove_end': 1.0}
+ARCV = {'heart': 0.62, 'heart+': 0.72, 'build': 0.84, 'build+': 0.94, 'outro': 1.0, 'groove': 1.0, 'groove_end': 1.0, 'calm': 1.0, 'calm_end': 1.0}
 LIFTS = [1.30, 1.20, 1.14, 1.10]
 arc, li = [], 0
 for _, k in PLAN:
@@ -248,7 +269,7 @@ for _, k in PLAN:
         arc.append(LIFTS[min(li, 3)]); li += 1
     else:
         arc.append(ARCV[k])
-if STYLE == 'steady':  # flat level, a gentle lift from the reveal bar onwards
+if STEADY:  # flat level, a gentle lift from the reveal bar onwards
     arc = [1.0] * len(PLAN)
     FIRST_LIFT = None
 tt = np.arange(n) / SR
@@ -257,7 +278,7 @@ gain = np.interp(tt, anchors, arc)
 if FIRST_LIFT is not None:  # land the lift on beat 1 of the first lift bar
     lt = FIRST_LIFT * bar
     gain = np.where((tt > lt - 0.05) & (tt < lt + 0.05), np.interp(tt, [lt - 0.05, lt + 0.05], [0.85, arc[FIRST_LIFT]]), gain)
-if STYLE == 'steady':  # flat level with a gentle lift exactly at the reveal time (0.3 s ramp)
+if STEADY:  # flat level with a gentle lift exactly at the reveal time (0.3 s ramp)
     gain = np.interp(tt, [REVEAL - 0.15, REVEAL + 0.15], [0.92, 1.08])
 mix *= gain[:, None]
 
@@ -265,7 +286,7 @@ mix *= gain[:, None]
 for ch in (0, 1):
     sp = np.fft.rfft(mix[:, ch]); fr = np.fft.rfftfreq(n, 1 / SR)
     mix[:, ch] = np.fft.irfft(sp / (1 + (fr / 9000.0) ** 4), n)
-mix *= 0.12 / np.sqrt((mix ** 2).mean())
+mix *= (0.095 if STYLE == 'calm' else 0.12) / np.sqrt((mix ** 2).mean())
 mix = np.tanh(mix * 1.4) / 1.4
 peak = np.abs(mix).max()
 if peak > 0.40:

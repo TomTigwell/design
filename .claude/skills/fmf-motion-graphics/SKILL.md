@@ -88,6 +88,10 @@ Their examples assume a live page: in scenes, keep to the one-timeline contract 
   a bullet list.
 - **Seamless loop:** LinkedIn loops video. In the last 0.7 s, reset the opening elements to their exact frame-0 values and
   dip through the background colour into them, so the final frame equals frame 0.
+- Gotcha: drawing a line with a mask whose path uses `pathLength="1"` does not animate in the renderer (it pops in at
+  the end). Draw the visible path itself: `strokeDasharray = L + ' ' + L`, tween `strokeDashoffset` from `L` to 0, with
+  `L = path.getTotalLength()`. Measure prefix lengths the same way to stage a draw (fast, slow into a knot, stall, resume).
+- Music: `--style calm` gives a half-time feel on the same beat grid when the steady groove feels too intense.
 - Gotcha: a `tl.set()` at exactly t=0 is skipped when the renderer seeks to 0. Hide later-revealed elements in CSS and
   reveal them with a set at their beat.
 
