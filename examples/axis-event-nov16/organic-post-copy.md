@@ -1,6 +1,6 @@
 # Organic post copy: Axis event, 16 November
 
-Pairs with `scene-organic-45.html` (4:5, 30 s). The copy follows the video beat for beat: the same opening question,
+Pairs with `scene-organic-45.html` (4:5, 33.75 s). The copy follows the video beat for beat: the same opening question,
 the same problem, Axis, the event, then the same link. British English, no em dashes. Every fact is from the landing page.
 
 ---

@@ -30,7 +30,7 @@
   /* S1: still stitching */
   #s1{opacity:1;visibility:visible}
   #s1 .sub{top:580px;opacity:.85}
-  #s1sub{visibility:hidden}  /* revealed on the beat; hidden in CSS because a set() at t=0 is skipped when seeking to 0 */
+  #s1sub{visibility:hidden;font-size:50px}  /* revealed on the beat; hidden in CSS because a set() at t=0 is skipped when seeking to 0 */
   .chip{position:absolute;z-index:2;padding:12px 26px 14px;border-radius:14px;background:var(--ink2);border:2px solid rgba(255,255,255,.26);white-space:nowrap}
   .chip .tool{font-size:23px;font-weight:600;color:var(--soft)}
   .chip .art{font-size:31px;font-weight:500;margin-top:2px}
@@ -188,13 +188,10 @@
     <div class="cf"><span class="cu">Axis by Fill My Funnel</span><span class="cb">Learn more</span></div>
   </div>
   <div id="cmts">
-    <div class="cm" id="c1"><span class="ca s">S</span><div><div class="r">Strategist</div><div class="t">First draft's in. Over to you.</div></div></div>
-    <div class="cm" id="c2"><span class="ca m">CM</span><div><div class="r">Campaign manager</div><div class="t">Looks great. Sending to the client.</div></div></div>
-    <div class="cm" id="c3"><span class="ca c">C</span><div><div class="r">Client</div><div class="t">Let's make sure we highlight the new collaboration feature!</div></div></div>
     <div class="cm" id="c4"><span class="ca m">CM</span><div><div class="r">Campaign manager</div><div class="t">I've updated the copy. Please review.</div></div></div>
     <div class="cm" id="c5"><span class="ca c">C</span><div><div class="r">Client</div><div class="t">Done deal. Approved.</div></div></div>
   </div>
-  <div id="pub"><span id="lb1">Send to client</span><span id="lb2">Publish to LinkedIn</span></div>
+  <div id="pub"><span id="lb2">Publish to LinkedIn</span></div>
   <div id="rip"></div>
   <div id="cur"><svg id="ar" viewBox="0 0 22 28"><path d="M1.5 1.5 L1.5 22 L7 17 L10.5 25.5 L14 24 L10.6 15.8 L18 15.8 Z" fill="#0e1034" stroke="#fff" stroke-width="2" stroke-linejoin="round"/></svg><svg id="hand" viewBox="0 0 24 24"><path d="M10 7.5c0-.83.67-1.5 1.5-1.5S13 6.67 13 7.5v5.75h.76c.19 0 .37.04.54.11l4.54 2.26c.53.22.91.76.91 1.38 0 .06-.01.13-.02.2l-.75 5.27c-.11.73-.69 1.28-1.44 1.28h-6.79c-.41 0-.79-.17-1.06-.44L4.75 18.4l.79-.8c.2-.2.48-.33.79-.33.09 0 .16.02.24.03l3.43.72V7.5z" fill="#0e1034" stroke="#fff" stroke-width="1.2" stroke-linejoin="round"/></svg><span class="tag">Campaign manager</span></div>
   <div id="done">Published to LinkedIn.<br>Nothing rebuilt.</div>
@@ -215,9 +212,10 @@
 <div id="logo"><svg width="52" height="52" viewBox="0 0 48 48" aria-hidden="true"><path d="M24.3394 19.7273L30.2766 2.09935C30.4128 1.69804 30.2584 1.2582 29.9019 1.02014L28.6123 0.163113C28.0811 -0.190578 27.3545 0.0565523 27.1593 0.657375L21.4696 18.0971C21.3606 18.4304 21.4492 18.7954 21.6989 19.0448L22.7388 20.09C23.2428 20.5956 24.1124 20.3984 24.3372 19.7273H24.3394ZM24.7458 26.4678L37.4465 27.3792C38.0005 27.42 38.475 26.9893 38.4773 26.4429L38.5 22.3391C38.5023 21.8199 38.08 21.3982 37.5532 21.3892L24.8185 21.21C24.2827 21.2032 23.8422 21.6295 23.8445 22.1555L23.8536 25.5269C23.8536 26.0212 24.2441 26.4293 24.7436 26.4655L24.7458 26.4678ZM21.12 18.1084L16.5178 4.16255C16.2749 3.42796 15.2873 3.27379 14.8264 3.89955L14.1634 4.79738C13.9863 5.03771 13.9341 5.34832 14.0227 5.63173L18.4295 19.5731C18.6475 20.2623 19.542 20.4664 20.0461 19.9404L20.902 19.0471C21.1427 18.7954 21.2244 18.4372 21.1154 18.1084H21.12ZM21.4991 29.2815L27.207 47.3356C27.3931 47.9228 28.0901 48.1813 28.6237 47.8616L29.9065 47.0953C30.2856 46.8686 30.4582 46.4128 30.322 45.9979L24.3213 27.8123C24.1056 27.157 23.2701 26.9417 22.7547 27.411L21.7648 28.3111C21.4923 28.5582 21.3902 28.9368 21.4991 29.2837V29.2815ZM17.9641 21.1148L10.474 21.0831C9.94273 21.0831 9.51135 21.5025 9.50908 22.024L9.5 24.3615C9.5 24.8535 9.88143 25.2662 10.3832 25.307L17.8914 25.9123C18.4522 25.9577 18.9313 25.5224 18.9313 24.9691L18.9245 22.058C18.9245 21.5388 18.4954 21.1193 17.9686 21.1171L17.9641 21.1148ZM18.4114 27.606L14.0544 41.1211C13.9636 41.3999 14.0113 41.7038 14.1816 41.9441L14.8582 42.9031C15.3077 43.5425 16.3067 43.4019 16.5587 42.6651L21.145 29.2225C21.2539 28.9074 21.1835 28.5582 20.961 28.3043L20.0552 27.2727C19.5647 26.7149 18.6384 26.9008 18.4114 27.606Z" fill="currentColor"></path></svg><svg class="wm" viewBox="0 0 80 32" fill="currentColor" aria-label="Axis"><path d="M0 31.373L11.8309 0H17.3897L28.9985 31.373H24.469L16.7183 9.63654C16.237 8.29374 15.9013 7.1336 15.7087 6.16353C15.5162 5.19346 15.4026 4.08022 15.373 2.82629H13.5785C13.5489 4.10984 13.428 5.2527 13.2206 6.25486C13.0133 7.25455 12.6652 8.38013 12.1913 9.63654L4.39124 31.373H0ZM6.04999 22.7683L7.39525 19.0929H21.5094L22.8547 22.7683H6.04999Z" /><path d="M29.6197 31.3731L37.4197 19.9914L30.0664 9.18979H34.549L37.1062 13.0874C37.6419 13.9266 38.0393 14.7683 38.291 15.6224C38.5453 16.4715 38.7033 17.3922 38.7625 18.3771H40.4657C40.4953 17.5131 40.6928 16.6764 41.0482 15.8667C41.4061 15.0596 41.9122 14.1339 42.5737 13.0874L45.126 9.18979H49.3814L41.9442 20.0358L49.8776 31.3755H45.2593L42.3441 26.9843C41.7789 26.2068 41.3666 25.3873 41.1124 24.5184C40.8606 23.6495 40.7051 22.7091 40.6409 21.6946H38.9378C38.9081 22.6202 38.7156 23.4718 38.3577 24.2469C37.9973 25.0244 37.474 25.9352 36.7903 26.9818L33.7418 31.3731H29.6172H29.6197Z" /><path d="M53.2422 4.88738V0H57.2755V4.88738H53.2422ZM53.3755 31.373V9.18729H57.1867V31.373H53.3755Z" /><path d="M71.0754 32C69.4636 32 67.9826 31.7532 66.6398 31.2595C65.2945 30.7683 64.1739 30.0451 63.2779 29.0849C62.3818 28.1296 61.782 26.9793 61.4883 25.6341L65.1168 24.4715C65.2945 25.2786 65.6228 26.0117 66.1017 26.6659C66.5805 27.3224 67.2396 27.8507 68.0739 28.2555C68.9082 28.6603 69.9277 28.8602 71.1223 28.8602C72.7342 28.8602 73.9733 28.569 74.8397 27.984C75.7086 27.4039 76.1405 26.5869 76.1405 25.5452C76.1405 24.6492 75.8197 23.9087 75.1779 23.3237C74.5312 22.7436 73.4821 22.3018 72.0159 22.0031L69.2365 21.4625C67.8641 21.1663 66.6842 20.7911 65.6993 20.3419C64.712 19.8926 63.9122 19.2435 63.3001 18.3943C62.6879 17.5403 62.3818 16.4567 62.3818 15.146C62.3818 13.8352 62.7496 12.764 63.4803 11.7618C64.2134 10.7621 65.2131 9.97717 66.4843 9.40945C67.753 8.84172 69.1353 8.55539 70.6262 8.55539C73.1069 8.55539 75.0791 9.08856 76.5429 10.15C78.0091 11.2114 78.9792 12.5319 79.458 14.1142L76.0986 15.4125C75.8863 14.7856 75.5728 14.1981 75.1532 13.6427C74.7385 13.0923 74.1461 12.6109 73.3834 12.2086C72.6206 11.8038 71.6876 11.6038 70.5818 11.6038C69.1205 11.6038 67.9949 11.9099 67.2223 12.5221C66.4423 13.1342 66.0548 13.8895 66.0548 14.7831C66.0548 15.5927 66.3238 16.2345 66.8619 16.7134C67.4025 17.1922 68.4022 17.5625 69.8659 17.834L72.6404 18.3696C74.5855 18.8189 76.2936 19.552 77.7721 20.569C79.2532 21.5835 79.9937 23.1361 79.9937 25.2293C79.9937 26.5721 79.6407 27.7519 78.9397 28.7664C78.2362 29.7834 77.2217 30.5758 75.8912 31.1435C74.5633 31.7087 72.9563 31.9926 71.073 31.9926L71.0754 32Z" /></svg></div>
 
 <script>
-  // One PAUSED timeline exposed as window.tl. Exactly 30 s, and it loops cleanly back to frame 0.
-  // Music: steady 96 bpm groove (beat 0.625 s), gentle lift at 14.375 s.
-  // S1 0-7.5 stitching | S2 7.5-14.375 familiar | S3a 14.375-17.5 Meet Axis + partner badge | S3b 17.5-24.375 collaboration | Final 24.375-30 CTA See Axis live + CTA + loop.
+  // One PAUSED timeline exposed as window.tl. 33.75 s, and it loops cleanly back to frame 0.
+  // Music: calm 96 bpm bed (beat 0.625 s), gentle lift at 15.625 s (make-bed.py --seconds 33.75 --reveal 15.625).
+  // Times below are written before the stretch at the end of the script. Final cut points:
+  // S1 0-8.75 stitching | S2 8.75-15.625 familiar | S3a 15.625-20.625 Meet Axis + partner badge | S3b 20.625-28.125 collaboration | Final 28.125-33.75 CTA + loop.
   gsap.registerPlugin(CustomEase, MotionPathPlugin);
   // Axis signature motion: one family of curves for every designed move
   CustomEase.create('axis',       'M0,0 C0.16,0.84 0.3,1 1,1');                               // settle
@@ -269,7 +267,8 @@
       .to('#pk'+i,{motionPath:{path:'#toknot',start:0,end:1-(i-1)*.04},duration:.95,ease:'axisInOut'},t)
       .to('#pk'+i,{x:'+=6',y:'-=4',duration:.09,yoyo:true,repeat:9,ease:'sine.inOut'},t+.95);
   });
-  vis('#s1sub',9.5*B);                              // 5.94 s; the connected picture then holds to 7.5
+  vis('#s1sub',9.5*B);                              // 5.94 s; the connected picture then holds to 8.75 (scene stretched below)
+  tl.fromTo('#s1sub',{opacity:0,scale:1.14},{opacity:.85,scale:1,duration:.7,ease:'axis'},9.5*B);
   off('#s1',12*B);
 
   // ---- S2 7.5 to 14.375: inbound messages, each preceded by typing dots; the unread count ticks up ----
@@ -316,8 +315,8 @@
   // ---- S3b 17.5 to 24.375 (light): the collaboration, larger ----
   const D = 28*B;
   ground(ALICE,NAVY,D); on('#s3b',D);
-  // 1. the draft is written  2. comments go back and forth  3. the campaign manager sends it to the client, who
-  // replies and approves  4. the campaign manager publishes and the ad goes live (sage, the FMF status green)
+  // 1. the draft is written  2. the campaign manager asks for review and the client approves (two comments only, so the
+  // eye is not pulled around)  3. the campaign manager publishes  4. the ad goes live (sage, the FMF status green)
   const SAGE='#7CC4A7', SAGED='#4A8F76', TC=D;
   ['#card','#d1','#d2','#d3','#d4'].forEach(id=>vis(id,TC));
   tl.fromTo('#card',{scale:.94,y:24},{scale:1,y:0,duration:.6,ease:'axisSpring'},TC)
@@ -330,21 +329,22 @@
   // typing, one character at a time, with a caret
   const ci=document.querySelector('#ci'), txt=ci.dataset.text;
   ci.innerHTML=[...txt].map(c=>'<span class="ch1">'+c+'</span>').join('')+'<span id="caret"></span>';
-  const T1=TC+.15, TT=.8;
+  const T1=TC+.25, TT=1.0;
   ci.querySelectorAll('.ch1').forEach((el,i)=>tl.set(el,{display:'inline'},T1+TT*i/txt.length));
   vis('#caret',TC-.01,false); vis('#caret',TC);
-  const C1=D+1.1;
+  const C1=D+1.75;
   vis('#caret',C1,false);
   const say=(id,t)=>tl.set(id,{display:'flex'},t)
-    .fromTo(id,{autoAlpha:0,y:18,scale:.92,transformOrigin:'0% 0%'},{autoAlpha:1,y:0,scale:1,duration:.45,ease:'axisSpring'},t);
+    .fromTo(id,{autoAlpha:0,y:18,scale:.92,transformOrigin:'0% 0%'},{autoAlpha:1,y:0,scale:1,duration:.5,ease:'axisSpring'},t);
   const gone=(ids,t)=>tl.to(ids,{autoAlpha:0,x:30,duration:.3,ease:'axisIn'},t).set(ids,{display:'none'},t+.3);
-  say('#c1',C1); say('#c2',C1+.6);
-  // the campaign manager's cursor comes in and sends it to the client
-  const BX=540, BY=1334, CL1=D+2.55;
-  vis('#pub',D+1.9); vis('#lb1',D+1.9);
-  tl.fromTo('#pub',{scale:.9,autoAlpha:0},{scale:1,autoAlpha:1,duration:.4,ease:'axisSpring'},D+1.9);
-  vis('#cur',D+1.95);
-  tl.fromTo('#cur',{x:1000,y:1560},{x:BX+40,y:BY+6,duration:.5,ease:'axisInOut'},D+1.95);
+  say('#c4',C1); step('#p2','#d2',1/3,C1+.1,'#p1');
+  say('#c5',C1+1.05); step('#p3','#d3',2/3,C1+1.25,'#p2');
+  // the campaign manager's cursor comes in and publishes to LinkedIn: the outline and the pill turn sage
+  const BX=540, BY=1334, PB=D+3.55, CL2=D+4.6;
+  vis('#pub',PB); vis('#lb2',PB);
+  tl.fromTo('#pub',{scale:.9,autoAlpha:0},{scale:1,autoAlpha:1,duration:.45,ease:'axisSpring'},PB);
+  vis('#cur',PB+.2);
+  tl.fromTo('#cur',{x:1000,y:1560},{x:BX+40,y:BY+6,duration:.65,ease:'axisInOut'},PB+.2);
   const click=t=>{ vis('#ar',t-.15,false); vis('#hand',t-.15);
     tl.to('#pub',{scale:.95,duration:.08,yoyo:true,repeat:1,ease:'sine.inOut'},t)
       .to('#cur',{scale:.9,duration:.08,yoyo:true,repeat:1,ease:'sine.inOut'},t)
@@ -352,19 +352,6 @@
       .fromTo('#rip',{scale:.4,opacity:1},{scale:2.4,opacity:0,duration:.5,ease:'axis'},t)
       .set('#rip',{visibility:'hidden'},t+.5);
     vis('#hand',t+.35,false); vis('#ar',t+.35); };
-  click(CL1);
-  step('#p2','#d2',1/3,CL1+.1,'#p1');
-  gone(['#c1','#c2'],CL1+.1);
-  tl.to('#cur',{x:840,y:1470,duration:.5,ease:'axisInOut'},CL1+.4);
-  // the client and the campaign manager go back and forth, then it is approved
-  const C3=D+3.0;
-  say('#c3',C3); say('#c4',C3+.65); gone(['#c3'],C3+1.05); say('#c5',C3+1.3);
-  step('#p3','#d3',2/3,C3+1.4,'#p2');
-  // publish to LinkedIn: the outline and the pill turn sage
-  const SW=D+4.6, CL2=D+5.05;
-  vis('#lb1',SW,false); vis('#lb2',SW);
-  tl.fromTo('#lb2',{y:14,opacity:0},{y:0,opacity:1,duration:.3},SW)
-    .to('#cur',{x:BX+40,y:BY+6,duration:.4,ease:'axisInOut'},SW+.05);
   click(CL2);
   const LV=CL2+.12;
   step('#p4','#d4',1,LV,'#p3');
@@ -373,13 +360,13 @@
     .to('#pub',{backgroundColor:SAGE,duration:.2},LV)
     .to('#pub',{autoAlpha:0,scale:.92,duration:.3,ease:'axisIn'},LV+.3)
     .to('#cur',{x:1180,y:1620,duration:.6,ease:'axisIn'},LV+.2);
-  gone(['#c4','#c5'],LV+.15);
-  vis('#done',LV+.55);
-  tl.fromTo('#done',{y:16,opacity:0},{y:0,opacity:1,duration:.45},LV+.55);
-  off('#s3b',39*B);
+  gone(['#c4','#c5'],LV+.2);
+  vis('#done',LV+.6);
+  tl.fromTo('#done',{y:16,opacity:0},{y:0,opacity:1,duration:.45},LV+.6);
+  const F = D+12*B;                                 // 7.5 s for the collaboration; the published card holds about 2 s
+  off('#s3b',F);
 
   // ---- Final 24.375 to 30 (navy): who, what, when, and the button; then loop ----
-  const F = 39*B;
   ground(NAVY,WHITE,F); on('#s4',F); tl.set('#logo',{autoAlpha:0},F);   // the lockup row replaces the corner logo here
   vis('#frow',F);
   tl.fromTo('#fax',{x:-24,opacity:0},{x:0,opacity:1,duration:.5},F)
@@ -394,16 +381,20 @@
     .to('#fbtn svg',{x:10,duration:.25,yoyo:true,repeat:3,ease:'sine.inOut'},F+2.7)
     .to('#fbtn',{scale:1.05,duration:.22,yoyo:true,repeat:1,ease:'sine.inOut'},F+3.8);
 
-  const L = 29.3;                                   // reset S1 to its exact frame-0 state, then cross-fade into it
+  const L = F+4.925;                                   // reset S1 to its exact frame-0 state, then cross-fade into it
   S1.forEach(([id,rot,fx,fy,fr])=>tl.set(id,{x:fx,y:fy,rotation:fr,borderColor:EDGE,backgroundColor:INK2},L));
   tl.set(thr,{strokeDashoffset:TL},L).set('.pkt',{opacity:0,x:0,y:0},L);
-  vis('#s1sub',L,false);
+  vis('#s1sub',L,false); tl.set('#s1sub',{opacity:.85,scale:1},L);
   tl.set('#s1',{autoAlpha:0},L)                    // dip through navy: CTA out, then frame 0 in
     .to('#s4',{autoAlpha:0,duration:.3,ease:'none'},L)
     .to('#s1',{autoAlpha:1,duration:.35,ease:'none'},L+.32)
     .to('#logo',{autoAlpha:1,duration:.35,ease:'none'},L+.32);
 
-  tl.to({},{duration:0.001},30);
+  tl.to({},{duration:0.001},L+.7);
+  // Pacing: stretch the scenes on the beat grid after the fact. Meet Axis holds 3 beats longer (shift everything from
+  // the collaboration cut on), then the opening holds 2 beats longer (shift everything from the first cut on).
+  tl.shiftChildren(3*B,false,D);
+  tl.shiftChildren(2*B,false,12*B);
 </script>
 </body>
 </html>
